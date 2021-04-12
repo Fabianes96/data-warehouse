@@ -2,6 +2,14 @@
   display: none;
 }
 
+.active {
+  border-bottom: 2px solid #FFFFFF;
+}
+
+.active a {
+  font-weight: bold;
+}
+
 header .navbar {
   padding-top: 0;
   padding-bottom: 0;
@@ -48,7 +56,7 @@ header nav .container ul li:hover a {
   font-weight: bold;
 }
 
-#opciones-contactos {
+#opciones-contactos .opciones-contactos {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -58,31 +66,31 @@ header nav .container ul li:hover a {
   padding: 40px 30px;
 }
 
-#opciones-contactos .busqueda {
+#opciones-contactos .opciones-contactos .busqueda {
   width: 510px;
 }
 
-#opciones-contactos .busqueda #div-search {
+#opciones-contactos .opciones-contactos .busqueda #div-search {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
   gap: 10px;
 }
 
-#opciones-contactos .busqueda #div-search .dropdown {
+#opciones-contactos .opciones-contactos .busqueda #div-search .dropdown {
   -ms-flex-item-align: center;
       -ms-grid-row-align: center;
       align-self: center;
   right: 80px;
 }
 
-#opciones-contactos .busqueda #div-search .dropdown .dropdown-menu.show {
+#opciones-contactos .opciones-contactos .busqueda #div-search .dropdown .dropdown-menu.show {
   width: 440px;
   -webkit-transform: translate(-414px, 31px) !important;
           transform: translate(-414px, 31px) !important;
 }
 
-#opciones-contactos .busqueda #div-search #div-icon-search {
+#opciones-contactos .opciones-contactos .busqueda #div-search #div-icon-search {
   width: 40px;
   height: 40px;
   border: 1px solid rgba(0, 0, 0, 0.25);
@@ -103,6 +111,34 @@ header nav .container ul li:hover a {
   height: 400px;
   border: 1px solid;
   margin: 0px 30px;
+}
+
+#usuarios .usuarios {
+  width: 50%;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  margin: 40px auto;
+  border: 1px solid rgba(0, 0, 0, 0.5);
+  border-radius: 30px;
+  padding: 40px;
+}
+
+#usuarios .usuarios > :first-child {
+  -ms-flex-item-align: center;
+      -ms-grid-row-align: center;
+      align-self: center;
+  margin-bottom: 1.5rem;
+}
+
+#usuarios .usuarios #btn-crear-usuario {
+  -ms-flex-item-align: center;
+      -ms-grid-row-align: center;
+      align-self: center;
 }
 
 #login .login {

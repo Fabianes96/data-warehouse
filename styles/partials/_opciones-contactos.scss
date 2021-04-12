@@ -1,33 +1,35 @@
 #opciones-contactos{
-    display: flex;
-    justify-content: space-between;
-    padding: 40px 30px;
-    .busqueda{
-        width: 510px    ;
-        #div-search{
-            display: flex;
-            gap: 10px;
-            .dropdown{
-                align-self: center;
-                right: 80px;
-                .dropdown-menu.show{
-                    width: 440px;
-                    transform: translate(-414px, 31px)!important;
+    .opciones-contactos{
+        display: flex;
+        justify-content: space-between;
+        padding: 40px 30px;
+        .busqueda{
+            width: 510px    ;
+            #div-search{
+                display: flex;
+                gap: 10px;
+                .dropdown{
+                    align-self: center;
+                    right: 80px;
+                    .dropdown-menu.show{
+                        width: 440px;
+                        transform: translate(-414px, 31px)!important;
+                    }
+                }
+                #div-icon-search{
+                    width: 40px;
+                    height: 40px;
+                    border: 1px solid rgba(0,0,0,0.25);
+                    border-radius: 3px;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    cursor: pointer;
                 }
             }
-            #div-icon-search{
-                width: 40px;
-                height: 40px;
-                border: 1px solid rgba(0,0,0,0.25);
-                border-radius: 3px;
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                cursor: pointer;
-            }
         }
-    }
-    .btn-contactos{
-
+        .btn-contactos{
+    
+        }
     }
 }

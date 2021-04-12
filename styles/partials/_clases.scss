@@ -1,3 +1,9 @@
 .none{
     display: none;
 }
+.active{
+    border-bottom: 2px solid #FFFFFF;
+    a{
+        font-weight: bold;
+    }
+}
