@@ -16,21 +16,25 @@
         </nav>
     </header>
     <section id="login">
-        <form class="login" action="./index.html">
+        <div class="login">
             <h1>Bienvenidos</h1>
             <div class="mb-3">              
-              <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Usuario">              
+              <input type="text" class="form-control" id="inputEmail" aria-describedby="emailHelp" placeholder="Usuario">              
             </div>
             <div class="mb-3">              
-              <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Contraseña">
+              <input type="password" class="form-control" id="inputPassword" placeholder="Contraseña">
             </div>            
-            <button type="submit" class="btn btn-primary">Ingresar</button>
-          </form>
+            <button id="btnIngresar" class="btn btn-primary">Ingresar</button>
+            <div id="auth-failed" class="alert alert-danger none" role="alert">
+                Email o contraseña incorrectos
+            </div>
+          </div>
     </section>        
     <script
       src="https://kit.fontawesome.com/73b0c866b6.js"
       crossorigin="anonymous"
     ></script>
     <script src="/node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>    
+    <script src="./js/login.js"></script>
 </body>
 </html>
