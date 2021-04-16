@@ -8,6 +8,7 @@ let inputApellido = document.getElementById("inputApellido");
 let inputEmailUsuario = document.getElementById("inputEmailUsuario");
 let perfil = document.getElementById("perfil");
 let inputPasswordUsuario = document.getElementById("inputPasswordUsuario");
+let regionCiudad = document.getElementById("region-ciudad");
 
 function activeLink(){
     let menu = document.getElementById("menu");
@@ -96,6 +97,40 @@ prueba.addEventListener("click", ()=>{
   },100)
   
 })
+let vector = []
+let objeto = {
+  "region": {      
+  }
+}
+async function pruebaxd(){
+  try {
+    let consulta = await fetch("http://localhost:3000/regiones");
+    let consultaAsJson = await consulta.json()
+    vector = consultaAsJson;
+    console.log(vector);
+    vector.forEach((obj)=>{
+      let prop = obj.region      
+      if(prop in objeto.region){
+        let pais = obj.pais;
+        if(pais in objeto.region[prop]){          
+          objeto.region[prop][pais].push(obj.ciudad)          
+        }else{
+          objeto.region[prop][pais] = []          
+          objeto.region[prop][pais].push(obj.ciudad)          
+        }
+      }else{        
+        let pais = obj.pais;
+        objeto.region[prop] = {}
+        objeto.region[prop][pais] = []     
+        objeto.region[prop][pais].push(obj.ciudad)
+      }
+    })    
+  } catch (error) {
+    console.log(error);
+  }
+}
+
 
 activeLink()
 formB()
+pruebaxd()
