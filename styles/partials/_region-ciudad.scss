@@ -1,0 +1,13 @@
+#region-ciudad{  
+    #card-region{        
+        transition: .3s ease all;                
+        height: 72px;
+    }
+    .region{
+        margin: 0 20px;
+        .region-body{
+            display: flex;
+            justify-content: space-between;
+        }                      
+    }    
+}

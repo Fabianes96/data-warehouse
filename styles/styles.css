@@ -1,3 +1,11 @@
+.block {
+  display: block;
+}
+
+.abrir-card {
+  height: 336px !important;
+}
+
 .none {
   display: none;
 }
@@ -139,6 +147,25 @@ header nav .container ul li:hover a {
   -ms-flex-item-align: center;
       -ms-grid-row-align: center;
       align-self: center;
+}
+
+#region-ciudad #card-region {
+  -webkit-transition: .3s ease all;
+  transition: .3s ease all;
+  height: 72px;
+}
+
+#region-ciudad .region {
+  margin: 0 20px;
+}
+
+#region-ciudad .region .region-body {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
 }
 
 #login .login {

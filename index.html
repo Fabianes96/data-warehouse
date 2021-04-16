@@ -53,47 +53,152 @@
             <button>Exportar</button>
             <button>Agregar</button>            
         </div>          
-
       </div>
     </section>
     <section id="usuarios" class="none">
-      <div class="usuarios">
+      <form class="usuarios needs-validation" novalidate>
         <h1>Crear Usuario</h1>
         <div class="mb-3">
           <label for="inputNombre" class="form-label">Nombre</label>
-          <input type="text" class="form-control" id="inputNombre" aria-describedby="emailHelp">          
+          <input type="text" class="form-control" id="inputNombre" required>          
+          <div class="valid-feedback">            
+          </div>
+          <div class="invalid-feedback">
+            Debe ingresar un nombre
+          </div>
         </div>
         <div class="mb-3">
           <label for="inputApellido" class="form-label">Apellido</label>
-          <input type="text" class="form-control" id="inputApellido">
+          <input type="text" class="form-control" id="inputApellido" required>
+          <div class="valid-feedback">            
+          </div>
+          <div class="invalid-feedback">
+            Debe ingresar el apellido
+          </div>
         </div>        
         <div class="mb-3">
           <label for="inputEmailUsuario" class="form-label">Email</label>
-          <input type="email" class="form-control" id="inputEmailUsuario">
+          <input type="email" class="form-control" id="inputEmailUsuario" required>
+          <div class="valid-feedback">            
+          </div>
+          <div class="invalid-feedback">
+            Debe ingresar un email
+          </div>
         </div>        
         <div class="mb-3">
           <label for="perfil" class="form-label">Perfil</label>
-          <select id="perfil" class="form-select" aria-label="Default select example">
+          <select id="perfil" class="form-select" aria-label="Default select example" required>
             <option selected>Básico</option>
-            <option value="1">Admin</option>
+            <option value="1">Admin</option>            
           </select>
+          <div class="valid-feedback">            
+          </div>
+          <div class="invalid-feedback">
+            Debe ingresar un perfil
+          </div>
         </div>        
         <div class="mb-3">
           <label for="" class="form-label">Contraseña</label>
-          <input type="password" class="form-control" id="inputPasswordUsuario">
+          <input name="contra" type="password" class="form-control" id="inputPasswordUsuario" required>
+          <div class="valid-feedback">            
+          </div>
+          <div class="invalid-feedback">
+            Debe ingresar la contraseña
+          </div>
         </div>        
         <div class="mb-3">
           <label for="repetirContra" class="form-label">Repetir Contaseña</label>
-          <input type="password" class="form-control" id="repetirContra">
+          <input name="repetir" id="repetir" type="password" class="form-control" id="repetirContra" required>
+          <div id="coinciden" class="valid-feedback">            
+          </div>
+          <div id="noCoinciden" class="invalid-feedback">
+            Las contraseñas no coinciden
+          </div>
         </div>        
-        <button id="btn-crear-usuario" class="btn btn-primary">Crear</button>
+        <button type="submit" id="btn-crear-usuario" class="btn btn-primary">Crear</button>
         <div class="alert alert-success" role="alert">
           Usuario registrado con éxito
         </div>
         <div class="alert alert-danger" role="alert">
           Ha ocurrido un error inesperado
         </div>
+      </form>
+    </section>
+    <section id="region-ciudad">
+      <div id="card-region" class="card region">
+        <div class="card-body">
+          <div class="region-body">
+            <h5 class="card-title">Card title</h5>          
+            <button id="btnPrueba" type="button" class="btn btn-outline-success">Agregar pais</button>          
+          </div>
+          <div id="list-tree" class="none">
+            <ul id="myUL">
+              <li>
+                <span class="caret" style="margin-right: 20px;">Argentina</span>
+                <span class="opciones" style="font-size: 13px; align-self:center;">
+                  <span class="link-primary">Editar</span>
+                  <span class="link-danger">Eliminar</span>
+                </span>
+                <ul class="nested">
+                  <li style="display: flex; gap:20px">
+                    <span>Buenos Aires</span>
+                    <span class="opciones" style="font-size: 13px; align-self:center;">
+                      <span class="link-primary">Editar</span>
+                      <span class="link-danger">Eliminar</span>
+                    </span>
+                  </li>                  
+                  <li style="display: flex; gap:20px">
+                    <span>Córdoba</span>
+                    <span class="opciones" style="font-size: 13px; align-self:center;">
+                      <span class="link-primary">Editar</span>
+                      <span class="link-danger">Eliminar</span>
+                    </span>
+                  </li>                  
+                </ul>                
+              </li>
+              <li>
+                <span class="caret" style="margin-right: 20px;">Colombia</span>
+                <span class="opciones" style="font-size: 13px; align-self:center;">
+                  <span class="link-primary">Editar</span>
+                  <span class="link-danger">Eliminar</span>
+                </span>
+                <ul class="nested">
+                  <li style="display: flex; gap:20px">
+                    <span>Bogotá</span>
+                    <span class="opciones" style="font-size: 13px; align-self:center;">
+                      <span class="link-primary">Editar</span>
+                      <span class="link-danger">Eliminar</span>
+                    </span>
+                  </li>                  
+                  <li style="display: flex; gap:20px">
+                    <span>Medellín</span>
+                    <span class="opciones" style="font-size: 13px; align-self:center;">
+                      <span class="link-primary">Editar</span>
+                      <span class="link-danger">Eliminar</span>
+                    </span>
+                  </li>                  
+                  <li style="display: flex; gap:20px">
+                    <span>Cali</span>
+                    <span class="opciones" style="font-size: 13px; align-self:center;">
+                      <span class="link-primary">Editar</span>
+                      <span class="link-danger">Eliminar</span>
+                    </span>
+                  </li>                  
+                </ul>
+              </li>
+            </ul>
+          </div>
+        </div>
+        </div>
+        
+      <div class="card region">
+        <div class="card-body">
+          <h5 class="card-title">Card title</h5>          
+          <button type="button" class="btn btn-outline-primary">Agregar región</button>
+        </div>
       </div>
+
+
     </section>
     <section id="contactos">
       <div id="div-contactos">

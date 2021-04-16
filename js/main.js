@@ -71,4 +71,31 @@ btnCrearUsuario.addEventListener("click",async()=>{
     console.log("Algo salió mal: ", error);
   }
 })
+function formB () { 
+  
+  var forms = document.querySelectorAll('.needs-validation')  
+  Array.prototype.slice.call(forms)
+    .forEach(function (form) {
+      form.addEventListener('submit', function (event) {
+        if (!form.checkValidity()) {
+          event.preventDefault()
+          event.stopPropagation()
+        }
+        form.classList.add('was-validated')
+      }, false)
+    })
+}
+
+let prueba = document.getElementById("card-region");
+let tree = document.getElementById("list-tree")
+let region = document.querySelector(".region")
+prueba.addEventListener("click", ()=>{
+  prueba.classList.toggle("abrir-card")
+  setTimeout(()=>{
+    tree.classList.toggle("none"); 
+  },100)
+  
+})
+
 activeLink()
+formB()
