@@ -120,6 +120,28 @@ server.post("/usuarios",authorization,isAdmin,async(req,res)=>{
         res.json("Ha ocurrido un error inesperado");
       }
 })
+server.get("/regiones",async(req,res)=>{
+  try {
+    let consulta = await db.sequelize.query(
+      `SELECT ciudad.nombre AS ciudad,
+      pais.nombre AS pais,
+      region.nombre AS region 
+      FROM ciudad 
+      JOIN pais
+      ON ciudad.pais = pais.id
+      JOIN region
+      ON pais.region = region.id`
+    ,{
+      type: db.sequelize.QueryTypes.SELECT,
+    });    
+    res.status(200)
+    res.json(consulta);
+  } catch (error) {
+    console.log(error);
+    res.status(500);
+    res.json("Ha ocurrido un error inesperado");
+  }
+})
 server.listen(process.env.PORT || 3000, () => {
     console.log("Server on port 3000");
 });
