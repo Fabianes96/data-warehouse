@@ -127,9 +127,9 @@ server.get("/regiones",async(req,res)=>{
       pais.nombre AS pais,
       region.nombre AS region 
       FROM ciudad 
-      JOIN pais
+      RIGHT JOIN pais
       ON ciudad.pais = pais.id
-      JOIN region
+      RIGHT JOIN region
       ON pais.region = region.id`
     ,{
       type: db.sequelize.QueryTypes.SELECT,

@@ -125,12 +125,12 @@ async function queryToJSON(){
           objeto.region[prop][pais].push(obj.ciudad)          
         }
       }else{        
-        let pais = obj.pais;
+        let pais = obj.pais;      
         objeto.region[prop] = {}
         objeto.region[prop][pais] = []     
         objeto.region[prop][pais].push(obj.ciudad)
       }
-    })        
+    })                
     addContentToTree(objeto.region)
   } catch (error) {
     console.log(error);
@@ -164,33 +164,13 @@ function addContentToTree(obj){
     divTreeList.setAttribute("class","list-tree");
     divTreeList.setAttribute("id", id)    
     
-    let ul = document.createElement("ul");    
-    
+    let ul = document.createElement("ul");        
     for(pais in obj[region]){      
-      let li = document.createElement("li");
-      let spanCaret = document.createElement("span");
-      spanCaret.setAttribute("class","caret")
-      spanCaret.textContent = pais;
-      let spanOpciones =document.createElement("span");
-      spanOpciones.setAttribute("class","opciones");
-      let spanLinkPrimary = document.createElement("span");
-      spanLinkPrimary.setAttribute("class", "link-primary")
-      spanLinkPrimary.textContent = "Editar";
-      let spanLinkDanger = document.createElement("span");
-      spanLinkDanger.setAttribute("class", "link-danger")
-      spanLinkDanger.textContent = "Eliminar";
-
-      spanOpciones.appendChild(spanLinkPrimary);
-      spanOpciones.appendChild(spanLinkDanger);
-
-      let ulNested = document.createElement("ul");
-      ulNested.setAttribute("class","nested");      
-      let arrayActual = obj[region][pais]
-      for (let i = 0; i < arrayActual.length; i++) {            
-        let liCiudades = document.createElement("li");
-        liCiudades.setAttribute("class", "li-ciudades");
-        let spanNombre = document.createElement("span");
-        spanNombre.textContent = arrayActual[i]
+      if(pais != "null"){
+        let li = document.createElement("li");
+        let spanCaret = document.createElement("span");
+        spanCaret.setAttribute("class","caret")
+        spanCaret.textContent = pais;
         let spanOpciones =document.createElement("span");
         spanOpciones.setAttribute("class","opciones");
         let spanLinkPrimary = document.createElement("span");
@@ -199,20 +179,43 @@ function addContentToTree(obj){
         let spanLinkDanger = document.createElement("span");
         spanLinkDanger.setAttribute("class", "link-danger")
         spanLinkDanger.textContent = "Eliminar";
-
+  
         spanOpciones.appendChild(spanLinkPrimary);
         spanOpciones.appendChild(spanLinkDanger);
-
-        liCiudades.appendChild(spanNombre);
-        liCiudades.appendChild(spanOpciones);
-        ulNested.appendChild(liCiudades);        
-      }      
-
-      li.appendChild(spanCaret);
-      li.appendChild(spanOpciones);
-      li.appendChild(ulNested);
-      
-      ul.appendChild(li)
+  
+        let ulNested = document.createElement("ul");
+        ulNested.setAttribute("class","nested");      
+        let arrayActual = obj[region][pais]
+        for (let i = 0; i < arrayActual.length; i++) {            
+          if(arrayActual[i]!=null){
+            let liCiudades = document.createElement("li");
+            liCiudades.setAttribute("class", "li-ciudades");
+            let spanNombre = document.createElement("span");
+            spanNombre.textContent = arrayActual[i]
+            let spanOpciones =document.createElement("span");
+            spanOpciones.setAttribute("class","opciones");
+            let spanLinkPrimary = document.createElement("span");
+            spanLinkPrimary.setAttribute("class", "link-primary")
+            spanLinkPrimary.textContent = "Editar";
+            let spanLinkDanger = document.createElement("span");
+            spanLinkDanger.setAttribute("class", "link-danger")
+            spanLinkDanger.textContent = "Eliminar";
+    
+            spanOpciones.appendChild(spanLinkPrimary);
+            spanOpciones.appendChild(spanLinkDanger);
+    
+            liCiudades.appendChild(spanNombre);
+            liCiudades.appendChild(spanOpciones);
+            ulNested.appendChild(liCiudades);        
+          }
+        }      
+  
+        li.appendChild(spanCaret);
+        li.appendChild(spanOpciones);
+        li.appendChild(ulNested);
+        
+        ul.appendChild(li)
+      }
     }
     divTreeList.appendChild(ul)
     divCardBody.appendChild(divTreeList)
