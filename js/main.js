@@ -9,6 +9,11 @@ let inputEmailUsuario = document.getElementById("inputEmailUsuario");
 let perfil = document.getElementById("perfil");
 let inputPasswordUsuario = document.getElementById("inputPasswordUsuario");
 let regionCiudad = document.getElementById("region-ciudad");
+let vector = []
+let objeto = {
+  "region": {      
+  }
+}
 
 function activeLink(){
     let menu = document.getElementById("menu");
@@ -87,22 +92,7 @@ function formB () {
     })
 }
 
-let prueba = document.getElementById("card-region");
-let tree = document.getElementById("list-tree")
-let region = document.querySelector(".region")
-prueba.addEventListener("click", ()=>{
-  prueba.classList.toggle("abrir-card")
-  setTimeout(()=>{
-    tree.classList.toggle("none"); 
-  },100)
-  
-})
-let vector = []
-let objeto = {
-  "region": {      
-  }
-}
-async function pruebaxd(){
+async function queryToJSON(){
   try {
     let consulta = await fetch("http://localhost:3000/regiones");
     let consultaAsJson = await consulta.json()
@@ -125,12 +115,108 @@ async function pruebaxd(){
         objeto.region[prop][pais].push(obj.ciudad)
       }
     })    
+    console.log(objeto);
+    addContentToTree(objeto.region)
   } catch (error) {
     console.log(error);
   }
 }
 
+function addContentToTree(obj){
+  let id = 0;
+  for (let region in obj) {    
+    
+    let divCardRegion = document.createElement("div");
+    divCardRegion.setAttribute("class", "card region");
+    let divCardBody = document.createElement("div");
+    divCardBody.setAttribute("class", "card-body");
+    
+    let divRegionBody = document.createElement("div");
+    divRegionBody.setAttribute("class", "region-body");
+    let h5 = document.createElement("h5");
+    h5.setAttribute("class","card-title")
+    h5.textContent = region
+    let button = document.createElement("button")
+    button.setAttribute("class","btn btn-outline-success")
+    button.textContent = "Agregar pais";
+    divRegionBody.appendChild(h5)
+    divRegionBody.appendChild(button);
+    
+    divCardBody.appendChild(divRegionBody);    
+    let divTreeList = document.createElement("div");
+    divTreeList.setAttribute("class","list-tree none");
+    divTreeList.setAttribute("id", id)    
+    
+    let ul = document.createElement("ul");    
+    
+    for(pais in obj[region]){      
+      let li = document.createElement("li");
+      let spanCaret = document.createElement("span");
+      spanCaret.setAttribute("class","caret")
+      spanCaret.textContent = pais;
+      let spanOpciones =document.createElement("span");
+      spanOpciones.setAttribute("class","opciones");
+      let spanLinkPrimary = document.createElement("span");
+      spanLinkPrimary.setAttribute("class", "link-primary")
+      spanLinkPrimary.textContent = "Editar";
+      let spanLinkDanger = document.createElement("span");
+      spanLinkDanger.setAttribute("class", "link-danger")
+      spanLinkDanger.textContent = "Eliminar";
+
+      spanOpciones.appendChild(spanLinkPrimary);
+      spanOpciones.appendChild(spanLinkDanger);
+
+      let ulNested = document.createElement("ul");
+      ulNested.setAttribute("class","nested");
+      console.log(obj[region][pais]);
+      let arrayActual = obj[region][pais]
+      for (let i = 0; i < arrayActual.length; i++) {            
+        let liCiudades = document.createElement("li");
+        liCiudades.setAttribute("class", "li-ciudades");
+        let spanNombre = document.createElement("span");
+        spanNombre.textContent = arrayActual[i]
+        let spanOpciones =document.createElement("span");
+        spanOpciones.setAttribute("class","opciones");
+        let spanLinkPrimary = document.createElement("span");
+        spanLinkPrimary.setAttribute("class", "link-primary")
+        spanLinkPrimary.textContent = "Editar";
+        let spanLinkDanger = document.createElement("span");
+        spanLinkDanger.setAttribute("class", "link-danger")
+        spanLinkDanger.textContent = "Eliminar";
+
+        spanOpciones.appendChild(spanLinkPrimary);
+        spanOpciones.appendChild(spanLinkDanger);
+
+        liCiudades.appendChild(spanNombre);
+        liCiudades.appendChild(spanOpciones);
+        ulNested.appendChild(liCiudades);        
+      }      
+
+      li.appendChild(spanCaret);
+      li.appendChild(spanOpciones);
+      li.appendChild(ulNested);
+      
+      ul.appendChild(li)
+    }
+    divTreeList.appendChild(ul)
+    divCardBody.appendChild(divTreeList)
+    
+
+    divCardRegion.appendChild(divCardBody);
+    regionCiudad.appendChild(divCardRegion);
+    let tree = document.getElementById(id);
+    console.log(id,tree);
+    divCardRegion.addEventListener("click",()=>{
+      divCardRegion.classList.toggle("abrir-card");
+      setTimeout(()=>{
+        tree.classList.toggle("none"); 
+      },100)
+    })
+    id++;
+    console.log(id);
+  }
+}
 
 activeLink()
 formB()
-pruebaxd()
+queryToJSON()

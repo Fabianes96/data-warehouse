@@ -3,7 +3,7 @@
 }
 
 .abrir-card {
-  height: 336px !important;
+  max-height: 500px;
 }
 
 .none {
@@ -149,13 +149,9 @@ header nav .container ul li:hover a {
       align-self: center;
 }
 
-#region-ciudad #card-region {
+#region-ciudad .region {
   -webkit-transition: .3s ease all;
   transition: .3s ease all;
-  height: 72px;
-}
-
-#region-ciudad .region {
   margin: 0 20px;
 }
 
@@ -166,6 +162,28 @@ header nav .container ul li:hover a {
   -webkit-box-pack: justify;
       -ms-flex-pack: justify;
           justify-content: space-between;
+}
+
+#region-ciudad .region .caret {
+  margin-right: 20px;
+}
+
+#region-ciudad .region .opciones {
+  font-size: 13px;
+  -ms-flex-item-align: center;
+      -ms-grid-row-align: center;
+      align-self: center;
+}
+
+#region-ciudad .region .opciones :first-child {
+  margin-right: 4px;
+}
+
+#region-ciudad .region .li-ciudades {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  gap: 20px;
 }
 
 #login .login {
