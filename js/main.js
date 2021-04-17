@@ -125,7 +125,7 @@ async function queryToJSON(){
           objeto.region[prop][pais].push(obj.ciudad)          
         }
       }else{        
-        let pais = obj.pais;      
+        let pais = obj.pais;              
         objeto.region[prop] = {}
         objeto.region[prop][pais] = []     
         objeto.region[prop][pais].push(obj.ciudad)
@@ -173,13 +173,26 @@ function addContentToTree(obj){
         spanCaret.textContent = pais;
         let spanOpciones =document.createElement("span");
         spanOpciones.setAttribute("class","opciones");
+
+        let spanSuccess = document.createElement("span");
+        spanSuccess.setAttribute("class", "link-success");
+        let iconPlus = document.createElement("i");
+        iconPlus.setAttribute("class","fas fa-plus-circle");
+        spanSuccess.appendChild(iconPlus);
+
         let spanLinkPrimary = document.createElement("span");
-        spanLinkPrimary.setAttribute("class", "link-primary")
-        spanLinkPrimary.textContent = "Editar";
+        spanLinkPrimary.setAttribute("class", "link-primary")        
+        let iconEdit = document.createElement("i")
+        iconEdit.setAttribute("class", "far fa-edit")
+        spanLinkPrimary.appendChild(iconEdit);
+
         let spanLinkDanger = document.createElement("span");
         spanLinkDanger.setAttribute("class", "link-danger")
-        spanLinkDanger.textContent = "Eliminar";
-  
+        let iconDelete = document.createElement("i")        
+        iconDelete.setAttribute("class", "far fa-trash-alt");
+        spanLinkDanger.appendChild(iconDelete);
+        
+        spanOpciones.appendChild(spanSuccess);
         spanOpciones.appendChild(spanLinkPrimary);
         spanOpciones.appendChild(spanLinkDanger);
   
@@ -195,11 +208,16 @@ function addContentToTree(obj){
             let spanOpciones =document.createElement("span");
             spanOpciones.setAttribute("class","opciones");
             let spanLinkPrimary = document.createElement("span");
-            spanLinkPrimary.setAttribute("class", "link-primary")
-            spanLinkPrimary.textContent = "Editar";
+            spanLinkPrimary.setAttribute("class", "link-primary")        
+            let iconEdit = document.createElement("i")
+            iconEdit.setAttribute("class", "far fa-edit")
+            spanLinkPrimary.appendChild(iconEdit);
+
             let spanLinkDanger = document.createElement("span");
             spanLinkDanger.setAttribute("class", "link-danger")
-            spanLinkDanger.textContent = "Eliminar";
+            let iconDelete = document.createElement("i")        
+            iconDelete.setAttribute("class", "far fa-trash-alt");
+            spanLinkDanger.appendChild(iconDelete);
     
             spanOpciones.appendChild(spanLinkPrimary);
             spanOpciones.appendChild(spanLinkDanger);
