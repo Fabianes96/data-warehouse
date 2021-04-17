@@ -123,7 +123,7 @@ server.post("/usuarios",authorization,isAdmin,async(req,res)=>{
 server.get("/regiones",async(req,res)=>{
   try {
     let consulta = await db.sequelize.query(
-      `SELECT ciudad.nombre AS ciudad,
+      `SELECT ciudad.id AS id_ciudad,pais.id AS id_pais ,region.id AS id_region, ciudad.nombre AS ciudad,
       pais.nombre AS pais,
       region.nombre AS region 
       FROM ciudad 

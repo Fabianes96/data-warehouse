@@ -10,6 +10,8 @@ let inputEmailUsuario = document.getElementById("inputEmailUsuario");
 let perfil = document.getElementById("perfil");
 let inputPasswordUsuario = document.getElementById("inputPasswordUsuario");
 let regionCiudad = document.getElementById("region-ciudad");
+let modalLabel = document.getElementById("addModalLabel");
+let labelAddCiudad = document.getElementById("labelInfoAddCiudad");
 let vector = []
 let objeto = {
   "region": {      
@@ -114,23 +116,39 @@ async function queryToJSON(){
     let consulta = await fetch("http://localhost:3000/regiones");
     let consultaAsJson = await consulta.json()
     vector = consultaAsJson;    
+    console.log(vector);
     vector.forEach((obj)=>{
-      let prop = obj.region      
+      let prop = obj.region
+      let ciudades = []      
       if(prop in objeto.region){
-        let pais = obj.pais;
-        if(pais in objeto.region[prop]){          
-          objeto.region[prop][pais].push(obj.ciudad)          
-        }else{
-          objeto.region[prop][pais] = []          
-          objeto.region[prop][pais].push(obj.ciudad)          
+        if(prop != "id"){
+          let pais = obj.pais;
+          if(pais in objeto.region[prop]){          
+            console.log(objeto.region[prop][pais]);
+            objeto.region[prop][pais].ciudades.push({"id": obj.id_ciudad, "ciudad": obj.ciudad})   
+            
+          }else{
+            ciudades = []
+            objeto.region[prop][pais] = {
+              "id": obj.id_pais,
+              "ciudades": ciudades
+            }                    
+            objeto.region[prop][pais].ciudades.push({"id": obj.id_ciudad, "ciudad": obj.ciudad}       )          
+          }
         }
       }else{        
         let pais = obj.pais;              
+        let id_region = "id"
         objeto.region[prop] = {}
-        objeto.region[prop][pais] = []     
-        objeto.region[prop][pais].push(obj.ciudad)
+        objeto.region[prop][id_region] = obj.id_region;
+        objeto.region[prop][pais] = {
+          "id": obj.id_pais,
+          "ciudades": ciudades
+        }                    
+        objeto.region[prop][pais].ciudades.push({"id": obj.id_ciudad, "ciudad": obj.ciudad})          
       }
     })                
+    console.log(objeto);
     addContentToTree(objeto.region)
   } catch (error) {
     console.log(error);
@@ -152,7 +170,12 @@ function addContentToTree(obj){
     h5.setAttribute("class","card-title")
     h5.textContent = region
     let button = document.createElement("button")
-    button.setAttribute("class","btn btn-outline-success btn-add")    
+    button.setAttribute("class","btn btn-outline-success btn-add")  
+    button.setAttribute("data-bs-target", "#exampleModal")
+    button.setAttribute("data-bs-toggle", "modal")
+    button.addEventListener("click",()=>{
+      modalLabel.textContent = "Añadir pais";      
+    })
     let spanBtn = document.createElement("span");
     spanBtn.textContent = "+";
     button.appendChild(spanBtn);
@@ -165,25 +188,33 @@ function addContentToTree(obj){
     divTreeList.setAttribute("id", id)    
     
     let ul = document.createElement("ul");        
-    for(pais in obj[region]){      
-      if(pais != "null"){
+    for(pais in obj[region]){          
+      if(pais != "null" && pais != "id"){        
         let li = document.createElement("li");
         let spanCaret = document.createElement("span");
         spanCaret.setAttribute("class","caret")
-        spanCaret.textContent = pais;
+        spanCaret.textContent = pais + " Con id: " + obj[region][pais].id;
         let spanOpciones =document.createElement("span");
         spanOpciones.setAttribute("class","opciones");
+        spanOpciones.setAttribute("pais", pais);
 
         let spanSuccess = document.createElement("span");
         spanSuccess.setAttribute("class", "link-success");
         let iconPlus = document.createElement("i");
-        iconPlus.setAttribute("class","fas fa-plus-circle");
+        iconPlus.setAttribute("class","fas fa-plus-circle");        
+        spanSuccess.setAttribute("data-bs-target", "#exampleModal")
+        spanSuccess.setAttribute("data-bs-toggle", "modal");
+        spanSuccess.addEventListener("click",()=>{                  
+          modalLabel.textContent = "Añadir ciudad";
+          labelAddCiudad.textContent = `Escriba el nombre de la ciudad a agregar en ${spanOpciones.getAttribute("pais")}.`
+          
+        })
         spanSuccess.appendChild(iconPlus);
 
         let spanLinkPrimary = document.createElement("span");
         spanLinkPrimary.setAttribute("class", "link-primary")        
         let iconEdit = document.createElement("i")
-        iconEdit.setAttribute("class", "far fa-edit")
+        iconEdit.setAttribute("class", "far fa-edit");
         spanLinkPrimary.appendChild(iconEdit);
 
         let spanLinkDanger = document.createElement("span");
@@ -198,13 +229,13 @@ function addContentToTree(obj){
   
         let ulNested = document.createElement("ul");
         ulNested.setAttribute("class","nested");      
-        let arrayActual = obj[region][pais]
+        let arrayActual = obj[region][pais].ciudades
         for (let i = 0; i < arrayActual.length; i++) {            
-          if(arrayActual[i]!=null){
+          if(arrayActual[i].ciudad!=null){
             let liCiudades = document.createElement("li");
             liCiudades.setAttribute("class", "li-ciudades");
             let spanNombre = document.createElement("span");
-            spanNombre.textContent = arrayActual[i]
+            spanNombre.textContent = arrayActual[i].ciudad
             let spanOpciones =document.createElement("span");
             spanOpciones.setAttribute("class","opciones");
             let spanLinkPrimary = document.createElement("span");
