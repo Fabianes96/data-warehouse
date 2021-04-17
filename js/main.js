@@ -1,4 +1,5 @@
 let linkUsuarios = document.getElementsByClassName("links")[2];
+let linkRegiones = document.getElementsByClassName("links")[3];
 let opcionesContactos = document.getElementById("opciones-contactos");
 let contactos = document.getElementById("contactos");
 let usuarios = document.getElementById("usuarios");
@@ -14,7 +15,6 @@ let objeto = {
   "region": {      
   }
 }
-
 function activeLink(){
     let menu = document.getElementById("menu");
     let a = menu.getElementsByClassName("links");      
@@ -27,7 +27,7 @@ function activeLink(){
         }      
         a[i].classList.remove("no-selected")
         a[i].classList.add("active")
-        if(i!=2){
+        if(i==0){
             noLinkUsuarios()
         }
       })
@@ -41,8 +41,25 @@ function noLinkUsuarios(){
 linkUsuarios.addEventListener("click",()=>{
     opcionesContactos.classList.add("none");
     contactos.classList.add("none");
+    regionCiudad.classList.add("none")
+    regionCiudad.classList.remove("flex")
     usuarios.classList.remove("none");
 });
+linkRegiones.addEventListener("click",async()=>{  
+  opcionesContactos.classList.add("none");
+  contactos.classList.add("none");
+  usuarios.classList.add("none");
+  regionCiudad.classList.remove("none");
+  regionCiudad.classList.add("flex")
+  while(regionCiudad.firstElementChild){
+    regionCiudad.removeChild(regionCiudad.firstElementChild);
+    objeto = {
+      "region": {      
+      }
+    }
+  }
+  await queryToJSON()
+})
 btnCrearUsuario.addEventListener("click",async()=>{
   let admin = "0";
   if(perfil.value =="Admin"){
@@ -96,8 +113,7 @@ async function queryToJSON(){
   try {
     let consulta = await fetch("http://localhost:3000/regiones");
     let consultaAsJson = await consulta.json()
-    vector = consultaAsJson;
-    console.log(vector);
+    vector = consultaAsJson;    
     vector.forEach((obj)=>{
       let prop = obj.region      
       if(prop in objeto.region){
@@ -114,8 +130,7 @@ async function queryToJSON(){
         objeto.region[prop][pais] = []     
         objeto.region[prop][pais].push(obj.ciudad)
       }
-    })    
-    console.log(objeto);
+    })        
     addContentToTree(objeto.region)
   } catch (error) {
     console.log(error);
@@ -137,14 +152,16 @@ function addContentToTree(obj){
     h5.setAttribute("class","card-title")
     h5.textContent = region
     let button = document.createElement("button")
-    button.setAttribute("class","btn btn-outline-success")
-    button.textContent = "Agregar pais";
+    button.setAttribute("class","btn btn-outline-success btn-add")    
+    let spanBtn = document.createElement("span");
+    spanBtn.textContent = "+";
+    button.appendChild(spanBtn);
     divRegionBody.appendChild(h5)
     divRegionBody.appendChild(button);
     
     divCardBody.appendChild(divRegionBody);    
     let divTreeList = document.createElement("div");
-    divTreeList.setAttribute("class","list-tree none");
+    divTreeList.setAttribute("class","list-tree");
     divTreeList.setAttribute("id", id)    
     
     let ul = document.createElement("ul");    
@@ -167,8 +184,7 @@ function addContentToTree(obj){
       spanOpciones.appendChild(spanLinkDanger);
 
       let ulNested = document.createElement("ul");
-      ulNested.setAttribute("class","nested");
-      console.log(obj[region][pais]);
+      ulNested.setAttribute("class","nested");      
       let arrayActual = obj[region][pais]
       for (let i = 0; i < arrayActual.length; i++) {            
         let liCiudades = document.createElement("li");
@@ -204,19 +220,17 @@ function addContentToTree(obj){
 
     divCardRegion.appendChild(divCardBody);
     regionCiudad.appendChild(divCardRegion);
-    let tree = document.getElementById(id);
-    console.log(id,tree);
-    divCardRegion.addEventListener("click",()=>{
-      divCardRegion.classList.toggle("abrir-card");
-      setTimeout(()=>{
-        tree.classList.toggle("none"); 
-      },100)
-    })
-    id++;
-    console.log(id);
+    let tree = document.getElementById(id);    
+    // divCardRegion.addEventListener("click",()=>{
+    //   divCardRegion.classList.toggle("abrir-card");
+    //   setTimeout(()=>{
+    //     tree.classList.toggle("none"); 
+    //   },100)
+    // })
+    id++;    
   }
 }
 
 activeLink()
 formB()
-queryToJSON()
+

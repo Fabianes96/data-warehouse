@@ -1,4 +1,9 @@
 #region-ciudad{      
+    position: relative;
+    top: 30px;    
+    flex-direction: column;
+    gap: 25px;
+    padding: 20px;
     .region{
         transition: .3s ease all;                        
         margin: 0 20px;

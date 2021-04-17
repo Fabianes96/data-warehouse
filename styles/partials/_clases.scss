@@ -7,6 +7,23 @@
 .none{
     display: none;
 }
+.flex{
+    display: flex;
+}
+.btn-add{
+    border-radius: 50px !important;
+    width: 35px;
+    height: 35px;    
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+    font-size: 27px !important;
+    font-weight: 300 !important;    
+    span{
+        position: relative;
+        bottom: 3px;
+    }
+}
 .active{
     border-bottom: 2px solid #FFFFFF;
     a{
