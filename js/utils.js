@@ -1,3 +1,5 @@
+const db = require("./db");
+
 function MD5(string) {
     function RotateLeft(lValue, iShiftBits) {
       return (lValue << iShiftBits) | (lValue >>> (32 - iShiftBits));
@@ -227,4 +229,20 @@ function MD5(string) {
   
     return temp.toLowerCase();
 }
-module.exports = {MD5}
+async function isAlreadyInDB(nombre, tabla){
+  try {
+    let consulta = await db.sequelize.query(`SELECT nombre FROM ${tabla} WHERE nombre = :nombre`,{
+      type: db.sequelize.QueryTypes.SELECT,
+      replacements:{
+        nombre: nombre
+      }
+    })
+    if (consulta.length !==0){
+      return true;
+    }
+    return false;
+  } catch (error) {
+    console.log(error);
+  }
+}
+module.exports = {MD5, isAlreadyInDB}

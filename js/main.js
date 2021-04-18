@@ -11,7 +11,9 @@ let perfil = document.getElementById("perfil");
 let inputPasswordUsuario = document.getElementById("inputPasswordUsuario");
 let regionCiudad = document.getElementById("region-ciudad");
 let modalLabel = document.getElementById("addModalLabel");
+let btnAceptarModal = document.getElementById("btnAceptarModal");
 let labelAddCiudad = document.getElementById("labelInfoAddCiudad");
+let inputModal = document.getElementById("inputModal");
 let vector = []
 let objeto = {
   "region": {      
@@ -96,8 +98,35 @@ btnCrearUsuario.addEventListener("click",async()=>{
     console.log("Algo salió mal: ", error);
   }
 })
-function formB () { 
-  
+btnAceptarModal.addEventListener("click",async()=>{
+  try {
+    const res = await fetch("http://localhost:3000/paises",{
+      method: 'POST',
+      headers:{
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${localStorage.getItem("jwt")}`
+      },
+      body:JSON.stringify({
+        nombre: inputModal.value,
+        region: labelAddCiudad.getAttribute("region")
+      })
+    })
+   inputModal.value = "";
+   labelAddCiudad.removeAttribute("region");
+   let mensaje = await res.json()
+   if(mensaje === "Pais ya ingresado en base de datos"){
+     console.log(mensaje);
+   };
+   if(!res.ok){
+     throw 'Error al ingresar el pais';
+   }
+   console.log("Pais registrado");
+   window.location.reload();
+  } catch (error) {
+    console.log(error);
+  }
+})
+function formB () {   
   var forms = document.querySelectorAll('.needs-validation')  
   Array.prototype.slice.call(forms)
     .forEach(function (form) {
@@ -173,8 +202,10 @@ function addContentToTree(obj){
     button.setAttribute("class","btn btn-outline-success btn-add")  
     button.setAttribute("data-bs-target", "#exampleModal")
     button.setAttribute("data-bs-toggle", "modal")
-    button.addEventListener("click",()=>{
+    button.addEventListener("click",()=>{            
       modalLabel.textContent = "Añadir pais";      
+      labelAddCiudad.setAttribute("region",obj[region].id);
+      labelAddCiudad.textContent = "Escriba el nombre del pais a agregar"
     })
     let spanBtn = document.createElement("span");
     spanBtn.textContent = "+";
@@ -205,7 +236,7 @@ function addContentToTree(obj){
         spanSuccess.setAttribute("data-bs-target", "#exampleModal")
         spanSuccess.setAttribute("data-bs-toggle", "modal");
         spanSuccess.addEventListener("click",()=>{                  
-          modalLabel.textContent = "Añadir ciudad";
+          modalLabel.textContent = "Añadir ciudad";          
           labelAddCiudad.textContent = `Escriba el nombre de la ciudad a agregar en ${spanOpciones.getAttribute("pais")}.`
           
         })

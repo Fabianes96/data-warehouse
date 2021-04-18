@@ -123,14 +123,14 @@ server.post("/usuarios",authorization,isAdmin,async(req,res)=>{
 server.get("/regiones",async(req,res)=>{
   try {
     let consulta = await db.sequelize.query(
-      `SELECT ciudad.id AS id_ciudad,pais.id AS id_pais ,region.id AS id_region, ciudad.nombre AS ciudad,
-      pais.nombre AS pais,
-      region.nombre AS region 
-      FROM ciudad 
-      RIGHT JOIN pais
-      ON ciudad.pais = pais.id
-      RIGHT JOIN region
-      ON pais.region = region.id`
+      `SELECT ciudades.id AS id_ciudad,paises.id AS id_pais ,regiones.id AS id_region, ciudades.nombre AS ciudad,
+      paises.nombre AS pais,
+      regiones.nombre AS region 
+      FROM ciudades 
+      RIGHT JOIN paises
+      ON ciudades.pais = paises.id
+      RIGHT JOIN regiones
+      ON paises.region = regiones.id`
     ,{
       type: db.sequelize.QueryTypes.SELECT,
     });    
@@ -140,6 +140,39 @@ server.get("/regiones",async(req,res)=>{
     console.log(error);
     res.status(500);
     res.json("Ha ocurrido un error inesperado");
+  }
+})
+server.post("/paises",authorization,isAdmin,async(req,res)=>{
+  try {
+    const {nombre,region} = req.body;
+    if(nombre=="" || nombre ==null){
+      res.status(400);
+      res.json("Debe ingresar el nombre");
+      return;
+    } else if(await utils.isAlreadyInDB(nombre, "paises")){
+      res.status(400);
+      res.json("Pais ya ingresado en base de datos")
+      return
+    }
+    if(isNaN(region)){
+      res.status(400);
+      res.json("Debe ingresar el id de la región");
+      return;
+    }
+    let consulta = await db.sequelize.query(`
+      INSERT into paises (region, nombre) VALUES (:region, :nombre)
+    `,{
+      replacements:{
+        region: region,
+        nombre: nombre
+      }, type: db.sequelize.QueryTypes.INSERT
+    })
+    res.status(201);    
+    console.log("Pais agregado con exito");
+    res.json(consulta);
+  } catch (error) {
+    console.log(error);
+    res.status(500);
   }
 })
 server.listen(process.env.PORT || 3000, () => {
