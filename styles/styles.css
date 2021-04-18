@@ -10,10 +10,15 @@
   display: none;
 }
 
-.flex {
+.div-opciones-flex {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
+  gap: 10px;
+}
+
+.div-opciones-flex span {
+  cursor: pointer;
 }
 
 .grid {

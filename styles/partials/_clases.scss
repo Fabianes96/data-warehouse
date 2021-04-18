@@ -7,8 +7,12 @@
 .none{
     display: none;
 }
-.flex{
+.div-opciones-flex{
     display: flex;
+    gap: 10px;
+    span{
+        cursor: pointer;
+    }
 }
 .grid{
     display: grid;

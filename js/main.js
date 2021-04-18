@@ -14,7 +14,7 @@ let regiones = document.getElementById("regiones")
 let modalLabel = document.getElementById("addModalLabel");
 let btnAceptarModal = document.getElementById("btnAceptarModal");
 let btnEliminar = document.getElementById("btnAceptarWarningModal");
-let labelAddCiudad = document.getElementById("labelInfoAddCiudad");
+let labelAddInModal = document.getElementById("labelInfoAdd");
 let labelWarning = document.getElementById("labelWarning");
 let inputModal = document.getElementById("inputModal");
 let btnAgregarRegion = document.getElementById("btnAgregarRegion");
@@ -53,12 +53,12 @@ function noLinkUsuarios(){
 window.onclick = function(e){
   if(e.target == modal || e.target == btnClose || e.target == xClose){    
     modalLabel.textContent = "";
-    labelAddCiudad.textContent = "";
+    labelAddInModal.textContent = "";
     inputModal.value = ""    
-    labelAddCiudad.removeAttribute("region");
-    labelAddCiudad.removeAttribute("pais");
-    labelAddCiudad.removeAttribute("epais");
-    labelAddCiudad.removeAttribute("eciudad");
+    labelAddInModal.removeAttribute("region");
+    labelAddInModal.removeAttribute("pais");
+    labelAddInModal.removeAttribute("epais");
+    labelAddInModal.removeAttribute("eciudad");
   }
 }
 linkUsuarios.addEventListener("click",()=>{
@@ -117,7 +117,7 @@ btnCrearUsuario.addEventListener("click",async()=>{
 })
 btnAceptarModal.addEventListener("click",async()=>{
   try {    
-    if(labelAddCiudad.getAttribute("region")){
+    if(labelAddInModal.getAttribute("region")){
       const res = await fetch("http://localhost:3000/paises",{
       method: 'POST',
       headers:{
@@ -126,18 +126,18 @@ btnAceptarModal.addEventListener("click",async()=>{
       },
       body:JSON.stringify({
         nombre: inputModal.value,
-        region: labelAddCiudad.getAttribute("region")
+        region: labelAddInModal.getAttribute("region")
       })
     })
       inputModal.value = "";
-      labelAddCiudad.removeAttribute("region");      
+      labelAddInModal.removeAttribute("region");      
       let mensaje = await res.json()      
       if(!res.ok){
         throw mensaje;
       }
       console.log("Pais registrado");
       window.location.reload();
-    } else if(labelAddCiudad.getAttribute("pais")){      
+    } else if(labelAddInModal.getAttribute("pais")){      
       const res = await fetch("http://localhost:3000/ciudades",{
       method: 'POST',
       headers:{
@@ -146,7 +146,7 @@ btnAceptarModal.addEventListener("click",async()=>{
       },
       body:JSON.stringify({
         nombre: inputModal.value,
-        pais: labelAddCiudad.getAttribute("pais")
+        pais: labelAddInModal.getAttribute("pais")
       })
     })
       if(!res.ok){
@@ -155,11 +155,11 @@ btnAceptarModal.addEventListener("click",async()=>{
       }
       console.log("Ciudad registrada");
       inputModal.value = "";
-      labelAddCiudad.removeAttribute("pais");      
+      labelAddInModal.removeAttribute("pais");      
       window.location.reload();      
     
-    }else if(labelAddCiudad.getAttribute("epais")){
-      const res = await fetch(`http://localhost:3000/paises/${labelAddCiudad.getAttribute("epais")}`,{
+    }else if(labelAddInModal.getAttribute("epais")){
+      const res = await fetch(`http://localhost:3000/paises/${labelAddInModal.getAttribute("epais")}`,{
       method: 'PATCH',
       headers:{
         'Content-Type': 'application/json',
@@ -170,15 +170,15 @@ btnAceptarModal.addEventListener("click",async()=>{
       })
     })
       inputModal.value = "";
-      labelAddCiudad.removeAttribute("epais");      
+      labelAddInModal.removeAttribute("epais");      
       let mensaje = await res.json()      
       if(!res.ok){
         throw mensaje;
       }
       console.log("Pais actualizado");
       window.location.reload();
-    }else if(labelAddCiudad.getAttribute("eciudad")){
-      const res = await fetch(`http://localhost:3000/ciudades/${labelAddCiudad.getAttribute("eciudad")}`,{
+    }else if(labelAddInModal.getAttribute("eciudad")){
+      const res = await fetch(`http://localhost:3000/ciudades/${labelAddInModal.getAttribute("eciudad")}`,{
       method: 'PATCH',
       headers:{
         'Content-Type': 'application/json',
@@ -189,7 +189,7 @@ btnAceptarModal.addEventListener("click",async()=>{
       })
     })
       inputModal.value = "";
-      labelAddCiudad.removeAttribute("eciudad");      
+      labelAddInModal.removeAttribute("eciudad");      
       let mensaje = await res.json()      
       if(!res.ok){
         throw mensaje;
@@ -219,14 +219,33 @@ btnAceptarModal.addEventListener("click",async()=>{
       } catch (error) {
         console.log(error);
       }
-    }  
+    }else if(labelAddInModal.getAttribute("eregion")){
+      const res = await fetch(`http://localhost:3000/regiones/${labelAddInModal.getAttribute("eregion")}`,{
+      method: 'PATCH',
+      headers:{
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${localStorage.getItem("jwt")}`
+      },
+      body:JSON.stringify({
+        nombre: inputModal.value,        
+      })
+    })
+      inputModal.value = "";
+      labelAddInModal.removeAttribute("eregion");      
+      let mensaje = await res.json()      
+      if(!res.ok){
+        throw mensaje;
+      }
+      console.log("Región actualizada");
+      window.location.reload();
+    }
   } catch (error) {
     console.log(error);
   }
 });
 btnAgregarRegion.addEventListener("click",()=>{
   modalLabel.textContent = "Agregar región";
-  labelAddCiudad.textContent = "Escriba el nombre de la región a agregar";  
+  labelAddInModal.textContent = "Escriba el nombre de la región a agregar";  
   flag = true
 });
 btnEliminar.addEventListener("click",async()=>{
@@ -257,6 +276,19 @@ btnEliminar.addEventListener("click",async()=>{
         throw 'Error al eliminar los datos';
       }
       console.log("Ciudad eliminada");      
+    } else if(labelWarning.getAttribute("region")){
+      const res = await fetch(`http://localhost:3000/regiones/${labelWarning.getAttribute("region")}`,{
+        method: 'DELETE',
+        headers:{
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${localStorage.getItem("jwt")}`
+        },      
+      })      
+        labelWarning.removeAttribute("region");            
+        if(!res.ok){
+          throw 'Error al eliminar los datos';
+        }
+        console.log("Región eliminada");      
     }
     window.location.reload();
   } catch (error) {
@@ -332,20 +364,58 @@ function addContentToTree(obj){
     let h5 = document.createElement("h5");
     h5.setAttribute("class","card-title")
     h5.textContent = region
-    let button = document.createElement("button")
-    button.setAttribute("class","btn btn-outline-success btn-add")  
+    
+    let button = document.createElement("i");
+    button.setAttribute("class", "fas fa-plus-circle fa-lg");
+    let buttonEdit = document.createElement("i");
+    buttonEdit.setAttribute("class", "fas fa-edit fa-lg");
+    let buttonDelete = document.createElement("i");
+    buttonDelete.setAttribute("class","fas fa-minus-circle fa-lg");
+
     button.setAttribute("data-bs-target", "#exampleModal")
     button.setAttribute("data-bs-toggle", "modal")
     button.addEventListener("click",()=>{            
       modalLabel.textContent = "Añadir pais";      
-      labelAddCiudad.setAttribute("region",obj[region].id);
-      labelAddCiudad.textContent = "Escriba el nombre del pais a agregar"
+      labelAddInModal.setAttribute("region",obj[region].id);
+      labelAddInModal.textContent = "Escriba el nombre del pais a agregar"
     })
+
+    buttonEdit.setAttribute("data-bs-target", "#exampleModal")
+    buttonEdit.setAttribute("data-bs-toggle", "modal");
+    buttonEdit.addEventListener("click",()=>{            
+      modalLabel.textContent = "Editar región";            
+      labelAddInModal.setAttribute("eregion",obj[region].id);
+      inputModal.value = region
+    });
+
+    buttonDelete.setAttribute("data-bs-target", "#warningModal");
+    buttonDelete.setAttribute("data-bs-toggle","modal");
+    buttonDelete.addEventListener("click",()=>{
+      labelWarning.textContent = `Está seguro que desea eliminar '${region}'?`
+      labelWarning.setAttribute("region",obj[region].id);
+    })
+
     let spanBtn = document.createElement("span");
-    spanBtn.textContent = "+";
-    button.appendChild(spanBtn);
-    divRegionBody.appendChild(h5)
-    divRegionBody.appendChild(button);
+    spanBtn.setAttribute("class", "link-success");
+    spanBtn.appendChild(button);
+
+    let spanEdit = document.createElement("span");
+    spanEdit.setAttribute("class", "link-primary");
+    spanEdit.appendChild(buttonEdit);
+
+    let spanDelete = document.createElement("span");
+    spanDelete.setAttribute("class","link-danger");
+    spanDelete.appendChild(buttonDelete);
+
+    let divOpciones = document.createElement("div");
+    divOpciones.setAttribute("class","div-opciones-flex");
+    divOpciones.appendChild(spanBtn);
+    divOpciones.appendChild(spanEdit);
+    divOpciones.appendChild(spanDelete);
+
+    divRegionBody.appendChild(h5);
+    divRegionBody.appendChild(divOpciones);
+    
     
     divCardBody.appendChild(divRegionBody);    
     let divTreeList = document.createElement("div");
@@ -372,8 +442,8 @@ function addContentToTree(obj){
         spanSuccess.setAttribute("data-bs-toggle", "modal");
         spanSuccess.addEventListener("click",()=>{                  
           modalLabel.textContent = "Añadir ciudad";          
-          labelAddCiudad.textContent = `Escriba el nombre de la ciudad a agregar en ${spanOpciones.getAttribute("pais")}.`          
-          labelAddCiudad.setAttribute("pais", spanOpciones.getAttribute("id_pais"));
+          labelAddInModal.textContent = `Escriba el nombre de la ciudad a agregar en ${spanOpciones.getAttribute("pais")}.`          
+          labelAddInModal.setAttribute("pais", spanOpciones.getAttribute("id_pais"));
         })
         spanSuccess.appendChild(iconPlus);
 
@@ -383,9 +453,9 @@ function addContentToTree(obj){
         spanLinkPrimary.setAttribute("data-bs-toggle","modal");
         spanLinkPrimary.addEventListener("click",()=>{
           modalLabel.textContent = "Editar pais";
-          labelAddCiudad.textContent = ""
+          labelAddInModal.textContent = ""
           inputModal.value = spanOpciones.getAttribute("pais");
-          labelAddCiudad.setAttribute("epais", spanOpciones.getAttribute("id_pais"));
+          labelAddInModal.setAttribute("epais", spanOpciones.getAttribute("id_pais"));
         })
         let iconEdit = document.createElement("i")
         iconEdit.setAttribute("class", "far fa-edit");
@@ -428,9 +498,9 @@ function addContentToTree(obj){
             spanLinkPrimary.setAttribute("data-bs-toggle","modal");
             spanLinkPrimary.addEventListener("click",()=>{
               modalLabel.textContent = "Editar ciudad";
-              labelAddCiudad.textContent = ""
+              labelAddInModal.textContent = ""
               inputModal.value = spanOpciones.getAttribute("ciudad");
-              labelAddCiudad.setAttribute("eciudad", spanOpciones.getAttribute("id_ciudad"));
+              labelAddInModal.setAttribute("eciudad", spanOpciones.getAttribute("id_ciudad"));
             })            
 
             let iconEdit = document.createElement("i")

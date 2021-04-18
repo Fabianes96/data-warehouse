@@ -168,6 +168,50 @@ server.post("/regiones",authorization,isAdmin,async(req,res)=>{
     console.log(error);
     res.status(500);
   }
+});
+server.patch("/regiones/:id",authorization, isAdmin, async(req,res)=>{
+  try {
+    const id = req.params.id;
+    const nombre = req.body.nombre;
+    if(nombre== "" || nombre ==null){
+      res.status(400);
+      res.json("Debe ingresar el nombre");
+      return;
+    }
+    let consulta = await db.sequelize.query("UPDATE regiones SET nombre = :nombre WHERE id = :id",{
+      replacements:{
+        id: id,
+        nombre: nombre
+      }, type: db.sequelize.QueryTypes.UPDATE
+    });
+    if(consulta.length === 0){
+      res.status(404);
+      res.json("Región no encontrada");
+      return
+    }
+    res.status(200);
+    res.json(consulta);    
+  } catch (error) {
+    console.log(error);
+    res.status(500);
+  }
+});
+server.delete("/regiones/:id",authorization,isAdmin,async(req,res)=>{
+  try {
+    const id = req.params.id;
+    let consulta = await db.sequelize.query("DELETE FROM regiones WHERE id = :id",{
+      replacements: {
+        id: id,
+      },type: db.sequelize.QueryTypes.DELETE
+    });    
+    res.status(200)
+    console.log("Región eliminada");
+    res.json(consulta);
+  } catch (error) {
+    console.log(error);
+    res.status(500);
+    res.json("Ha ocurrido un error inesperado");
+  }
 })
 server.post("/paises",authorization,isAdmin,async(req,res)=>{
   try {
