@@ -133,18 +133,54 @@ btnAceptarModal.addEventListener("click",async()=>{
         pais: labelAddCiudad.getAttribute("pais")
       })
     })
-    if(!res.ok){
-      let mensaje = await res.json()        
-      throw mensaje;
-    }
-    console.log("Ciudad registrada");
-    inputModal.value = "";
-    labelAddCiudad.removeAttribute("pais");      
-    window.location.reload();      
+      if(!res.ok){
+        let mensaje = await res.json()        
+        throw mensaje;
+      }
+      console.log("Ciudad registrada");
+      inputModal.value = "";
+      labelAddCiudad.removeAttribute("pais");      
+      window.location.reload();      
     
-    }
-    
-    
+    }else if(labelAddCiudad.getAttribute("epais")){
+      const res = await fetch(`http://localhost:3000/paises/${labelAddCiudad.getAttribute("epais")}`,{
+      method: 'PATCH',
+      headers:{
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${localStorage.getItem("jwt")}`
+      },
+      body:JSON.stringify({
+        nombre: inputModal.value,        
+      })
+    })
+      inputModal.value = "";
+      labelAddCiudad.removeAttribute("epais");      
+      let mensaje = await res.json()      
+      if(!res.ok){
+        throw mensaje;
+      }
+      console.log("Pais actualizado");
+      window.location.reload();
+    }else if(labelAddCiudad.getAttribute("eciudad")){
+      const res = await fetch(`http://localhost:3000/ciudades/${labelAddCiudad.getAttribute("eciudad")}`,{
+      method: 'PATCH',
+      headers:{
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${localStorage.getItem("jwt")}`
+      },
+      body:JSON.stringify({
+        nombre: inputModal.value,        
+      })
+    })
+      inputModal.value = "";
+      labelAddCiudad.removeAttribute("eciudad");      
+      let mensaje = await res.json()      
+      if(!res.ok){
+        throw mensaje;
+      }
+      console.log("Ciudad actualizada");
+      window.location.reload();
+    }       
   } catch (error) {
     console.log(error);
   }
@@ -268,8 +304,17 @@ function addContentToTree(obj){
 
         let spanLinkPrimary = document.createElement("span");
         spanLinkPrimary.setAttribute("class", "link-primary")        
+        spanLinkPrimary.setAttribute("data-bs-target", "#exampleModal");
+        spanLinkPrimary.setAttribute("data-bs-toggle","modal");
+        spanLinkPrimary.addEventListener("click",()=>{
+          modalLabel.textContent = "Editar pais";
+          labelAddCiudad.textContent = ""
+          inputModal.value = spanOpciones.getAttribute("pais");
+          labelAddCiudad.setAttribute("epais", spanOpciones.getAttribute("id_pais"));
+        })
         let iconEdit = document.createElement("i")
         iconEdit.setAttribute("class", "far fa-edit");
+        
         spanLinkPrimary.appendChild(iconEdit);
 
         let spanLinkDanger = document.createElement("span");
@@ -293,8 +338,21 @@ function addContentToTree(obj){
             spanNombre.textContent = arrayActual[i].ciudad
             let spanOpciones =document.createElement("span");
             spanOpciones.setAttribute("class","opciones");
+            spanOpciones.setAttribute("ciudad", arrayActual[i].ciudad);
+            spanOpciones.setAttribute("id_ciudad", arrayActual[i].id);
+
             let spanLinkPrimary = document.createElement("span");
-            spanLinkPrimary.setAttribute("class", "link-primary")        
+            spanLinkPrimary.setAttribute("class", "link-primary")               
+            spanLinkPrimary.setAttribute("data-bs-target", "#exampleModal");
+            spanLinkPrimary.setAttribute("data-bs-toggle","modal");
+            spanLinkPrimary.addEventListener("click",()=>{
+              modalLabel.textContent = "Editar ciudad";
+              labelAddCiudad.textContent = ""
+              inputModal.value = spanOpciones.getAttribute("ciudad");
+              labelAddCiudad.setAttribute("eciudad", spanOpciones.getAttribute("id_ciudad"));
+            })
+            
+
             let iconEdit = document.createElement("i")
             iconEdit.setAttribute("class", "far fa-edit")
             spanLinkPrimary.appendChild(iconEdit);

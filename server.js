@@ -216,10 +216,6 @@ server.patch("/ciudades/:id",authorization,isAdmin,async(req,res)=>{
       res.status(400);
       res.json("Debe ingresar el nombre");
       return;
-    } else if(await utils.isAlreadyInDB(nombre, "ciudades")){
-      res.status(400);
-      res.json("Ciudad ya ingresada en base de datos")
-      return
     }
     let consulta = await db.sequelize.query("UPDATE ciudades SET nombre = :nombre WHERE id = :id",{
       replacements:{
@@ -247,11 +243,7 @@ server.patch("/paises/:id",authorization,isAdmin,async(req,res)=>{
       res.status(400);
       res.json("Debe ingresar el nombre");
       return;
-    } else if(await utils.isAlreadyInDB(nombre, "paises")){
-      res.status(400);
-      res.json("Pais ya ingresado en base de datos")
-      return
-    }
+    } 
     let consulta = await db.sequelize.query("UPDATE paises SET nombre = :nombre WHERE id = :id",{
       replacements:{
         id: id,
