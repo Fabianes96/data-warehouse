@@ -128,7 +128,7 @@
       </form>
     </section>
     <section id="regiones" class="none">   
-      <button id="btnAgregarRegion" class="btn link-success">+ Agregar una nueva región</button>        
+      <button id="btnAgregarRegion" class="btn btn-outline-success" data-bs-target="#exampleModal" data-bs-toggle="modal">+ Agregar una nueva región</button>        
       <div id="region-ciudad">
       </div>
     </section>
@@ -142,7 +142,7 @@
           <div class="modal-content">
             <div class="modal-header">
               <h5 class="modal-title" id="addModalLabel"></h5>
-              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              <button id="xclose" type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
               <form>
@@ -153,7 +153,7 @@
               </form>
             </div>
             <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+              <button id="close" type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
               <button id="btnAceptarModal" type="button" class="btn btn-primary">Aceptar</button>
             </div>
           </div>

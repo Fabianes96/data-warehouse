@@ -141,6 +141,33 @@ server.get("/regiones",async(req,res)=>{
     res.status(500);
     res.json("Ha ocurrido un error inesperado");
   }
+});
+server.post("/regiones",authorization,isAdmin,async(req,res)=>{
+  try {
+    const nombre = req.body.nombre;
+    if(nombre=="" || nombre ==null){
+      res.status(400);
+      res.json("Debe ingresar el nombre");
+      return;
+    } else if(await utils.isAlreadyInDB(nombre, "regiones")){
+      res.status(400);
+      res.json("Región ya ingresada en base de datos")
+      return
+    }    
+    let consulta = await db.sequelize.query(`
+      INSERT into regiones (nombre) VALUES (:nombre)
+    `,{
+      replacements:{        
+        nombre: nombre
+      }, type: db.sequelize.QueryTypes.INSERT
+    })
+    res.status(201);    
+    console.log("Región agregada con exito");
+    res.json(consulta);
+  } catch (error) {
+    console.log(error);
+    res.status(500);
+  }
 })
 server.post("/paises",authorization,isAdmin,async(req,res)=>{
   try {

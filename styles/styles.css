@@ -196,6 +196,8 @@ header nav .container ul li:hover a {
 }
 
 #regiones #region-ciudad {
+  display: -ms-grid;
+  display: grid;
   position: relative;
   top: 30px;
   -ms-grid-columns: 1fr 1fr;

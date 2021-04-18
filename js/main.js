@@ -17,7 +17,12 @@ let btnEliminar = document.getElementById("btnAceptarWarningModal");
 let labelAddCiudad = document.getElementById("labelInfoAddCiudad");
 let labelWarning = document.getElementById("labelWarning");
 let inputModal = document.getElementById("inputModal");
+let btnAgregarRegion = document.getElementById("btnAgregarRegion");
 let vector = []
+let flag = false;
+let btnClose = document.getElementById("close");
+let xClose =document.getElementById("xclose");
+let modal = document.getElementById("exampleModal");
 let objeto = {
   "region": {      
   }
@@ -45,19 +50,28 @@ function noLinkUsuarios(){
     contactos.classList.remove("none");
     usuarios.classList.add("none");
 }
+window.onclick = function(e){
+  if(e.target == modal || e.target == btnClose || e.target == xClose){    
+    modalLabel.textContent = "";
+    labelAddCiudad.textContent = "";
+    inputModal.value = ""    
+    labelAddCiudad.removeAttribute("region");
+    labelAddCiudad.removeAttribute("pais");
+    labelAddCiudad.removeAttribute("epais");
+    labelAddCiudad.removeAttribute("eciudad");
+  }
+}
 linkUsuarios.addEventListener("click",()=>{
     opcionesContactos.classList.add("none");
     contactos.classList.add("none");
-    regiones.classList.add("none")
-    //regionCiudad.classList.remove("flex")
+    regiones.classList.add("none")    
     usuarios.classList.remove("none");
 });
 linkRegiones.addEventListener("click",async()=>{  
   opcionesContactos.classList.add("none");
   contactos.classList.add("none");
   usuarios.classList.add("none");
-  regiones.classList.remove("none");
-  regionCiudad.classList.add("grid")
+  regiones.classList.remove("none");  
   while(regionCiudad.firstElementChild){
     regionCiudad.removeChild(regionCiudad.firstElementChild);
     objeto = {
@@ -182,12 +196,39 @@ btnAceptarModal.addEventListener("click",async()=>{
       }
       console.log("Ciudad actualizada");
       window.location.reload();
-    }       
+    }else if(flag){
+      try {
+        const res = await fetch("http://localhost:3000/regiones",{
+          method: 'POST',
+          headers:{
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${localStorage.getItem("jwt")}`
+          },
+          body:JSON.stringify({
+            nombre: inputModal.value,        
+          })
+        });
+        inputModal.value = "";        
+        flag = false;
+        let mensaje = await res.json()
+        if(!res.ok){
+          throw mensaje
+        }
+        console.log("Región agregada con exito");
+        window.location.reload()
+      } catch (error) {
+        console.log(error);
+      }
+    }  
   } catch (error) {
     console.log(error);
   }
 });
-
+btnAgregarRegion.addEventListener("click",()=>{
+  modalLabel.textContent = "Agregar región";
+  labelAddCiudad.textContent = "Escriba el nombre de la región a agregar";  
+  flag = true
+});
 btnEliminar.addEventListener("click",async()=>{
   try {
     if(labelWarning.getAttribute("pais")){
