@@ -4,7 +4,7 @@ const server = express();
 const db = require("./js/db");
 const jwt = require("jsonwebtoken");
 const cors = require("cors");
-const utils = require("./js/utils")
+const utils = require("./js/utils");
 const secret = "jfausifuasoifjaewwtgc";
 
 //Middlewares
@@ -261,7 +261,42 @@ server.patch("/paises/:id",authorization,isAdmin,async(req,res)=>{
     console.log(error);
     res.status(500);
   }
+});
+server.delete("/paises/:id",authorization,isAdmin,async(req,res)=>{
+  try {
+    const id = req.params.id;
+    let consulta = await db.sequelize.query("DELETE FROM paises WHERE id = :id",{
+      replacements: {
+        id: id,
+      },type: db.sequelize.QueryTypes.DELETE
+    });    
+    res.status(200)
+    console.log("Pais eliminado");
+    res.json(consulta);
+  } catch (error) {
+    console.log(error);
+    res.status(500);
+    res.json("Ha ocurrido un error inesperado");
+  }
 })
+server.delete("/ciudades/:id",authorization,isAdmin,async(req,res)=>{
+  try {
+    const id = req.params.id;
+    let consulta = await db.sequelize.query("DELETE FROM ciudades WHERE id = :id",{
+      replacements: {
+        id: id,
+      },type: db.sequelize.QueryTypes.DELETE
+    });    
+    res.status(200)
+    console.log("Ciudad eliminada");
+    res.json(consulta);
+  } catch (error) {
+    console.log(error);
+    res.status(500);
+    res.json("Ha ocurrido un error inesperado");
+  }
+})
+
 server.listen(process.env.PORT || 3000, () => {
     console.log("Server on port 3000");
 });

@@ -12,7 +12,9 @@ let inputPasswordUsuario = document.getElementById("inputPasswordUsuario");
 let regionCiudad = document.getElementById("region-ciudad");
 let modalLabel = document.getElementById("addModalLabel");
 let btnAceptarModal = document.getElementById("btnAceptarModal");
+let btnEliminar = document.getElementById("btnAceptarWarningModal");
 let labelAddCiudad = document.getElementById("labelInfoAddCiudad");
+let labelWarning = document.getElementById("labelWarning");
 let inputModal = document.getElementById("inputModal");
 let vector = []
 let objeto = {
@@ -183,7 +185,43 @@ btnAceptarModal.addEventListener("click",async()=>{
   } catch (error) {
     console.log(error);
   }
-})
+});
+
+btnEliminar.addEventListener("click",async()=>{
+  try {
+    if(labelWarning.getAttribute("pais")){
+      const res = await fetch(`http://localhost:3000/paises/${labelWarning.getAttribute("pais")}`,{
+      method: 'DELETE',
+      headers:{
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${localStorage.getItem("jwt")}`
+      },      
+    })      
+      labelWarning.removeAttribute("pais");            
+      if(!res.ok){
+        throw 'Error al eliminar los datos';
+      }
+      console.log("Pais eliminado");      
+    }else if(labelWarning.getAttribute("ciudad")){
+      const res = await fetch(`http://localhost:3000/ciudades/${labelWarning.getAttribute("ciudad")}`,{
+      method: 'DELETE',
+      headers:{
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${localStorage.getItem("jwt")}`
+      },      
+    })      
+      labelWarning.removeAttribute("ciudad");            
+      if(!res.ok){
+        throw 'Error al eliminar los datos';
+      }
+      console.log("Ciudad eliminada");      
+    }
+    window.location.reload();
+  } catch (error) {
+    console.log(error);
+  }
+});
+
 function formB () {   
   var forms = document.querySelectorAll('.needs-validation')  
   Array.prototype.slice.call(forms)
@@ -319,6 +357,10 @@ function addContentToTree(obj){
         spanLinkDanger.appendChild(iconDelete);
         spanLinkDanger.setAttribute("data-bs-target", "#warningModal");
         spanLinkDanger.setAttribute("data-bs-toggle","modal");
+        spanLinkDanger.addEventListener("click",()=>{
+          labelWarning.textContent = `Está seguro que desea eliminar '${spanOpciones.getAttribute("pais")}'?`
+          labelWarning.setAttribute("pais",spanOpciones.getAttribute("id_pais"));
+        })
         
         spanOpciones.appendChild(spanSuccess);
         spanOpciones.appendChild(spanLinkPrimary);
@@ -357,6 +399,10 @@ function addContentToTree(obj){
             spanLinkDanger.setAttribute("class", "link-danger")
             spanLinkDanger.setAttribute("data-bs-target", "#warningModal");
             spanLinkDanger.setAttribute("data-bs-toggle","modal");
+            spanLinkDanger.addEventListener("click",()=>{
+              labelWarning.textContent = `Está seguro que desea eliminar '${spanOpciones.getAttribute("ciudad")}'?`
+              labelWarning.setAttribute("ciudad",spanOpciones.getAttribute("id_ciudad"));
+            })
             let iconDelete = document.createElement("i")        
             iconDelete.setAttribute("class", "far fa-trash-alt");
             spanLinkDanger.appendChild(iconDelete);
