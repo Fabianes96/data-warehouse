@@ -208,6 +208,68 @@ server.post("/ciudades",authorization,isAdmin,async(req,res)=>{
     res.status(500);
   }
 });
+server.patch("/ciudades/:id",authorization,isAdmin,async(req,res)=>{
+  try {
+    const id = req.params.id;
+    const nombre = req.body.nombre;
+    if(nombre== "" || nombre ==null){
+      res.status(400);
+      res.json("Debe ingresar el nombre");
+      return;
+    } else if(await utils.isAlreadyInDB(nombre, "ciudades")){
+      res.status(400);
+      res.json("Ciudad ya ingresada en base de datos")
+      return
+    }
+    let consulta = await db.sequelize.query("UPDATE ciudades SET nombre = :nombre WHERE id = :id",{
+      replacements:{
+        id: id,
+        nombre: nombre
+      }, type: db.sequelize.QueryTypes.UPDATE
+    });
+    if(consulta.length === 0){
+      res.status(404);
+      res.json("Ciudad no encontrada");
+      return
+    }
+    res.status(200);
+    res.json(consulta);    
+  } catch (error) {
+    console.log(error);
+    res.status(500);
+  }
+})
+server.patch("/paises/:id",authorization,isAdmin,async(req,res)=>{
+  try {
+    const id = req.params.id;
+    const nombre = req.body.nombre;
+    if(nombre== "" || nombre ==null){
+      res.status(400);
+      res.json("Debe ingresar el nombre");
+      return;
+    } else if(await utils.isAlreadyInDB(nombre, "paises")){
+      res.status(400);
+      res.json("Pais ya ingresado en base de datos")
+      return
+    }
+    let consulta = await db.sequelize.query("UPDATE paises SET nombre = :nombre WHERE id = :id",{
+      replacements:{
+        id: id,
+        nombre: nombre
+      }, type: db.sequelize.QueryTypes.UPDATE
+    });
+    if(consulta.length === 0){
+      res.status(404);
+      res.json("Pais no encontrado");
+      return
+    }
+    res.status(200);
+    res.json(consulta);    
+  } catch (error) {
+    console.log(error);
+    res.status(500);
+  }
+})
 server.listen(process.env.PORT || 3000, () => {
     console.log("Server on port 3000");
 });
