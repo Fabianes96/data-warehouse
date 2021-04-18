@@ -16,6 +16,11 @@
   display: flex;
 }
 
+.grid {
+  display: -ms-grid;
+  display: grid;
+}
+
 .btn-add {
   border-radius: 50px !important;
   width: 35px;
@@ -177,24 +182,35 @@ header nav .container ul li:hover a {
       align-self: center;
 }
 
-#region-ciudad {
+#regiones {
+  position: relative;
+  top: 15px;
+}
+
+#regiones > button {
+  border: 1px solid;
+  border-radius: 20px;
   position: relative;
   top: 30px;
-  -webkit-box-orient: vertical;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: column;
-          flex-direction: column;
+  left: 40px;
+}
+
+#regiones #region-ciudad {
+  position: relative;
+  top: 30px;
+  -ms-grid-columns: 1fr 1fr;
+      grid-template-columns: 1fr 1fr;
   gap: 25px;
   padding: 20px;
 }
 
-#region-ciudad .region {
+#regiones #region-ciudad .region {
   -webkit-transition: .3s ease all;
   transition: .3s ease all;
   margin: 0 20px;
 }
 
-#region-ciudad .region .region-body {
+#regiones #region-ciudad .region .region-body {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -203,22 +219,22 @@ header nav .container ul li:hover a {
           justify-content: space-between;
 }
 
-#region-ciudad .region .caret {
+#regiones #region-ciudad .region .caret {
   margin-right: 20px;
 }
 
-#region-ciudad .region .opciones {
+#regiones #region-ciudad .region .opciones {
   font-size: 13px;
   -ms-flex-item-align: center;
       -ms-grid-row-align: center;
       align-self: center;
 }
 
-#region-ciudad .region .opciones :first-child {
+#regiones #region-ciudad .region .opciones :first-child {
   margin-right: 4px;
 }
 
-#region-ciudad .region .li-ciudades {
+#regiones #region-ciudad .region .li-ciudades {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;

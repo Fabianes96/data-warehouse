@@ -1,0 +1,40 @@
+#regiones{
+    position: relative;
+    top: 15px;
+    > button{
+        border: 1px solid;
+        border-radius: 20px;
+        position: relative;
+        top: 30px;
+        left: 40px;
+    }
+    #region-ciudad{      
+        position: relative;
+        top: 30px;    
+        grid-template-columns: 1fr 1fr;
+        gap: 25px;
+        padding: 20px;
+        .region{
+            transition: .3s ease all;                        
+            margin: 0 20px;
+            .region-body{
+                display: flex;
+                justify-content: space-between;
+            }
+            .caret{
+                margin-right:20px;            
+            }
+            .opciones{
+                font-size: 13px;
+                align-self: center;
+                :first-child{
+                    margin-right: 4px;
+                }
+            }
+            .li-ciudades{
+                display: flex;
+                gap: 20px;
+            }
+        }    
+    }
+}

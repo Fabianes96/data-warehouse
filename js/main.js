@@ -10,6 +10,7 @@ let inputEmailUsuario = document.getElementById("inputEmailUsuario");
 let perfil = document.getElementById("perfil");
 let inputPasswordUsuario = document.getElementById("inputPasswordUsuario");
 let regionCiudad = document.getElementById("region-ciudad");
+let regiones = document.getElementById("regiones")
 let modalLabel = document.getElementById("addModalLabel");
 let btnAceptarModal = document.getElementById("btnAceptarModal");
 let btnEliminar = document.getElementById("btnAceptarWarningModal");
@@ -47,16 +48,16 @@ function noLinkUsuarios(){
 linkUsuarios.addEventListener("click",()=>{
     opcionesContactos.classList.add("none");
     contactos.classList.add("none");
-    regionCiudad.classList.add("none")
-    regionCiudad.classList.remove("flex")
+    regiones.classList.add("none")
+    //regionCiudad.classList.remove("flex")
     usuarios.classList.remove("none");
 });
 linkRegiones.addEventListener("click",async()=>{  
   opcionesContactos.classList.add("none");
   contactos.classList.add("none");
   usuarios.classList.add("none");
-  regionCiudad.classList.remove("none");
-  regionCiudad.classList.add("flex")
+  regiones.classList.remove("none");
+  regionCiudad.classList.add("grid")
   while(regionCiudad.firstElementChild){
     regionCiudad.removeChild(regionCiudad.firstElementChild);
     objeto = {
