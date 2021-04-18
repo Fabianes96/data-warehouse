@@ -174,7 +174,40 @@ server.post("/paises",authorization,isAdmin,async(req,res)=>{
     console.log(error);
     res.status(500);
   }
-})
+});
+server.post("/ciudades",authorization,isAdmin,async(req,res)=>{
+  try {
+    const {nombre,pais} = req.body;
+    if(nombre=="" || nombre ==null){
+      res.status(400);
+      res.json("Debe ingresar el nombre");
+      return;
+    } else if(await utils.isAlreadyInDB(nombre, "ciudades")){
+      res.status(400);
+      res.json("Ciudad ya ingresada en base de datos")
+      return
+    }
+    if(isNaN(pais)){
+      res.status(400);
+      res.json("Debe ingresar el id de la región");
+      return;
+    }
+    let consulta = await db.sequelize.query(`
+      INSERT into ciudades (pais, nombre) VALUES (:pais, :nombre)
+    `,{
+      replacements:{
+        pais: pais,
+        nombre: nombre
+      }, type: db.sequelize.QueryTypes.INSERT
+    })
+    res.status(201);    
+    console.log("Ciudad agregada con exito");
+    res.json(consulta);
+  } catch (error) {
+    console.log(error);
+    res.status(500);
+  }
+});
 server.listen(process.env.PORT || 3000, () => {
     console.log("Server on port 3000");
 });
