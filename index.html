@@ -33,7 +33,7 @@
                       <i class="fas fa-search"></i>
                     </div>
                     <span class="link-primary">                      
-                      <i class="far fa-edit"></i> 
+                      <i class="far fa-edit"></i>                       
                     </span>
                     <div class="dropdown">                
                       <svg id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false"  xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-caret-down-fill" viewBox="0 0 16 16">
@@ -133,34 +133,52 @@
       <div id="div-contactos">        
       </div>
     </section>    
-    <section id="modalSection">
-            <!-- Button trigger modal -->
-<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
-  Launch demo modal
-</button>
-<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="addModalLabel"></h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+    <section id="modalSection">            
+      <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="addModalLabel"></h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <form>
+                <div class="mb-3">            
+                  <label id="labelInfoAddCiudad" for="recipient-name" class="col-form-label"></label>
+                  <input type="text" class="form-control" id="inputModal">
+                </div>          
+              </form>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+              <button id="btnAceptarModal" type="button" class="btn btn-primary">Aceptar</button>
+            </div>
+          </div>
+        </div>
       </div>
-      <div class="modal-body">
-        <form>
-          <div class="mb-3">            
-            <label id="labelInfoAddCiudad" for="recipient-name" class="col-form-label"></label>
-            <input type="text" class="form-control" id="inputModal">
-          </div>          
-        </form>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        <button id="btnAceptarModal" type="button" class="btn btn-primary">Aceptar</button>
-      </div>
-    </div>
-  </div>
-</div>
+    </section>
 
+    <section id="modalWarning">      
+      <div class="modal fade" id="warningModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">              
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body flex" style="flex-direction: column; align-items: center;">
+              <span class="link-danger"> 
+                <i class="fas fa-exclamation-circle fa-7x"></i>
+              </span>
+              <label class="col-form-label">Esta seguro de eliminar?</label>              
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+              <button id="btnAceptarWarningModal" type="button" class="btn btn-danger">Eliminar</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      
     </section>
     <script
       src="https://kit.fontawesome.com/73b0c866b6.js"

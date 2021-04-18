@@ -120,8 +120,7 @@ btnAceptarModal.addEventListener("click",async()=>{
       }
       console.log("Pais registrado");
       window.location.reload();
-    } else if(labelAddCiudad.getAttribute("pais")){
-      console.log(labelAddCiudad.getAttribute("pais"));
+    } else if(labelAddCiudad.getAttribute("pais")){      
       const res = await fetch("http://localhost:3000/ciudades",{
       method: 'POST',
       headers:{
@@ -203,18 +202,15 @@ async function queryToJSON(){
   try {
     let consulta = await fetch("http://localhost:3000/regiones");
     let consultaAsJson = await consulta.json()
-    vector = consultaAsJson;    
-    console.log(vector);
+    vector = consultaAsJson;        
     vector.forEach((obj)=>{
       let prop = obj.region
       let ciudades = []      
       if(prop in objeto.region){
         if(prop != "id"){
           let pais = obj.pais;
-          if(pais in objeto.region[prop]){          
-            console.log(objeto.region[prop][pais]);
-            objeto.region[prop][pais].ciudades.push({"id": obj.id_ciudad, "ciudad": obj.ciudad})   
-            
+          if(pais in objeto.region[prop]){                      
+            objeto.region[prop][pais].ciudades.push({"id": obj.id_ciudad, "ciudad": obj.ciudad})             
           }else{
             ciudades = []
             objeto.region[prop][pais] = {
@@ -235,8 +231,7 @@ async function queryToJSON(){
         }                    
         objeto.region[prop][pais].ciudades.push({"id": obj.id_ciudad, "ciudad": obj.ciudad})          
       }
-    })                
-    console.log(objeto);
+    })                    
     addContentToTree(objeto.region)
   } catch (error) {
     console.log(error);
@@ -283,7 +278,7 @@ function addContentToTree(obj){
         let li = document.createElement("li");
         let spanCaret = document.createElement("span");
         spanCaret.setAttribute("class","caret")
-        spanCaret.textContent = pais + " Con id: " + obj[region][pais].id;
+        spanCaret.textContent = pais;
         let spanOpciones =document.createElement("span");
         spanOpciones.setAttribute("class","opciones");
         spanOpciones.setAttribute("pais", pais);
@@ -322,6 +317,8 @@ function addContentToTree(obj){
         let iconDelete = document.createElement("i")        
         iconDelete.setAttribute("class", "far fa-trash-alt");
         spanLinkDanger.appendChild(iconDelete);
+        spanLinkDanger.setAttribute("data-bs-target", "#warningModal");
+        spanLinkDanger.setAttribute("data-bs-toggle","modal");
         
         spanOpciones.appendChild(spanSuccess);
         spanOpciones.appendChild(spanLinkPrimary);
@@ -350,8 +347,7 @@ function addContentToTree(obj){
               labelAddCiudad.textContent = ""
               inputModal.value = spanOpciones.getAttribute("ciudad");
               labelAddCiudad.setAttribute("eciudad", spanOpciones.getAttribute("id_ciudad"));
-            })
-            
+            })            
 
             let iconEdit = document.createElement("i")
             iconEdit.setAttribute("class", "far fa-edit")
@@ -359,6 +355,8 @@ function addContentToTree(obj){
 
             let spanLinkDanger = document.createElement("span");
             spanLinkDanger.setAttribute("class", "link-danger")
+            spanLinkDanger.setAttribute("data-bs-target", "#warningModal");
+            spanLinkDanger.setAttribute("data-bs-toggle","modal");
             let iconDelete = document.createElement("i")        
             iconDelete.setAttribute("class", "far fa-trash-alt");
             spanLinkDanger.appendChild(iconDelete);
