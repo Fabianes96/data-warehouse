@@ -21,6 +21,19 @@
   cursor: pointer;
 }
 
+.div-opciones-companias {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  gap: 5px;
+  position: relative;
+  left: 15px;
+}
+
+.div-opciones-companias span {
+  cursor: pointer;
+}
+
 .grid {
   display: -ms-grid;
   display: grid;
@@ -246,6 +259,26 @@ header nav .container ul li:hover a {
   display: -ms-flexbox;
   display: flex;
   gap: 20px;
+}
+
+#companias {
+  position: relative;
+  top: 40px;
+  padding: 0 5rem;
+}
+
+#companias .cabecera-companias {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+}
+
+#companias #tabla-card {
+  position: relative;
+  top: 15px;
 }
 
 #login .login {

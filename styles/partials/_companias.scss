@@ -1,0 +1,13 @@
+#companias{
+    position: relative;
+    top: 40px;
+    padding: 0 5rem;
+    .cabecera-companias{
+        display: flex;
+        justify-content: space-between;
+    }
+    #tabla-card{
+        position: relative;   
+        top: 15px;
+    }
+}

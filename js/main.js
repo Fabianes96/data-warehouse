@@ -1,6 +1,8 @@
+let linkCompanias = document.getElementsByClassName("links")[1];
 let linkUsuarios = document.getElementsByClassName("links")[2];
 let linkRegiones = document.getElementsByClassName("links")[3];
 let opcionesContactos = document.getElementById("opciones-contactos");
+let companias = document.getElementById("companias");
 let contactos = document.getElementById("contactos");
 let usuarios = document.getElementById("usuarios");
 let btnCrearUsuario = document.getElementById("btn-crear-usuario");
@@ -23,10 +25,12 @@ let flag = false;
 let btnClose = document.getElementById("close");
 let xClose =document.getElementById("xclose");
 let modal = document.getElementById("exampleModal");
+let bodyTabla = document.getElementById("tbody");
 let objeto = {
   "region": {      
   }
 }
+let arrayCompanias = []
 function activeLink(){
     let menu = document.getElementById("menu");
     let a = menu.getElementsByClassName("links");      
@@ -61,6 +65,22 @@ window.onclick = function(e){
     labelAddInModal.removeAttribute("eciudad");
   }
 }
+linkCompanias.addEventListener("click",async()=>{
+  opcionesContactos.classList.add("none");
+  contactos.classList.add("none");
+  regiones.classList.add("none")
+  usuarios.classList.add("none");
+  companias.classList.remove("none");
+  let res = await fetch("http://localhost:3000/companias",{
+    headers:{
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${localStorage.getItem("jwt")}`
+    }
+  });
+  arrayCompanias = await res.json()
+  console.log(arrayCompanias);
+  addCompaniesToTable();
+})
 linkUsuarios.addEventListener("click",()=>{
     opcionesContactos.classList.add("none");
     contactos.classList.add("none");
@@ -350,8 +370,7 @@ async function queryToJSON(){
   }
 }
 
-function addContentToTree(obj){
-  let id = 0;
+function addContentToTree(obj){  
   for (let region in obj) {    
     
     let divCardRegion = document.createElement("div");
@@ -419,8 +438,7 @@ function addContentToTree(obj){
     
     divCardBody.appendChild(divRegionBody);    
     let divTreeList = document.createElement("div");
-    divTreeList.setAttribute("class","list-tree");
-    divTreeList.setAttribute("id", id)    
+    divTreeList.setAttribute("class","list-tree");   
     
     let ul = document.createElement("ul");        
     for(pais in obj[region]){          
@@ -536,22 +554,44 @@ function addContentToTree(obj){
       }
     }
     divTreeList.appendChild(ul)
-    divCardBody.appendChild(divTreeList)
-    
+    divCardBody.appendChild(divTreeList)   
 
     divCardRegion.appendChild(divCardBody);
-    regionCiudad.appendChild(divCardRegion);
-    let tree = document.getElementById(id);    
-    // divCardRegion.addEventListener("click",()=>{
-    //   divCardRegion.classList.toggle("abrir-card");
-    //   setTimeout(()=>{
-    //     tree.classList.toggle("none"); 
-    //   },100)
-    // })
-    id++;    
+    regionCiudad.appendChild(divCardRegion);    
   }
 }
 
+function addCompaniesToTable(){
+  for (let i = 0; i < arrayCompanias.length; i++) {    
+    let tr = document.createElement("tr");
+    let tdNombre = document.createElement("td");
+    tdNombre.textContent = arrayCompanias[i].compania;
+    let tdUbicacion = document.createElement("td");
+    tdUbicacion.textContent = arrayCompanias[i].ciudad + " - " + arrayCompanias[i].pais;
+    let tdDireccion = document.createElement("td");
+    tdDireccion.textContent = arrayCompanias[i].direccion;
+    let tdOpciones = document.createElement("td");
+    let spanPrimary = document.createElement("span");
+    spanPrimary.setAttribute("class","link-primary");
+    let iEdit = document.createElement("i");
+    iEdit.setAttribute("class", "far fa-edit");
+    spanPrimary.appendChild(iEdit);
+    let spanDelete = document.createElement("span");
+    spanDelete.setAttribute("class","link-danger");
+    let iDelete = document.createElement("i");
+    iDelete.setAttribute("class","fas fa-times-circle");
+    spanDelete.appendChild(iDelete);
+    tdOpciones.appendChild(spanPrimary)
+    tdOpciones.appendChild(spanDelete);
+    tdOpciones.setAttribute("class", "div-opciones-companias")
+
+    tr.appendChild(tdNombre);
+    tr.appendChild(tdUbicacion);
+    tr.appendChild(tdDireccion);
+    tr.appendChild(tdOpciones);
+    bodyTabla.appendChild(tr)
+  }
+}
 activeLink()
 formB()
 

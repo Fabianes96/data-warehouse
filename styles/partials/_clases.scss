@@ -1,3 +1,11 @@
+@mixin opciones($gap){
+    display: flex;
+    gap: $gap;
+    span{
+        cursor: pointer;
+    }
+}
+
 .block{
     display: block;
 }
@@ -8,11 +16,12 @@
     display: none;
 }
 .div-opciones-flex{
-    display: flex;
-    gap: 10px;
-    span{
-        cursor: pointer;
-    }
+    @include opciones(10px);
+}
+.div-opciones-companias{
+    @include opciones(5px);
+    position: relative;
+    left: 15px;
 }
 .grid{
     display: grid;
