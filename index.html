@@ -61,7 +61,7 @@
     <section id="companias" class="none">
       <div class="cabecera-companias">
         <h1>Compañias</h1>
-        <button type="button" class="btn btn-outline-success">Agregar</button>
+        <button id="addCompanias" type="button" class="btn btn-outline-success" data-bs-toggle="modal" data-bs-target="#modalCompania">Agregar</button>
       </div>
       <div id="tabla-card" class="card text-dark bg-light mb-3">        
         <div class="card-body">
@@ -69,7 +69,9 @@
             <thead>
               <tr>
                 <th scope="col">Nombre</th>
+                <th scope="col">Email</th>                
                 <th scope="col">Ubicación</th>
+                <th scope="col">Teléfono</th>
                 <th scope="col">Dirección</th>
                 <th scope="col">Acciones</th>
               </tr>
@@ -191,7 +193,7 @@
           <div class="modal-content">
             <div class="modal-header">
               <h5 class="modal-title">Agregar una nueva compañia</h5>
-              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              <button id="xcloseCompania" type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
               <form>
@@ -223,13 +225,12 @@
                         <option selected></option>                        
                       </select>                    
                     </div>        
-                  </div>          
-
+                  </div>   
                   </div>
               </form>
             </div>
             <div class="modal-footer">
-              <button id="close" type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+              <button id="btnCloseModalCompania" type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
               <button id="btnAceptarModalCompania" type="button" class="btn btn-primary">Aceptar</button>
             </div>
           </div>

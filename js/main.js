@@ -25,7 +25,11 @@ let flag = false;
 let btnClose = document.getElementById("close");
 let xClose =document.getElementById("xclose");
 let modal = document.getElementById("exampleModal");
+let modalCompania = document.getElementById("modalCompania")
+let xCloseCompania = document.getElementById("xcloseCompania");
+let btnCloseCompania = document.getElementById("btnCloseModalCompania")
 let bodyTabla = document.getElementById("tbody");
+let btnAddCompanias = document.getElementById("addCompanias");
 let objeto = {
   "region": {      
   }
@@ -54,7 +58,7 @@ function noLinkUsuarios(){
     contactos.classList.remove("none");
     usuarios.classList.add("none");
 }
-window.onclick = function(e){
+window.onclick = function(e){  
   if(e.target == modal || e.target == btnClose || e.target == xClose){    
     modalLabel.textContent = "";
     labelAddInModal.textContent = "";
@@ -63,6 +67,12 @@ window.onclick = function(e){
     labelAddInModal.removeAttribute("pais");
     labelAddInModal.removeAttribute("epais");
     labelAddInModal.removeAttribute("eciudad");
+  }
+  if(e.target == modalCompania || e.target == btnCloseCompania || e.target == xCloseCompania){
+    let optionsPais = document.getElementById("optionsPais");  
+    clearOptions(optionsPais);
+    let optionsCiudad = document.getElementById("optionsCiudad");  
+    clearOptions(optionsCiudad);
   }
 }
 linkCompanias.addEventListener("click",async()=>{
@@ -330,6 +340,10 @@ function formB () {
     })
 }
 
+btnAddCompanias.addEventListener("click",async()=>{
+  await loadOptions();  
+})
+
 async function queryToJSON(){
   try {
     let consulta = await fetch("http://localhost:3000/infociudades");
@@ -566,8 +580,12 @@ function addCompaniesToTable(){
     let tr = document.createElement("tr");
     let tdNombre = document.createElement("td");
     tdNombre.textContent = arrayCompanias[i].compania;
+    let tdEmail = document.createElement("td");
+    tdEmail.textContent = arrayCompanias[i].email;
     let tdUbicacion = document.createElement("td");
     tdUbicacion.textContent = arrayCompanias[i].ciudad + " - " + arrayCompanias[i].pais;
+    let tdTelefono =  document.createElement("td");
+    tdTelefono.textContent = arrayCompanias[i].telefono;
     let tdDireccion = document.createElement("td");
     tdDireccion.textContent = arrayCompanias[i].direccion;
     let tdOpciones = document.createElement("td");
@@ -586,7 +604,9 @@ function addCompaniesToTable(){
     tdOpciones.setAttribute("class", "div-opciones-companias")
 
     tr.appendChild(tdNombre);
+    tr.appendChild(tdEmail)
     tr.appendChild(tdUbicacion);
+    tr.appendChild(tdTelefono);
     tr.appendChild(tdDireccion);
     tr.appendChild(tdOpciones);
     bodyTabla.appendChild(tr)
@@ -601,8 +621,12 @@ async function loadOptions(){
         'Authorization': `Bearer ${localStorage.getItem("jwt")}`
       },
     });
-    let regiones = await res.json();
+    let regiones = await res.json();    
     let optionsGroup = document.getElementById("optionsGroup");    
+    clearOptions(optionsGroup);
+    let emptyOption = document.createElement("option");
+    emptyOption.setAttribute("selected","");
+    optionsGroup.appendChild(emptyOption);
     for (let i = 0; i < regiones.length; i++) {      
       let option = document.createElement("option");            
       option.textContent = regiones[i].nombre        
@@ -617,9 +641,7 @@ async function loadPaises(){
   let res = await fetch("http://localhost:3000/paises");
   let arrayPaises = await res.json();
   let optionsPais = document.getElementById("optionsPais");  
-  while(optionsPais.firstElementChild){
-    optionsPais.removeChild(optionsPais.firstElementChild);
-  }
+  clearOptions(optionsPais);
   let emptyOption = document.createElement("option");
   emptyOption.setAttribute("selected","");
   optionsPais.appendChild(emptyOption);
@@ -636,9 +658,7 @@ async function loadCiudades(){
   let res = await fetch("http://localhost:3000/ciudades");
   let arrayCiudades = await res.json();
   let optionsCiudad = document.getElementById("optionsCiudad");  
-  while(optionsCiudad.firstElementChild){
-    optionsCiudad.removeChild(optionsCiudad.firstElementChild);
-  }
+  clearOptions(optionsCiudad);
   let emptyOption = document.createElement("option");
   emptyOption.setAttribute("selected","");
   optionsCiudad.appendChild(emptyOption);
@@ -650,11 +670,10 @@ async function loadCiudades(){
     }
   }  
 }
-window.onload = ()=>{
-  setTimeout(async()=>{
-    await loadOptions();
-    
-  },1000)
+function clearOptions(options){
+  while(options.firstElementChild){
+    options.removeChild(options.firstElementChild);
+  }
 }
 activeLink()
 formB()
