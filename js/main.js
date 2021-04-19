@@ -42,6 +42,9 @@ let objeto = {
   }
 }
 let arrayCompanias = []
+let flagCompania = true;
+let btnAceptarModalCompania = document.getElementById("btnAceptarModalCompania");
+
 function activeLink(){
     let menu = document.getElementById("menu");
     let a = menu.getElementsByClassName("links");      
@@ -76,14 +79,7 @@ window.onclick = function(e){
     labelAddInModal.removeAttribute("eciudad");
   }
   if(e.target == modalCompania || e.target == btnCloseCompania || e.target == xCloseCompania){
-    inputModalCompaniaNombre.value = "";
-    inputModalCompaniaDireccion.value = "";
-    inputModalCompaniaEmail.value = "";
-    inputModalCompaniaTelefono.value = "";
-    optionsPais = document.getElementById("optionsPais");  
-    clearOptions(optionsPais);
-    optionsCiudad = document.getElementById("optionsCiudad");  
-    clearOptions(optionsCiudad);
+    clearModalCompania()
   }
 }
 linkCompanias.addEventListener("click",async()=>{
@@ -261,7 +257,7 @@ btnAceptarModal.addEventListener("click",async()=>{
         console.log(error);
       }
     }else if(labelAddInModal.getAttribute("eregion")){
-      const res = await fetch(`http://localhost:3000/infociudades/${labelAddInModal.getAttribute("eregion")}`,{
+      const res = await fetch(`http://localhost:3000/regiones/${labelAddInModal.getAttribute("eregion")}`,{
       method: 'PATCH',
       headers:{
         'Content-Type': 'application/json',
@@ -318,7 +314,7 @@ btnEliminar.addEventListener("click",async()=>{
       }
       console.log("Ciudad eliminada");      
     } else if(labelWarning.getAttribute("region")){
-      const res = await fetch(`http://localhost:3000/infociudades/${labelWarning.getAttribute("region")}`,{
+      const res = await fetch(`http://localhost:3000/regiones/${labelWarning.getAttribute("region")}`,{
         method: 'DELETE',
         headers:{
           'Content-Type': 'application/json',
@@ -330,6 +326,19 @@ btnEliminar.addEventListener("click",async()=>{
           throw 'Error al eliminar los datos';
         }
         console.log("Región eliminada");      
+    } else if(labelWarning.getAttribute("compania")){
+      const res = await fetch(`http://localhost:3000/companias/${labelWarning.getAttribute("compania")}`,{
+        method: 'DELETE',
+        headers:{
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${localStorage.getItem("jwt")}`
+        },      
+      })      
+        labelWarning.removeAttribute("region");            
+        if(!res.ok){
+          throw 'Error al eliminar los datos';
+        }
+        console.log("Compania eliminada");      
     }
     window.location.reload();
   } catch (error) {
@@ -350,6 +359,58 @@ function formB () {
       }, false)
     })
 }
+btnAceptarModalCompania.addEventListener("click",async()=>{
+  try {    
+    let comp = modalCompania.getAttribute("compania");    
+    if(!comp){
+      let res = await fetch("http://localhost:3000/companias",{
+        method: 'POST',
+        headers:{
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${localStorage.getItem("jwt")}`
+        },
+        body:JSON.stringify({
+          nombre: inputModalCompaniaNombre.value,        
+          email: inputModalCompaniaEmail.value,
+          direccion: inputModalCompaniaDireccion.value,
+          telefono: inputModalCompaniaTelefono.value,
+          ciudad: optionsCiudad.value
+        })
+      });
+      clearModalCompania()        
+      let mensaje = await res.json()
+      if(!res.ok){
+        throw mensaje
+      }
+      console.log("Compañia agregada con exito");
+      window.location.reload()
+    }else{
+      let res = await fetch(`http://localhost:3000/companias/${modalCompania.getAttribute("compania")}`,{
+        method: 'PATCH',
+        headers:{
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${localStorage.getItem("jwt")}`
+        },
+        body:JSON.stringify({
+          nombre: inputModalCompaniaNombre.value,        
+          email: inputModalCompaniaEmail.value,
+          direccion: inputModalCompaniaDireccion.value,
+          telefono: inputModalCompaniaTelefono.value,
+          ciudad: optionsCiudad.value
+        })
+      })
+        clearModalCompania()             
+        let mensaje = await res.json()      
+        if(!res.ok){
+          throw mensaje;
+        }
+        console.log("Compañia actualizada");
+        window.location.reload();
+      }
+    } catch (error) {
+      console.log(error);
+    }
+})
 
 btnAddCompanias.addEventListener("click",async()=>{
   await loadOptions();  
@@ -611,19 +672,26 @@ function addCompaniesToTable(){
       inputModalCompaniaEmail.value = arrayCompanias[i].email;
       inputModalCompaniaDireccion.value = arrayCompanias[i].direccion;
       inputModalCompaniaTelefono.value = arrayCompanias[i].telefono;
+      modalCompania.setAttribute("compania", arrayCompanias[i].id_compania);
       await loadOptions();
       optionsGroup.value = arrayCompanias[i].id_region;
       await loadPaises();      
       optionsPais.value = arrayCompanias[i].id_pais;
       await loadCiudades();
-      optionsCiudad.value = arrayCompanias[i].id_ciudad;
-      
+      optionsCiudad.value = arrayCompanias[i].id_ciudad;      
+      flagCompania = false
     });
     spanPrimary.appendChild(iEdit);
     let spanDelete = document.createElement("span");
     spanDelete.setAttribute("class","link-danger");
     let iDelete = document.createElement("i");
     iDelete.setAttribute("class","fas fa-times-circle");
+    iDelete.setAttribute("data-bs-target", "#warningModal");
+    iDelete.setAttribute("data-bs-toggle","modal");
+    iDelete.addEventListener("click",()=>{
+      labelWarning.textContent = `Está seguro que desea eliminar '${arrayCompanias[i].compania}'?`
+      labelWarning.setAttribute("compania",arrayCompanias[i].id_compania);
+    })
     spanDelete.appendChild(iDelete);
     tdOpciones.appendChild(spanPrimary)
     tdOpciones.appendChild(spanDelete);
@@ -648,7 +716,7 @@ async function loadOptions(){
       },
     });
     let regiones = await res.json();        
-    clearOptions(optionsGroup);
+    clearOptions(optionsGroup);        
     let emptyOption = document.createElement("option");
     emptyOption.setAttribute("selected","");
     optionsGroup.appendChild(emptyOption);
@@ -666,6 +734,9 @@ async function loadPaises(){
   let res = await fetch("http://localhost:3000/paises");
   let arrayPaises = await res.json();  
   clearOptions(optionsPais);
+  if(optionsCiudad.length > 1){    
+    clearOptions(optionsCiudad);
+  }
   let emptyOption = document.createElement("option");
   emptyOption.setAttribute("selected","");
   optionsPais.appendChild(emptyOption);
@@ -679,6 +750,7 @@ async function loadPaises(){
   }  
 }
 async function loadCiudades(){  
+  
   let res = await fetch("http://localhost:3000/ciudades");
   let arrayCiudades = await res.json();  
   clearOptions(optionsCiudad);
@@ -698,6 +770,17 @@ function clearOptions(options){
   while(options.firstElementChild){
     options.removeChild(options.firstElementChild);
   }
+}
+function clearModalCompania(){
+    inputModalCompaniaNombre.value = "";
+    inputModalCompaniaDireccion.value = "";
+    inputModalCompaniaEmail.value = "";
+    inputModalCompaniaTelefono.value = "";
+    modalCompania.removeAttribute("compania");
+    optionsPais = document.getElementById("optionsPais");  
+    clearOptions(optionsPais);
+    optionsCiudad = document.getElementById("optionsCiudad");  
+    clearOptions(optionsCiudad);
 }
 activeLink()
 formB()

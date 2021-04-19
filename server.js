@@ -439,6 +439,79 @@ server.get("/companias", authorization, async(req,res)=>{
     res.status(500);
     res.json("Ha ocurrido un error inesperado");
   }
+});
+server.post("/companias",authorization,isAdmin,async(req,res)=>{
+  try {    
+    const {nombre, email, direccion, telefono, ciudad} = req.body;
+    if(!nombre || !email || !direccion || !telefono || !ciudad){
+      res.status(400);
+      res.json("Falta algún parámetro");
+      return;
+    } 
+    let consulta = await db.sequelize.query("INSERT INTO companias (nombre, direccion, email, telefono, ciudad) VALUES (:nombre, :direccion, :email, :telefono, :ciudad)",{
+      replacements:{        
+        nombre: nombre,
+        direccion: direccion,
+        email: email,
+        telefono: telefono,
+        ciudad: ciudad
+      }, type: db.sequelize.QueryTypes.INSERT
+    });    
+    console.log("Compañia agregada con exito");
+    res.status(201);
+    res.json(consulta);    
+  } catch (error) {
+    console.log(error);
+    res.status(500);
+  }
+})
+server.patch("/companias/:id",authorization,isAdmin,async(req,res)=>{
+  try {
+    const id = req.params.id;
+    const {nombre, email, direccion, telefono, ciudad} = req.body;
+    if(!nombre || !email || !direccion || !telefono || !ciudad){
+      res.status(400);
+      res.json("Falta algún parámetro");
+      return;
+    } 
+    let consulta = await db.sequelize.query("UPDATE companias SET nombre = :nombre, direccion = :direccion, email = :email, telefono = :telefono, ciudad = :ciudad WHERE id = :id",{
+      replacements:{
+        id: id,
+        nombre: nombre,
+        direccion: direccion,
+        email: email,
+        telefono: telefono,
+        ciudad: ciudad
+      }, type: db.sequelize.QueryTypes.UPDATE
+    });
+    if(consulta.length === 0){
+      res.status(404);
+      res.json("Compañia no encontrada");
+      return
+    }
+    res.status(200);
+    res.json(consulta);    
+  } catch (error) {
+    console.log(error);
+    res.status(500);
+  }
+});
+server.delete("/companias/:id",authorization,isAdmin,async(req,res)=>{
+  try {
+    const id = req.params.id;
+    let consulta = await db.sequelize.query("DELETE FROM companias WHERE id = :id",{
+      replacements: {
+        id: id,
+      },type: db.sequelize.QueryTypes.DELETE
+    });    
+    res.status(200);
+    console.log("Compania eliminada");
+    res.json(consulta);
+  } catch (error) {
+    console.log(error);
+    res.status(500);
+    res.json("Ha ocurrido un error inesperado");
+  }
 })
 
 server.listen(process.env.PORT || 3000, () => {
