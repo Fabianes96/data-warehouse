@@ -661,6 +661,8 @@ function addCompaniesToTable(){
     let tdDireccion = document.createElement("td");
     tdDireccion.textContent = arrayCompanias[i].direccion;
     let tdOpciones = document.createElement("td");
+    let divOpciones = document.createElement("div");
+    divOpciones.setAttribute("class", "div-opciones-companias");
     let spanPrimary = document.createElement("span");
     spanPrimary.setAttribute("class","link-primary");
     let iEdit = document.createElement("i");
@@ -691,11 +693,11 @@ function addCompaniesToTable(){
     iDelete.addEventListener("click",()=>{
       labelWarning.textContent = `Está seguro que desea eliminar '${arrayCompanias[i].compania}'?`
       labelWarning.setAttribute("compania",arrayCompanias[i].id_compania);
-    })
+    })    
     spanDelete.appendChild(iDelete);
-    tdOpciones.appendChild(spanPrimary)
-    tdOpciones.appendChild(spanDelete);
-    tdOpciones.setAttribute("class", "div-opciones-companias")
+    divOpciones.appendChild(spanPrimary)
+    divOpciones.appendChild(spanDelete)
+    tdOpciones.appendChild(divOpciones);    
 
     tr.appendChild(tdNombre);
     tr.appendChild(tdEmail)

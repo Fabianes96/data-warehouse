@@ -20,8 +20,7 @@
 }
 .div-opciones-companias{
     @include opciones(5px);
-    position: relative;
-    left: 15px;
+    justify-content: center;    
 }
 .grid{
     display: grid;

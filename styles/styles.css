@@ -26,8 +26,9 @@
   display: -ms-flexbox;
   display: flex;
   gap: 5px;
-  position: relative;
-  left: 15px;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
 }
 
 .div-opciones-companias span {
