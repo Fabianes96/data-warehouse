@@ -120,7 +120,7 @@ server.post("/usuarios",authorization,isAdmin,async(req,res)=>{
         res.json("Ha ocurrido un error inesperado");
       }
 })
-server.get("/regiones",async(req,res)=>{
+server.get("/infociudades",async(req,res)=>{
   try {
     let consulta = await db.sequelize.query(
       `SELECT ciudades.id AS id_ciudad,paises.id AS id_pais ,regiones.id AS id_region, ciudades.nombre AS ciudad,
@@ -142,6 +142,21 @@ server.get("/regiones",async(req,res)=>{
     res.json("Ha ocurrido un error inesperado");
   }
 });
+server.get("/regiones", authorization, async(req,res)=>{
+  try {
+    let consulta = await db.sequelize.query(
+      `SELECT * FROM regiones`
+    ,{
+      type: db.sequelize.QueryTypes.SELECT,
+    });    
+    res.status(200)
+    res.json(consulta);
+  } catch (error) {
+    console.log(error);
+    res.status(500);
+    res.json("Ha ocurrido un error inesperado");
+  }
+})
 server.post("/regiones",authorization,isAdmin,async(req,res)=>{
   try {
     const nombre = req.body.nombre;
@@ -213,6 +228,21 @@ server.delete("/regiones/:id",authorization,isAdmin,async(req,res)=>{
     res.json("Ha ocurrido un error inesperado");
   }
 })
+server.get("/paises", async(req,res)=>{
+  try {
+    let consulta = await db.sequelize.query(
+      `SELECT * FROM paises`
+    ,{
+      type: db.sequelize.QueryTypes.SELECT,
+    });    
+    res.status(200)
+    res.json(consulta);
+  } catch (error) {
+    console.log(error);
+    res.status(500);
+    res.json("Ha ocurrido un error inesperado");
+  }
+})
 server.post("/paises",authorization,isAdmin,async(req,res)=>{
   try {
     const {nombre,region} = req.body;
@@ -246,6 +276,21 @@ server.post("/paises",authorization,isAdmin,async(req,res)=>{
     res.status(500);
   }
 });
+server.get("/ciudades", async(req,res)=>{
+  try {
+    let consulta = await db.sequelize.query(
+      `SELECT * FROM ciudades`
+    ,{
+      type: db.sequelize.QueryTypes.SELECT,
+    });    
+    res.status(200)
+    res.json(consulta);
+  } catch (error) {
+    console.log(error);
+    res.status(500);
+    res.json("Ha ocurrido un error inesperado");
+  }
+})
 server.post("/ciudades",authorization,isAdmin,async(req,res)=>{
   try {
     const {nombre,pais} = req.body;

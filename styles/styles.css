@@ -69,6 +69,16 @@
   font-weight: bold;
 }
 
+.opciones-modal {
+  margin-top: 10px;
+  display: -ms-grid;
+  display: grid;
+  -ms-grid-columns: 1fr 1fr 1fr;
+      grid-template-columns: 1fr 1fr 1fr;
+  -webkit-column-gap: 18px;
+          column-gap: 18px;
+}
+
 header .navbar {
   padding-top: 0;
   padding-bottom: 0;

@@ -79,8 +79,6 @@
           </table>
         </div>
       </div>
-
-
     </section>
     <section id="usuarios" class="none">
       <form class="usuarios needs-validation" novalidate>
@@ -184,7 +182,60 @@
         </div>
       </div>
     </section>
+    <section id="modalAddCompania">            
+      <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalCompania">
+        Launch demo modal
+      </button>
+      <div class="modal fade" id="modalCompania" tabindex="-1" aria-labelledby="modalLabelCompania" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title">Agregar una nueva compañia</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <form>
+                <div class="mb-3">            
+                  <label for="recipient-name" class="col-form-label">Nombre</label>
+                  <input type="text" class="form-control" id="inputModalCompania">
+                  <label for="recipient-name" class="col-form-label">Direccion</label>
+                  <input type="text" class="form-control">
+                  <label for="recipient-name" class="col-form-label">Email</label>
+                  <input type="text" class="form-control">
+                  <label for="recipient-name" class="col-form-label">Teléfono</label>
+                  <input type="text" class="form-control">
+                  <div class="opciones-modal">
+                    <div class="mb-3">
+                      <label for="perfil" class="form-label">Region</label>
+                      <select id="optionsGroup" class="form-select" aria-label="Default select example" onchange="loadPaises();">
+                        <option selected></option>                                   
+                      </select>                    
+                    </div>        
+                    <div class="mb-3">
+                      <label for="perfil" class="form-label">Pais</label>
+                      <select id="optionsPais" class="form-select" aria-label="Default select example" onchange="loadCiudades();">
+                        <option selected></option>                        
+                      </select>                    
+                    </div>        
+                    <div class="mb-3">
+                      <label for="perfil" class="form-label">Ciudad</label>
+                      <select id="optionsCiudad" class="form-select" aria-label="Default select example">
+                        <option selected></option>                        
+                      </select>                    
+                    </div>        
+                  </div>          
 
+                  </div>
+              </form>
+            </div>
+            <div class="modal-footer">
+              <button id="close" type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+              <button id="btnAceptarModalCompania" type="button" class="btn btn-primary">Aceptar</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
     <section id="modalWarning">      
       <div class="modal fade" id="warningModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog">

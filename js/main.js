@@ -218,7 +218,7 @@ btnAceptarModal.addEventListener("click",async()=>{
       window.location.reload();
     }else if(flag){
       try {
-        const res = await fetch("http://localhost:3000/regiones",{
+        const res = await fetch("http://localhost:3000/infociudades",{
           method: 'POST',
           headers:{
             'Content-Type': 'application/json',
@@ -240,7 +240,7 @@ btnAceptarModal.addEventListener("click",async()=>{
         console.log(error);
       }
     }else if(labelAddInModal.getAttribute("eregion")){
-      const res = await fetch(`http://localhost:3000/regiones/${labelAddInModal.getAttribute("eregion")}`,{
+      const res = await fetch(`http://localhost:3000/infociudades/${labelAddInModal.getAttribute("eregion")}`,{
       method: 'PATCH',
       headers:{
         'Content-Type': 'application/json',
@@ -297,7 +297,7 @@ btnEliminar.addEventListener("click",async()=>{
       }
       console.log("Ciudad eliminada");      
     } else if(labelWarning.getAttribute("region")){
-      const res = await fetch(`http://localhost:3000/regiones/${labelWarning.getAttribute("region")}`,{
+      const res = await fetch(`http://localhost:3000/infociudades/${labelWarning.getAttribute("region")}`,{
         method: 'DELETE',
         headers:{
           'Content-Type': 'application/json',
@@ -332,7 +332,7 @@ function formB () {
 
 async function queryToJSON(){
   try {
-    let consulta = await fetch("http://localhost:3000/regiones");
+    let consulta = await fetch("http://localhost:3000/infociudades");
     let consultaAsJson = await consulta.json()
     vector = consultaAsJson;        
     vector.forEach((obj)=>{
@@ -591,6 +591,70 @@ function addCompaniesToTable(){
     tr.appendChild(tdOpciones);
     bodyTabla.appendChild(tr)
   }
+}
+
+async function loadOptions(){
+  try {
+    let res = await fetch("http://localhost:3000/regiones",{
+      headers:{
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${localStorage.getItem("jwt")}`
+      },
+    });
+    let regiones = await res.json();
+    let optionsGroup = document.getElementById("optionsGroup");    
+    for (let i = 0; i < regiones.length; i++) {      
+      let option = document.createElement("option");            
+      option.textContent = regiones[i].nombre        
+      option.setAttribute("value",regiones[i].id);
+      optionsGroup.appendChild(option);      
+    }    
+  } catch (error) {
+    console.log(error);
+  }
+}
+async function loadPaises(){  
+  let res = await fetch("http://localhost:3000/paises");
+  let arrayPaises = await res.json();
+  let optionsPais = document.getElementById("optionsPais");  
+  while(optionsPais.firstElementChild){
+    optionsPais.removeChild(optionsPais.firstElementChild);
+  }
+  let emptyOption = document.createElement("option");
+  emptyOption.setAttribute("selected","");
+  optionsPais.appendChild(emptyOption);
+  for (let i = 0; i < arrayPaises.length; i++) {      
+    let option = document.createElement("option");         
+    if(arrayPaises[i].region == optionsGroup.value){
+      option.textContent = arrayPaises[i].nombre  
+      option.setAttribute("value",arrayPaises[i].id);      
+      optionsPais.appendChild(option);    
+    }
+  }  
+}
+async function loadCiudades(){  
+  let res = await fetch("http://localhost:3000/ciudades");
+  let arrayCiudades = await res.json();
+  let optionsCiudad = document.getElementById("optionsCiudad");  
+  while(optionsCiudad.firstElementChild){
+    optionsCiudad.removeChild(optionsCiudad.firstElementChild);
+  }
+  let emptyOption = document.createElement("option");
+  emptyOption.setAttribute("selected","");
+  optionsCiudad.appendChild(emptyOption);
+  for (let i = 0; i < arrayCiudades.length; i++) {      
+    let option = document.createElement("option");         
+    if(arrayCiudades[i].pais == optionsPais.value){
+      option.textContent = arrayCiudades[i].nombre        
+      optionsCiudad.appendChild(option);    
+    }
+  }  
+}
+window.onload = ()=>{
+  setTimeout(async()=>{
+    await loadOptions();
+    
+  },1000)
 }
 activeLink()
 formB()
