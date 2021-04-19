@@ -416,16 +416,20 @@ server.get("/companias", authorization, async(req,res)=>{
   try {
     let consulta = await db.sequelize.query(`
     SELECT companias.id AS id_compania,
+    regiones.id AS id_region,
+    paises.id AS id_pais,
+    ciudades.id AS id_ciudad,
     companias.nombre AS compania,
     companias.direccion,
     companias.email,
-    companias.telefono,
-    ciudades.nombre AS ciudad,
+    companias.telefono,    
+    ciudades.nombre AS ciudad,    
     paises.nombre AS pais
     FROM companias
     JOIN ciudades
     ON companias.ciudad = ciudades.id
-    JOIN paises ON ciudades.pais = paises.id`,{
+    JOIN paises ON ciudades.pais = paises.id
+    JOIN regiones ON paises.region = regiones.id`,{
       type: db.sequelize.QueryTypes.SELECT,
     });    
     res.status(200);

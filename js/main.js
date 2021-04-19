@@ -30,6 +30,13 @@ let xCloseCompania = document.getElementById("xcloseCompania");
 let btnCloseCompania = document.getElementById("btnCloseModalCompania")
 let bodyTabla = document.getElementById("tbody");
 let btnAddCompanias = document.getElementById("addCompanias");
+let inputModalCompaniaNombre = document.getElementById("inputModalCompaniaNombre")
+let inputModalCompaniaDireccion = document.getElementById("inputModalCompaniaDireccion")
+let inputModalCompaniaEmail = document.getElementById("inputModalCompaniaEmail")
+let inputModalCompaniaTelefono = document.getElementById("inputModalCompaniaTelefono")
+let optionsGroup = document.getElementById("optionsGroup");    
+let optionsCiudad = document.getElementById("optionsCiudad");  
+let optionsPais = document.getElementById("optionsPais");  
 let objeto = {
   "region": {      
   }
@@ -69,9 +76,13 @@ window.onclick = function(e){
     labelAddInModal.removeAttribute("eciudad");
   }
   if(e.target == modalCompania || e.target == btnCloseCompania || e.target == xCloseCompania){
-    let optionsPais = document.getElementById("optionsPais");  
+    inputModalCompaniaNombre.value = "";
+    inputModalCompaniaDireccion.value = "";
+    inputModalCompaniaEmail.value = "";
+    inputModalCompaniaTelefono.value = "";
+    optionsPais = document.getElementById("optionsPais");  
     clearOptions(optionsPais);
-    let optionsCiudad = document.getElementById("optionsCiudad");  
+    optionsCiudad = document.getElementById("optionsCiudad");  
     clearOptions(optionsCiudad);
   }
 }
@@ -592,7 +603,22 @@ function addCompaniesToTable(){
     let spanPrimary = document.createElement("span");
     spanPrimary.setAttribute("class","link-primary");
     let iEdit = document.createElement("i");
-    iEdit.setAttribute("class", "far fa-edit");
+    iEdit.setAttribute("class", "far fa-edit");    
+    iEdit.setAttribute("data-bs-toggle","modal")
+    iEdit.setAttribute("data-bs-target","#modalCompania")
+    iEdit.addEventListener("click",async()=>{
+      inputModalCompaniaNombre.value = arrayCompanias[i].compania;
+      inputModalCompaniaEmail.value = arrayCompanias[i].email;
+      inputModalCompaniaDireccion.value = arrayCompanias[i].direccion;
+      inputModalCompaniaTelefono.value = arrayCompanias[i].telefono;
+      await loadOptions();
+      optionsGroup.value = arrayCompanias[i].id_region;
+      await loadPaises();      
+      optionsPais.value = arrayCompanias[i].id_pais;
+      await loadCiudades();
+      optionsCiudad.value = arrayCompanias[i].id_ciudad;
+      
+    });
     spanPrimary.appendChild(iEdit);
     let spanDelete = document.createElement("span");
     spanDelete.setAttribute("class","link-danger");
@@ -621,8 +647,7 @@ async function loadOptions(){
         'Authorization': `Bearer ${localStorage.getItem("jwt")}`
       },
     });
-    let regiones = await res.json();    
-    let optionsGroup = document.getElementById("optionsGroup");    
+    let regiones = await res.json();        
     clearOptions(optionsGroup);
     let emptyOption = document.createElement("option");
     emptyOption.setAttribute("selected","");
@@ -639,8 +664,7 @@ async function loadOptions(){
 }
 async function loadPaises(){  
   let res = await fetch("http://localhost:3000/paises");
-  let arrayPaises = await res.json();
-  let optionsPais = document.getElementById("optionsPais");  
+  let arrayPaises = await res.json();  
   clearOptions(optionsPais);
   let emptyOption = document.createElement("option");
   emptyOption.setAttribute("selected","");
@@ -656,8 +680,7 @@ async function loadPaises(){
 }
 async function loadCiudades(){  
   let res = await fetch("http://localhost:3000/ciudades");
-  let arrayCiudades = await res.json();
-  let optionsCiudad = document.getElementById("optionsCiudad");  
+  let arrayCiudades = await res.json();  
   clearOptions(optionsCiudad);
   let emptyOption = document.createElement("option");
   emptyOption.setAttribute("selected","");
@@ -666,6 +689,7 @@ async function loadCiudades(){
     let option = document.createElement("option");         
     if(arrayCiudades[i].pais == optionsPais.value){
       option.textContent = arrayCiudades[i].nombre        
+      option.setAttribute("value",arrayCiudades[i].id)
       optionsCiudad.appendChild(option);    
     }
   }  
