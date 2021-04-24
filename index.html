@@ -31,10 +31,7 @@
                     <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">                    
                     <div id="div-icon-search">
                       <i class="fas fa-search"></i>
-                    </div>
-                    <span class="link-primary">                      
-                      <i class="far fa-edit"></i>                       
-                    </span>
+                    </div>                    
                     <div class="dropdown">                
                       <svg id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false"  xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-caret-down-fill" viewBox="0 0 16 16">
                         <path d="M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z"/>
@@ -49,12 +46,21 @@
                 </div>                                  
               </form>            <!-- Example single danger button -->              
         </div>
-        <div class="btn-contactos">      
-          <i class="fas fa-arrow-alt-to-top"></i>
-          <i class="fad fa-arrow-to-top"></i>          
-            <button>Descargar</button>
-            <button>Exportar</button>
-            <button>Agregar</button>            
+        <div class="btn-contactos">                     
+          <!-- <button id="" class="btn btn-outline-primary">
+            <img src="styles/upload_icon.png" alt="imagen">
+          </button>
+            <div class="dropdown">
+              <button class="btn btn-outline-primary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                Exportar contactos
+              </button>
+              <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                <li><a class="dropdown-item" href="#">Action</a></li>
+                <li><a class="dropdown-item" href="#">Another action</a></li>
+                <li><a class="dropdown-item" href="#">Something else here</a></li>
+              </ul>
+            </div>             -->
+            <button id="btnAddContactos" class="btn btn-primary">Agregar contacto</button>                        
         </div>          
       </div>
     </section>
@@ -156,8 +162,127 @@
       <div id="region-ciudad">
       </div>
     </section>
-    <section id="contactos">
+    <section id="contactos">      
       <div id="div-contactos">        
+        <table class="table table-borderless table-hover">
+          <thead id="cabecera">
+            <tr>
+              <th scope="col"><div class="form-check">
+                <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+                <label class="form-check-label" for="flexCheckDefault">                  
+                </label>
+              </div></th>
+              <th scope="col">First</th>
+              <th scope="col">Last</th>
+              <th scope="col">Handle</th>
+              <th scope="col">Handle</th>
+              <th scope="col">Handle</th>
+              <th scope="col">Handle</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th scope="row">1</th>
+              <td>Mark</td>
+              <td>Otto</td>
+              <td>@mdo</td>
+              <td>@mdo</td>
+              <td>@mdo</td>
+              <td>@mdo</td>              
+            </tr>
+            <tr>
+              <th scope="row">2</th>
+              <td>Jacob</td>
+              <td>Thornton</td>
+              <td>@fat</td>
+              <td>@fat</td>
+              <td>@fat</td>
+              <td>@fat</td>
+            </tr>
+            <tr>
+              <th scope="row">3</th>
+              <td>Larry the Bird</td>
+              <td>@twitter</td>
+              <td>@twitter</td>
+              <td>@twitter</td>
+              <td>@twitter</td>
+              <td>@twitter</td>
+            </tr>
+            <tr>
+              <th scope="row">3</th>
+              <td>Larry the Bird</td>
+              <td>@twitter</td>
+              <td>@twitter</td>
+              <td>@twitter</td>
+              <td>@twitter</td>
+              <td>@twitter</td>
+            </tr>
+            <tr>
+              <th scope="row">3</th>
+              <td>Larry the Bird</td>
+              <td>@twitter</td>
+              <td>@twitter</td>
+              <td>@twitter</td>
+              <td>@twitter</td>
+              <td>@twitter</td>
+            </tr>
+            <tr>
+              <th scope="row">3</th>
+              <td>Larry the Bird</td>
+              <td>@twitter</td>
+              <td>@twitter</td>
+              <td>@twitter</td>
+              <td>@twitter</td>
+              <td>@twitter</td>
+            </tr>
+            <tr>
+              <th scope="row">3</th>
+              <td>Larry the Bird</td>
+              <td>@twitter</td>
+              <td>@twitter</td>
+              <td>@twitter</td>
+              <td>@twitter</td>
+              <td>@twitter</td>
+            </tr>
+            <tr>
+              <th scope="row">3</th>
+              <td>Larry the Bird</td>
+              <td>@twitter</td>
+              <td>@twitter</td>
+              <td>@twitter</td>
+              <td>@twitter</td>
+              <td>@twitter</td>
+            </tr>
+            <tr>
+              <th scope="row">3</th>
+              <td>Larry the Bird</td>
+              <td>@twitter</td>
+              <td>@twitter</td>
+              <td>@twitter</td>
+              <td>@twitter</td>
+              <td>@twitter</td>
+            </tr>
+            <tr>
+              <th scope="row">3</th>
+              <td>Larry the Bird</td>
+              <td>@twitter</td>
+              <td>@twitter</td>
+              <td>@twitter</td>
+              <td>@twitter</td>
+              <td>@twitter</td>
+            </tr>
+            <tr>
+              <th scope="row">3</th>
+              <td>Larry the Bird</td>
+              <td>@twitter</td>
+              <td>@twitter</td>
+              <td>@twitter</td>
+              <td>@twitter</td>
+              <td>@twitter</td>
+            </tr>
+
+          </tbody>
+        </table>
       </div>
     </section>    
     <section id="modalSection">            
@@ -294,8 +419,69 @@
             </div>
           </div>
         </div>
+      </div>      
+    </section>
+    <section id="modalContactos">
+      <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal2">
+        Launch demo modal
+        <!-- Button trigger modal -->
+</button>
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal2" tabindex="-1" aria-labelledby="exampleModalLabel2" aria-hidden="true">
+  <div class="modal-dialog modal-xl">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
-      
+      <div class="modal-body">
+        <div class="loquesea">
+          <img src="styles/perfil.png" alt="">
+          <label for="inputModalContactoNombre" class="col-form-label">Nombre</label>
+          <input type="text" class="form-control" id="inputModalContactoNombre" required>
+          <div class="valid-feedback">         
+          </div>
+          <div class="invalid-feedback">
+            Debe ingresar un nombre
+          </div>
+          <label for="inputModalContactoApellido" class="col-form-label">Apellido</label>
+          <input type="text" class="form-control" id="inputModalContactoApellido" required>
+          <div class="valid-feedback">         
+          </div>
+          <div class="invalid-feedback">
+            Debe ingresar el apellido
+          </div>
+          <label for="inputModalContactoCargo" class="col-form-label">Cargo</label>
+          <input type="text" class="form-control" id="inputModalContactoCargo" required>
+          <div class="valid-feedback">         
+          </div>
+          <div class="invalid-feedback">
+            Debe ingresar el cargo
+          </div>
+          <label for="inputModalContactoEmail" class="col-form-label">Email</label>
+          <input type="text" class="form-control" id="inputModalContactoEmail" required>
+          <div class="valid-feedback">         
+          </div>
+          <div class="invalid-feedback">
+            Debe ingresar un correo
+          </div>
+          <label for="inputModalContactoCompania" class="col-form-label">Compañia</label>
+          <input type="text" class="form-control" id="inputModalContactoCompania" required>
+          <div class="valid-feedback">         
+          </div>
+          <div class="invalid-feedback">
+            Debe ingresar la compañia
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
     </section>
     <script
       src="https://kit.fontawesome.com/73b0c866b6.js"
