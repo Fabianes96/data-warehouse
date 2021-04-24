@@ -1,3 +1,4 @@
+$color-scundario: rgba(0,0,0,0.50);
 @mixin opciones($gap){
     display: flex;
     gap: $gap;
@@ -5,7 +6,6 @@
         cursor: pointer;
     }
 }
-
 .block{
     display: block;
 }

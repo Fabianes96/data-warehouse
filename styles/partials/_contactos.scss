@@ -1,11 +1,40 @@
 #contactos{
     #div-contactos{
         height: 400px;
-        border: 1px solid rgba(0,0,0,0.10);
+        border: 1px solid $color-scundario;
         margin: 0px 30px;
         overflow: auto;
         #cabecera{
-            border-bottom: 1px solid rgba(0,0,0,0.10);
+            border-bottom: 1px solid $color-scundario;
+            tr > :last-child{
+                text-align: center;
+            }
+        }
+        tbody{
+            .form-check{            
+                display: flex;
+                align-items: flex-end;
+            }
+        }
+        .info-contact{
+            display: flex;   
+            flex-direction: column;
+            > :last-child{
+                font-size: 14px;
+                color: $color-scundario
+            }
+        }
+        .progress{
+            position: relative;
+            gap: 10px;
+            top: 5px;
+            background-color: transparent;
+            > :last-child{
+                border-radius: inherit;
+            }
+        }
+        .div-opciones-contactos{
+            text-align: center;
         }
     }
 }
