@@ -196,9 +196,22 @@ header nav .container ul li:hover a {
   margin: 0px 30px;
 }
 
-#contactos #nro-seleccion {
+#contactos .opciones-cabecera {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
   position: absolute;
   bottom: 400px;
+  width: 100%;
+}
+
+#contactos .opciones-cabecera #nro-seleccion {
   border: 1px solid rgba(0, 0, 0, 0.08);
   width: 100px;
   height: 30px;
@@ -207,9 +220,14 @@ header nav .container ul li:hover a {
   background-color: rgba(0, 0, 0, 0.08);
 }
 
-#contactos #nro-seleccion span {
+#contactos .opciones-cabecera #nro-seleccion span {
   font-size: 10px;
   color: #0683F9;
+}
+
+#contactos .opciones-cabecera #eliminar-contacto:hover {
+  text-decoration: underline;
+  cursor: pointer;
 }
 
 #contactos #div-contactos {

@@ -1,18 +1,28 @@
 #contactos{
     position: relative;
     margin: 0px 30px;
-    #nro-seleccion{
+    .opciones-cabecera{
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
         position: absolute;
         bottom: 400px;
-        border: 1px solid rgba(0,0,0,0.08);
-        width: 100px;
-        height: 30px;        
-        text-align: center;        
-        border-radius: 4px;
-        background-color: rgba(0,0,0,0.08);
-        span{
-            font-size: 10px;            
-            color: #0683F9;
+        width: 100%;
+        #nro-seleccion{        
+            border: 1px solid rgba(0,0,0,0.08);
+            width: 100px;
+            height: 30px;        
+            text-align: center;        
+            border-radius: 4px;
+            background-color: rgba(0,0,0,0.08);
+            span{
+                font-size: 10px;            
+                color: #0683F9;
+            }
+        }
+        #eliminar-contacto:hover{
+            text-decoration: underline;
+            cursor: pointer;
         }
     }
     #div-contactos{
