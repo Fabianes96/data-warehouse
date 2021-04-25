@@ -24,17 +24,24 @@
                 color: $color-scundario
             }
         }
-        .progress{
-            position: relative;
+        .progress-group{
+            display: grid;
+            grid-template-columns: 30px 1fr;
+            font-size: 12px;
+            align-items: center;
             gap: 10px;
-            top: 5px;
-            background-color: transparent;
-            > :last-child{
-                border-radius: inherit;
+            
+            .bg-orange{
+                background-color: #fd7e14;
             }
+            .progress-bar{                
+                border-radius: inherit;
+            }            
         }
         .div-opciones-contactos{
-            text-align: center;
+            display: flex;
+            justify-content: center;
+            gap: 5px;
         }
     }
 }

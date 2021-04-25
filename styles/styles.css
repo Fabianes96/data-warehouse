@@ -225,19 +225,34 @@ header nav .container ul li:hover a {
   color: rgba(0, 0, 0, 0.5);
 }
 
-#contactos #div-contactos .progress {
-  position: relative;
+#contactos #div-contactos .progress-group {
+  display: -ms-grid;
+  display: grid;
+  -ms-grid-columns: 30px 1fr;
+      grid-template-columns: 30px 1fr;
+  font-size: 12px;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
   gap: 10px;
-  top: 5px;
-  background-color: transparent;
 }
 
-#contactos #div-contactos .progress > :last-child {
+#contactos #div-contactos .progress-group .bg-orange {
+  background-color: #fd7e14;
+}
+
+#contactos #div-contactos .progress-group .progress-bar {
   border-radius: inherit;
 }
 
 #contactos #div-contactos .div-opciones-contactos {
-  text-align: center;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  gap: 5px;
 }
 
 #usuarios .usuarios {

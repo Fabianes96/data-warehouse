@@ -1,3 +1,4 @@
+let linkContactos = document.getElementsByClassName("links")[0];
 let linkCompanias = document.getElementsByClassName("links")[1];
 let linkUsuarios = document.getElementsByClassName("links")[2];
 let linkRegiones = document.getElementsByClassName("links")[3];
@@ -29,6 +30,7 @@ let modalCompania = document.getElementById("modalCompania")
 let xCloseCompania = document.getElementById("xcloseCompania");
 let btnCloseCompania = document.getElementById("btnCloseModalCompania")
 let bodyTabla = document.getElementById("tbody");
+let bodyTablaContactos = document.getElementById("tbodyContactos");
 let btnAddCompanias = document.getElementById("addCompanias");
 let inputModalCompaniaNombre = document.getElementById("inputModalCompaniaNombre")
 let inputModalCompaniaDireccion = document.getElementById("inputModalCompaniaDireccion")
@@ -41,7 +43,8 @@ let objeto = {
   "region": {      
   }
 }
-let arrayCompanias = []
+let arrayCompanias = [];
+let arrayContactos = [];
 let flagCompania = true;
 let btnAceptarModalCompania = document.getElementById("btnAceptarModalCompania");
 
@@ -82,6 +85,19 @@ window.onclick = function(e){
     clearModalCompania()
   }
 }
+window.onload = async()=>{
+  await loadContactos()
+  addContactos()
+}
+linkContactos.addEventListener("click",async()=>{
+  opcionesContactos.classList.add("none");
+  regiones.classList.add("none")
+  usuarios.classList.add("none");
+  companias.classList.add("none");
+  contactos.classList.remove("none");
+  await loadContactos();
+  addContactos()
+});
 linkCompanias.addEventListener("click",async()=>{
   opcionesContactos.classList.add("none");
   contactos.classList.add("none");
@@ -709,6 +725,19 @@ function addCompaniesToTable(){
   }
 }
 
+async function loadContactos(){
+  try {
+    let res = await fetch("http://localhost:3000/contactos",{
+      headers:{
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${localStorage.getItem("jwt")}`
+      },      
+    });
+    arrayContactos = await res.json()    
+  } catch (error) {
+    console.log(error);
+  }  
+}
 async function loadOptions(){
   try {
     let res = await fetch("http://localhost:3000/regiones",{
@@ -783,6 +812,117 @@ function clearModalCompania(){
     clearOptions(optionsPais);
     optionsCiudad = document.getElementById("optionsCiudad");  
     clearOptions(optionsCiudad);
+}
+
+function addContactos(){
+  for (let i = 0; i < arrayContactos.length; i++) {    
+    let tr = document.createElement("tr");
+    let th = document.createElement("th");
+    th.setAttribute("scope","row");
+    let divCheck = document.createElement("div")
+    divCheck.setAttribute("class","form-check");
+    let inputDiv = document.createElement("input");
+    inputDiv.setAttribute("class","form-check-input")
+    inputDiv.setAttribute("type","checkbox");
+    let label = document.createElement("label");
+    label.setAttribute("class", "form-check-label");
+    divCheck.appendChild(inputDiv);
+    divCheck.appendChild(label)
+    th.appendChild(divCheck);
+    tr.appendChild(th);
+
+    let td = document.createElement("td");
+    let divInfoContact = document.createElement("div");
+    divInfoContact.setAttribute("class","info-contact");
+    let spanContacto = document.createElement("span");
+    spanContacto.textContent = arrayContactos[i].nombre;
+    let spanContactoEmail = document.createElement("span");
+    spanContactoEmail.textContent = arrayContactos[i].email;
+    divInfoContact.appendChild(spanContacto);
+    divInfoContact.appendChild(spanContactoEmail);
+    td.appendChild(divInfoContact);
+    tr.appendChild(td)
+
+    let tdPais = document.createElement("td");
+    let divPais = document.createElement("div");
+    divPais.setAttribute("class","info-contact");
+    let spanPais = document.createElement("span");
+    spanPais.textContent = arrayContactos[i].pais;
+    let spanRegion = document.createElement("span");
+    spanRegion.textContent = arrayContactos[i].region;
+    divPais.appendChild(spanPais);
+    divPais.appendChild(spanRegion);
+    tdPais.appendChild(divPais);
+    tr.appendChild(tdPais);
+
+    let tdCompania = document.createElement("td");
+    tdCompania.textContent = arrayContactos[i].compania
+    tr.appendChild(tdCompania);
+
+    let tdCargo = document.createElement("td");
+    tdCargo.textContent = arrayContactos[i].cargo;
+    tr.appendChild(tdCargo);
+
+    let tdInteres =document.createElement("td");
+    tdInteres.setAttribute("colspan", "4");
+    let divProgresoGroup = document.createElement("div");
+    divProgresoGroup.setAttribute("class","progress-group");    
+    let spanProgreso = document.createElement("span");    
+    let divProgress = document.createElement("div");
+    divProgress.setAttribute("class","progress");
+    let divBar = document.createElement("div");
+    divBar.setAttribute("class","progress-bar");    
+    divBar.setAttribute("role", "progressbar");   
+    let porcentaje = arrayContactos[i].porcentaje;
+    spanProgreso.textContent = porcentaje + "%";
+    switch (porcentaje) {
+      case 100:
+        divBar.classList.add("bg-danger");
+        divBar.setAttribute("style","width: 100%");
+        break;
+      case 75:
+        divBar.classList.add("bg-orange");
+        divBar.setAttribute("style","width: 75%");
+        break;
+      case 50:
+        divBar.classList.add("bg-warning");
+        divBar.setAttribute("style","width: 50%");
+        break;
+      case 25:
+        divBar.classList.add("bg-info");
+        divBar.setAttribute("style","width: 25%");
+        break;
+      default:        
+        break;  
+    }
+    divProgress.appendChild(divBar);
+    divProgresoGroup.appendChild(spanProgreso);
+    divProgresoGroup.appendChild(divProgress);  
+    tdInteres.appendChild(divProgresoGroup);
+    tr.appendChild(tdInteres);
+
+    let tdAcciones = document.createElement("td");
+    let divOpciones = document.createElement("div");
+    divOpciones.setAttribute("class", "div-opciones-contactos");
+    let spanLinkPrimary = document.createElement("span");
+    spanLinkPrimary.setAttribute("class","link-primary")
+    let iconEdit = document.createElement("i");
+    iconEdit.setAttribute("class","far");
+    iconEdit.classList.add("fa-edit");
+    spanLinkPrimary.appendChild(iconEdit);
+    let spanLinkDanger = document.createElement("span");
+    spanLinkDanger.setAttribute("class","link-danger");
+    let iconDelete = document.createElement("i");
+    iconDelete.setAttribute("class","far")
+    iconDelete.classList.add("fa-times-circle")
+    spanLinkDanger.appendChild(iconDelete);
+    divOpciones.appendChild(spanLinkPrimary);
+    divOpciones.appendChild(spanLinkDanger);
+    tdAcciones.appendChild(divOpciones);
+    tr.appendChild(tdAcciones);
+
+    bodyTablaContactos.appendChild(tr);    
+  }
 }
 activeLink()
 formB()

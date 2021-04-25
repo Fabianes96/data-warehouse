@@ -512,6 +512,19 @@ server.delete("/companias/:id",authorization,isAdmin,async(req,res)=>{
     res.status(500);
     res.json("Ha ocurrido un error inesperado");
   }
+});
+server.get("/contactos/",authorization, async(req,res)=>{
+  try {
+    let consulta = await db.sequelize.query("SELECT contactos.id, contactos.nombre AS nombre,contactos.apellido AS apellido, cargo, contactos.email AS email, companias.id AS id_compania, companias.nombre AS compania, paises.nombre AS pais, regiones.nombre AS region, interes.porcentaje, contactos.direccion AS direccion FROM contactos JOIN ciudades ON ciudades.id = contactos.ciudad JOIN paises ON paises.id = ciudades.pais JOIN companias ON contactos.compania = companias.id JOIN regiones ON regiones.id = paises.region JOIN interes ON contactos.interes = interes.id ORDER BY contactos.id",{
+      type: db.sequelize.QueryTypes.SELECT,
+    });
+    res.status(200);
+    res.json(consulta);
+  } catch (error) {
+    console.log(error);
+    res.status(500);
+    res.json("Ha ocurrido un error inesperado");
+  }
 })
 
 server.listen(process.env.PORT || 3000, () => {
