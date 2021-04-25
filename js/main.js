@@ -39,6 +39,7 @@ let inputModalCompaniaTelefono = document.getElementById("inputModalCompaniaTele
 let optionsGroup = document.getElementById("optionsGroup");    
 let optionsCiudad = document.getElementById("optionsCiudad");  
 let optionsPais = document.getElementById("optionsPais");  
+let flexCheck = document.getElementById("flexCheck");
 let objeto = {
   "region": {      
   }
@@ -133,6 +134,27 @@ linkRegiones.addEventListener("click",async()=>{
     }
   }
   await queryToJSON()
+});
+flexCheck.addEventListener("change",(e)=>{
+  let checklist = document.getElementsByClassName("to-be-checked");
+  if(e.currentTarget.checked){    
+    for (let i = 0; i < checklist.length; i++) {            
+      checklist[i].classList.add("tr-hover")
+      let th = checklist[i].firstElementChild;
+      let div = th.firstElementChild
+      let check = div.firstElementChild
+      check.checked = true      
+    }
+  }
+  else{
+    for (let i = 0; i < checklist.length; i++) {      
+      checklist[i].classList.remove("tr-hover");
+      let th = checklist[i].firstElementChild;
+      let div = th.firstElementChild
+      let check = div.firstElementChild
+      check.checked = false
+    }
+  }
 })
 btnCrearUsuario.addEventListener("click",async()=>{
   let admin = "0";
@@ -824,6 +846,14 @@ function addContactos(){
     let inputDiv = document.createElement("input");
     inputDiv.setAttribute("class","form-check-input")
     inputDiv.setAttribute("type","checkbox");
+    tr.setAttribute("class","to-be-checked");
+    inputDiv.addEventListener("change",(e)=>{
+      if(e.currentTarget.checked){
+        tr.classList.toggle("tr-hover")
+      }else{
+        tr.classList.toggle("tr-hover")
+      }
+    })
     let label = document.createElement("label");
     label.setAttribute("class", "form-check-label");
     divCheck.appendChild(inputDiv);

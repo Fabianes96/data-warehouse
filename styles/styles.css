@@ -1,3 +1,8 @@
+.tr-hover {
+  --bs-table-accent-bg: var(--bs-table-hover-bg);
+  color: var(--bs-table-hover-color);
+}
+
 .block {
   display: block;
 }
