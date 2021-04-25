@@ -191,10 +191,30 @@ header nav .container ul li:hover a {
           align-items: center;
 }
 
+#contactos {
+  position: relative;
+  margin: 0px 30px;
+}
+
+#contactos #nro-seleccion {
+  position: absolute;
+  bottom: 400px;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  width: 100px;
+  height: 30px;
+  text-align: center;
+  border-radius: 4px;
+  background-color: rgba(0, 0, 0, 0.08);
+}
+
+#contactos #nro-seleccion span {
+  font-size: 10px;
+  color: #0683F9;
+}
+
 #contactos #div-contactos {
   height: 400px;
   border: 1px solid rgba(0, 0, 0, 0.5);
-  margin: 0px 30px;
   overflow: auto;
 }
 
@@ -262,7 +282,8 @@ header nav .container ul li:hover a {
 
 #modalContactos .form-nuevo-contacto {
   display: -ms-grid;
-  display: grid;  
+  display: grid;
+  -ms-grid-columns: (1fr)[5];
       grid-template-columns: repeat(5, 1fr);
 }
 

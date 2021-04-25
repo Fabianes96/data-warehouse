@@ -1,8 +1,23 @@
 #contactos{
+    position: relative;
+    margin: 0px 30px;
+    #nro-seleccion{
+        position: absolute;
+        bottom: 400px;
+        border: 1px solid rgba(0,0,0,0.08);
+        width: 100px;
+        height: 30px;        
+        text-align: center;        
+        border-radius: 4px;
+        background-color: rgba(0,0,0,0.08);
+        span{
+            font-size: 10px;            
+            color: #0683F9;
+        }
+    }
     #div-contactos{
         height: 400px;
         border: 1px solid $color-scundario;
-        margin: 0px 30px;
         overflow: auto;
         #cabecera{
             border-bottom: 1px solid $color-scundario;

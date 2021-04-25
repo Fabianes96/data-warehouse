@@ -50,6 +50,8 @@ let arrayCompanias = [];
 let arrayContactos = [];
 let flagCompania = true;
 let btnAceptarModalCompania = document.getElementById("btnAceptarModalCompania");
+let contadorSeleccionadas = 0;
+let nroSeleccion = document.getElementById("nro-seleccion");
 
 function activeLink(){
     let menu = document.getElementById("menu");
@@ -186,6 +188,9 @@ flexCheck.addEventListener("change",(e)=>{
       let check = div.firstElementChild
       check.checked = true      
     }
+    contadorSeleccionadas = checklist.length;
+    nroSeleccion.firstElementChild.textContent = contadorSeleccionadas + " selecciondas";
+    nroSeleccion.classList.remove("none");
   }
   else{
     for (let i = 0; i < checklist.length; i++) {      
@@ -195,6 +200,8 @@ flexCheck.addEventListener("change",(e)=>{
       let check = div.firstElementChild
       check.checked = false
     }
+    contadorSeleccionadas = 0;
+    nroSeleccion.classList.add("none");
   }
 })
 btnCrearUsuario.addEventListener("click",async()=>{
@@ -889,11 +896,21 @@ function addContactos(){
     inputDiv.setAttribute("type","checkbox");
     tr.setAttribute("class","to-be-checked");
     inputDiv.addEventListener("change",(e)=>{
+      let sp = nroSeleccion.firstElementChild
       if(e.currentTarget.checked){
-        tr.classList.toggle("tr-hover")
+        tr.classList.add("tr-hover")
+        contadorSeleccionadas++;
+        sp.textContent = contadorSeleccionadas + " selecciondas"        
+        nroSeleccion.classList.remove("none")
       }else{
-        tr.classList.toggle("tr-hover")
+        tr.classList.remove("tr-hover")
+        contadorSeleccionadas = contadorSeleccionadas -1;         
+        sp.textContent = contadorSeleccionadas + " selecciondas"
+        if(contadorSeleccionadas==0){
+          nroSeleccion.classList.add("none")
+        }
       }
+      
     })
     let label = document.createElement("label");
     label.setAttribute("class", "form-check-label");
