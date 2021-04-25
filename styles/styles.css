@@ -260,6 +260,18 @@ header nav .container ul li:hover a {
   gap: 5px;
 }
 
+#modalContactos .form-nuevo-contacto {
+  display: -ms-grid;
+  display: grid;  
+      grid-template-columns: repeat(5, 1fr);
+}
+
+#modalContactos .form-nuevo-contacto input {
+  -webkit-box-ordinal-group: 2;
+      -ms-flex-order: 1;
+          order: 1;
+}
+
 #usuarios .usuarios {
   width: 50%;
   display: -webkit-box;

@@ -1,0 +1,9 @@
+#modalContactos{
+    .form-nuevo-contacto{
+        display: grid;
+        grid-template-columns: repeat(5, 1fr);
+        input{
+            order: 1;
+        }        
+    }
+}
