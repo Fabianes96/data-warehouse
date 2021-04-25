@@ -40,6 +40,8 @@ let optionsGroup = document.getElementById("optionsGroup");
 let optionsCiudad = document.getElementById("optionsCiudad");  
 let optionsPais = document.getElementById("optionsPais");  
 let flexCheck = document.getElementById("flexCheck");
+let divSearch = document.getElementById("div-icon-search");
+let inputSearch = document.getElementById("inputSearch");
 let objeto = {
   "region": {      
   }
@@ -96,9 +98,48 @@ linkContactos.addEventListener("click",async()=>{
   usuarios.classList.add("none");
   companias.classList.add("none");
   contactos.classList.remove("none");
+  if(bodyTablaContactos.firstElementChild){
+    clearOptions(bodyTablaContactos)
+  }
   await loadContactos();
   addContactos()
 });
+divSearch.addEventListener("click",async()=>{
+  if(!inputSearch.value ==""){
+    try {
+      let res = await fetch(`http://localhost:3000/busqueda?termino=${inputSearch.value}`,{
+        headers:{
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${localStorage.getItem("jwt")}`
+        },        
+      });
+      arrayContactos = await res.json();
+      clearOptions(bodyTablaContactos);
+      addContactos()
+    } catch (error) {
+      console.log("Algo salió mal ", error);
+    }
+  }
+})
+inputSearch.addEventListener("keypress",async(e)=>{
+  if(e.key === "Enter"){
+    if(!inputSearch.value ==""){
+      try {
+        let res = await fetch(`http://localhost:3000/busqueda?termino=${inputSearch.value}`,{
+          headers:{
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${localStorage.getItem("jwt")}`
+          },        
+        });
+        arrayContactos = await res.json();
+        clearOptions(bodyTablaContactos);
+        addContactos()
+      } catch (error) {
+        console.log("Algo salió mal ", error);
+      }
+    }  
+  }
+})
 linkCompanias.addEventListener("click",async()=>{
   opcionesContactos.classList.add("none");
   contactos.classList.add("none");
@@ -114,7 +155,7 @@ linkCompanias.addEventListener("click",async()=>{
   arrayCompanias = await res.json()
   console.log(arrayCompanias);
   addCompaniesToTable();
-})
+});
 linkUsuarios.addEventListener("click",()=>{
     opcionesContactos.classList.add("none");
     contactos.classList.add("none");
@@ -956,4 +997,3 @@ function addContactos(){
 }
 activeLink()
 formB()
-
