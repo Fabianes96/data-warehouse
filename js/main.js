@@ -53,6 +53,7 @@ let btnAceptarModalCompania = document.getElementById("btnAceptarModalCompania")
 let contadorSeleccionadas = 0;
 let nroSeleccion = document.getElementById("nro-seleccion");
 let opCabecera = contactos.firstElementChild
+let linkEliminar = document.getElementById("eliminar-contacto")
 
 function activeLink(){
     let menu = document.getElementById("menu");
@@ -504,6 +505,14 @@ btnAddCompanias.addEventListener("click",async()=>{
   await loadOptions();  
 })
 
+linkEliminar.addEventListener("click", async()=>{
+  let allChecked = document.getElementsByClassName("tr-hover");
+  for (let i = 0; i < allChecked.length; i++) {    
+    await deleteContacto(allChecked[i].attributes.cid.value);    
+  }
+  window.location.reload()
+});
+
 async function queryToJSON(){
   try {
     let consulta = await fetch("http://localhost:3000/infociudades");
@@ -869,6 +878,22 @@ async function loadCiudades(){
     }
   }  
 }
+async function deleteContacto(id){
+  try {
+    let res = await fetch(`http://localhost:3000/contactos/${id}`,{
+      method: 'DELETE',
+      headers:{
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${localStorage.getItem("jwt")}`
+      },      
+    });
+    if(!res.ok){
+      throw 'Error al eliminar los datos';
+    }    
+  } catch (error) {
+    console.log(error);
+  }
+}
 function clearOptions(options){
   while(options.firstElementChild){
     options.removeChild(options.firstElementChild);
@@ -886,9 +911,10 @@ function clearModalCompania(){
     clearOptions(optionsCiudad);
 }
 
-function addContactos(){
+function addContactos(){  
   for (let i = 0; i < arrayContactos.length; i++) {    
     let tr = document.createElement("tr");
+    tr.setAttribute("cid",arrayContactos[i].id)
     let th = document.createElement("th");
     th.setAttribute("scope","row");
     let divCheck = document.createElement("div")

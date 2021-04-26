@@ -541,6 +541,23 @@ server.get("/contactos/",authorization, async(req,res)=>{
     res.status(500);
     res.json("Ha ocurrido un error inesperado");
   }
+});
+server.delete("/contactos/:id",authorization, isAdmin,async(req,res)=>{
+  try {
+    const id = req.params.id;
+    let consulta = await db.sequelize.query("DELETE FROM contactos WHERE id = :id",{
+      replacements: {
+        id: id,
+      },type: db.sequelize.QueryTypes.DELETE
+    });    
+    res.status(200)
+    console.log("Contacto eliminado");
+    res.json(consulta);
+  } catch (error) {
+    console.log(error);
+    res.status(500);
+    res.json("Ha ocurrido un error inesperado");
+  }
 })
 
 server.listen(process.env.PORT || 3000, () => {
