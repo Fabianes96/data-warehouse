@@ -298,17 +298,101 @@ header nav .container ul li:hover a {
   gap: 5px;
 }
 
+#modalContactos .modal-header {
+  height: 140px;
+  background-color: #0683F9;
+}
+
+#modalContactos .modal-header #tituloModalContacto {
+  color: #FFFFFF;
+  position: relative;
+  bottom: 20px;
+}
+
+#modalContactos .modal-header .btn-close {
+  position: relative;
+  bottom: 20px;
+  opacity: 1;
+  -webkit-filter: invert(1);
+          filter: invert(1);
+}
+
 #modalContactos .form-nuevo-contacto {
   display: -ms-grid;
   display: grid;
   -ms-grid-columns: (1fr)[5];
       grid-template-columns: repeat(5, 1fr);
+  border: 3px solid #0683F9;
+  border-radius: 6.5px;
+  padding: 20px;
+  -webkit-column-gap: 20px;
+          column-gap: 20px;
+  position: relative;
+  bottom: 65px;
+  background-color: #FFFFFF;
 }
 
 #modalContactos .form-nuevo-contacto input {
   -webkit-box-ordinal-group: 2;
       -ms-flex-order: 1;
           order: 1;
+}
+
+#modalContactos .form-add-nuevo-contacto-body {
+  display: -ms-grid;
+  display: grid;
+  -ms-grid-columns: (1fr)[3] 2fr 80px;
+      grid-template-columns: repeat(3, 1fr) 2fr 80px;
+  -webkit-column-gap: 30px;
+          column-gap: 30px;
+  position: relative;
+  bottom: 40px;
+}
+
+#modalContactos .form-add-nuevo-contacto-body .dropdown, #modalContactos .form-add-nuevo-contacto-body input, #modalContactos .form-add-nuevo-contacto-body select {
+  -webkit-box-ordinal-group: 2;
+      -ms-flex-order: 1;
+          order: 1;
+}
+
+@media screen and (max-width: 991px) {
+  #modalContactos .form-add-nuevo-contacto-body {
+    -ms-grid-columns: (1fr)[5];
+        grid-template-columns: repeat(5, 1fr);
+    -webkit-column-gap: 0;
+            column-gap: 0;
+  }
+  #modalContactos .form-add-nuevo-contacto-body .dropdown-toggle {
+    white-space: unset;
+  }
+}
+
+#modalContactos .canales-contactos {
+  display: -ms-grid;
+  display: grid;
+  -ms-grid-columns: (178px)[auto-fit];
+      grid-template-columns: repeat(auto-fit, 178px);
+  gap: 35px;
+  width: 90%;
+}
+
+#modalContactos .canales-contactos #dropdownCanal, #modalContactos .canales-contactos #dropdownPreferencia {
+  width: 100%;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+}
+
+#modalContactos .canales-contactos #agregarCanal {
+  justify-self: flex-start;
+  -ms-flex-item-align: end;
+      align-self: flex-end;
 }
 
 #usuarios .usuarios {

@@ -1,9 +1,64 @@
 #modalContactos{
+    .modal-header{
+        height: 140px;
+        background-color: #0683F9;
+        #tituloModalContacto{
+            color: #FFFFFF;
+            position: relative;
+            bottom: 20px;
+        }
+        .btn-close{
+            position: relative;
+            bottom: 20px;
+            opacity: 1;
+            filter: invert(1);
+        }
+    }
     .form-nuevo-contacto{
         display: grid;
         grid-template-columns: repeat(5, 1fr);
+        border: 3px solid #0683F9;
+        border-radius: 6.5px;
+        padding: 20px;
+        column-gap: 20px;
+        position: relative;
+        bottom: 65px;
+        background-color: #FFFFFF;
         input{
             order: 1;
         }        
+    }
+    .form-add-nuevo-contacto-body{
+        display: grid;
+        grid-template-columns: repeat(3,1fr) 2fr 80px;
+        column-gap: 30px;
+        position: relative;
+        bottom: 40px;
+        .dropdown, input, select {
+            order: 1;
+        }            
+        @media screen and(max-width:991px){
+            grid-template-columns: repeat(5,1fr);
+            column-gap: 0;
+            .dropdown-toggle{
+                white-space: unset;
+            }
+        }
+    }
+    .canales-contactos{
+        display: grid;
+        grid-template-columns: repeat(auto-fit,178px);
+        gap: 35px;
+        width: 90%;
+        #dropdownCanal, #dropdownPreferencia{
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        #agregarCanal{
+            justify-self: flex-start;
+            align-self: flex-end;
+        }
     }
 }

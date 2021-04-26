@@ -346,7 +346,7 @@
   <div class="modal-dialog modal-xl">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+        <h5 class="modal-title" id="tituloModalContacto">Nuevo contacto</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
@@ -421,11 +421,12 @@
               <li><a class="dropdown-item" href="#">Something else here</a></li>
             </ul>
           </div>
+          <label class="col-form-label">Dirección</label>          
           <input type="text" class="form-control" id="inputModalContactoDireccion" required>
           <div class="valid-feedback">         
           </div>
           <div class="invalid-feedback">
-            Debe ingresar un nombre
+            Debe ingresar la dirección
           </div>
           <label class="col-form-label">Interés</label>          
           <select id="selectInteres" class="form-select" aria-label="Default select example" required>
@@ -436,6 +437,45 @@
             <option value="4">100%</option>            
           </select>
         </div>
+        <div class="canales-contactos">
+          <div class="canales">
+            <label class="col-form-label">Canal de contacto</label>
+            <div class="dropdown">
+              <button class="btn btn-light dropdown-toggle" type="button" id="dropdownCanal" data-bs-toggle="dropdown" aria-expanded="false">
+                Seleccionar canal
+              </button>
+              <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                <li><a class="dropdown-item" href="#">Action</a></li>
+                <li><a class="dropdown-item" href="#">Another action</a></li>
+                <li><a class="dropdown-item" href="#">Something else here</a></li>
+              </ul>
+            </div>        
+          </div>
+          <div class="cuenta-usuario">
+            <label class="col-form-label">Cuenta de usuario</label>          
+            <input type="text" class="form-control" id="inputCuentaContacto" required>
+            <div class="valid-feedback">         
+            </div>
+            <div class="invalid-feedback">
+              Debe ingresar la cuenta de usuario
+            </div>
+          </div>
+          <div class="preferencias">
+            <label class="col-form-label">Preferencias</label>
+              <div class="dropdown">
+                <button class="btn btn-light dropdown-toggle" type="button" id="dropdownPreferencia" data-bs-toggle="dropdown" aria-expanded="false">
+                  Sin preferencia
+                </button>
+                <ul class="dropdown-menu" aria-labelledby="dropdownPreferencias">
+                  <li><a class="dropdown-item" href="#">Action</a></li>
+                  <li><a class="dropdown-item" href="#">Another action</a></li>
+                  <li><a class="dropdown-item" href="#">Something else here</a></li>
+                </ul>
+              </div>
+          </div>
+            <button id="agregarCanal" class="btn btn-primary">Agregar canal</button>            
+        </div>
+        
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
