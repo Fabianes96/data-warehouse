@@ -37,6 +37,7 @@ let inputModalCompaniaDireccion = document.getElementById("inputModalCompaniaDir
 let inputModalCompaniaEmail = document.getElementById("inputModalCompaniaEmail")
 let inputModalCompaniaTelefono = document.getElementById("inputModalCompaniaTelefono")
 let optionsGroup = document.getElementById("optionsGroup");    
+let optionsGroupContactos =document.getElementById("selectRegionContactos");
 let optionsCiudad = document.getElementById("optionsCiudad");  
 let optionsPais = document.getElementById("optionsPais");  
 let flexCheck = document.getElementById("flexCheck");
@@ -54,6 +55,8 @@ let contadorSeleccionadas = 0;
 let nroSeleccion = document.getElementById("nro-seleccion");
 let opCabecera = contactos.firstElementChild
 let linkEliminar = document.getElementById("eliminar-contacto")
+let btnAddContactos = document.getElementById("btnAddContactos");
+let selectCiudadContactos = document.getElementById("selectCiudadContactos");
 
 function activeLink(){
     let menu = document.getElementById("menu");
@@ -156,8 +159,7 @@ linkCompanias.addEventListener("click",async()=>{
       'Authorization': `Bearer ${localStorage.getItem("jwt")}`
     }
   });
-  arrayCompanias = await res.json()
-  console.log(arrayCompanias);
+  arrayCompanias = await res.json()  
   addCompaniesToTable();
 });
 linkUsuarios.addEventListener("click",()=>{
@@ -502,7 +504,11 @@ btnAceptarModalCompania.addEventListener("click",async()=>{
 })
 
 btnAddCompanias.addEventListener("click",async()=>{
-  await loadOptions();  
+  await loadOptions(optionsGroup);  
+})
+
+btnAddContactos.addEventListener("click",async()=>{  
+  await loadOptions(optionsGroupContactos);
 })
 
 linkEliminar.addEventListener("click", async()=>{
@@ -772,11 +778,11 @@ function addCompaniesToTable(){
       inputModalCompaniaDireccion.value = arrayCompanias[i].direccion;
       inputModalCompaniaTelefono.value = arrayCompanias[i].telefono;
       modalCompania.setAttribute("compania", arrayCompanias[i].id_compania);
-      await loadOptions();
-      optionsGroup.value = arrayCompanias[i].id_region;
-      await loadPaises();      
+      await loadOptions(optionsGroup);
+      optionsGroup.value = arrayCompanias[i].id_region;      
+      await loadPaises(optionsPais,optionsGroup);      
       optionsPais.value = arrayCompanias[i].id_pais;
-      await loadCiudades();
+      await loadCiudades(optionsCiudad, optionsPais);
       optionsCiudad.value = arrayCompanias[i].id_ciudad;      
       flagCompania = false
     });
@@ -819,7 +825,7 @@ async function loadContactos(){
     console.log(error);
   }  
 }
-async function loadOptions(){
+async function loadOptions(options){
   try {
     let res = await fetch("http://localhost:3000/regiones",{
       headers:{
@@ -828,55 +834,65 @@ async function loadOptions(){
       },
     });
     let regiones = await res.json();        
-    clearOptions(optionsGroup);        
+    clearOptions(options);        
     let emptyOption = document.createElement("option");
     emptyOption.setAttribute("selected","");
-    optionsGroup.appendChild(emptyOption);
+    options.appendChild(emptyOption);
     for (let i = 0; i < regiones.length; i++) {      
       let option = document.createElement("option");            
       option.textContent = regiones[i].nombre        
       option.setAttribute("value",regiones[i].id);
-      optionsGroup.appendChild(option);      
+      options.appendChild(option);      
     }    
   } catch (error) {
     console.log(error);
   }
 }
-async function loadPaises(){  
-  let res = await fetch("http://localhost:3000/paises");
-  let arrayPaises = await res.json();  
-  clearOptions(optionsPais);
-  if(optionsCiudad.length > 1){    
-    clearOptions(optionsCiudad);
+async function loadPaises(options, previewsOptions){  
+  try {
+    let res = await fetch("http://localhost:3000/paises");
+    let arrayPaises = await res.json();      
+    clearOptions(options);
+    if(optionsCiudad.length > 1){    
+      clearOptions(optionsCiudad);
+    }
+    if(selectCiudadContactos.length>1){
+      clearOptions(selectCiudadContactos);
+    }
+    let emptyOption = document.createElement("option");
+    emptyOption.setAttribute("selected","");
+    options.appendChild(emptyOption);
+    for (let i = 0; i < arrayPaises.length; i++) {      
+      let option = document.createElement("option");         
+      if(arrayPaises[i].region == previewsOptions.value){
+        option.textContent = arrayPaises[i].nombre  
+        option.setAttribute("value",arrayPaises[i].id);      
+        options.appendChild(option);    
+      }
+    }     
+  } catch (error) {
+    console.log(error);
   }
-  let emptyOption = document.createElement("option");
-  emptyOption.setAttribute("selected","");
-  optionsPais.appendChild(emptyOption);
-  for (let i = 0; i < arrayPaises.length; i++) {      
-    let option = document.createElement("option");         
-    if(arrayPaises[i].region == optionsGroup.value){
-      option.textContent = arrayPaises[i].nombre  
-      option.setAttribute("value",arrayPaises[i].id);      
-      optionsPais.appendChild(option);    
-    }
-  }  
 }
-async function loadCiudades(){  
-  
-  let res = await fetch("http://localhost:3000/ciudades");
-  let arrayCiudades = await res.json();  
-  clearOptions(optionsCiudad);
-  let emptyOption = document.createElement("option");
-  emptyOption.setAttribute("selected","");
-  optionsCiudad.appendChild(emptyOption);
-  for (let i = 0; i < arrayCiudades.length; i++) {      
-    let option = document.createElement("option");         
-    if(arrayCiudades[i].pais == optionsPais.value){
-      option.textContent = arrayCiudades[i].nombre        
-      option.setAttribute("value",arrayCiudades[i].id)
-      optionsCiudad.appendChild(option);    
-    }
-  }  
+async function loadCiudades(options,previewsOptions){  
+  try {
+    let res = await fetch("http://localhost:3000/ciudades");
+    let arrayCiudades = await res.json();  
+    clearOptions(options);
+    let emptyOption = document.createElement("option");
+    emptyOption.setAttribute("selected","");
+    options.appendChild(emptyOption);
+    for (let i = 0; i < arrayCiudades.length; i++) {      
+      let option = document.createElement("option");         
+      if(arrayCiudades[i].pais == previewsOptions.value){
+        option.textContent = arrayCiudades[i].nombre        
+        option.setAttribute("value",arrayCiudades[i].id)
+        options.appendChild(option);    
+      }
+    }      
+  } catch (error) {
+    console.log(error);
+  }
 }
 async function deleteContacto(id){
   try {

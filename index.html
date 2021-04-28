@@ -60,7 +60,7 @@
                 <li><a class="dropdown-item" href="#">Something else here</a></li>
               </ul>
             </div>             -->
-            <button id="btnAddContactos" class="btn btn-primary">Agregar contacto</button>                        
+            <button id="btnAddContactos" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalAddContactos">Agregar contacto</button>                        
         </div>          
       </div>
     </section>
@@ -271,7 +271,7 @@
                   <div class="opciones-modal">
                     <div class="mb-3">
                       <label for="perfil" class="form-label">Region</label>
-                      <select id="optionsGroup" class="form-select" aria-label="Default select example" onchange="loadPaises();" required>
+                      <select id="optionsGroup" class="form-select" aria-label="Default select example" onchange="loadPaises(optionsPais,optionsGroup);" required>
                         <option selected></option>                          
                       </select>    
                       <div class="valid-feedback">         
@@ -282,7 +282,7 @@
                     </div>        
                     <div class="mb-3">
                       <label for="perfil" class="form-label">Pais</label>
-                      <select id="optionsPais" class="form-select" aria-label="Default select example" onchange="loadCiudades();" required>
+                      <select id="optionsPais" class="form-select" aria-label="Default select example" onchange="loadCiudades(optionsCiudad,optionsPais);" required>
                         <option selected></option>                        
                       </select>  
                       <div class="valid-feedback">         
@@ -336,13 +336,10 @@
       </div>      
     </section>
     <section id="modalContactos">
-      <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal2">
-        Launch demo modal
-        <!-- Button trigger modal -->
-</button>
+      
 
 <!-- Modal -->
-<div class="modal fade" id="exampleModal2" tabindex="-1" aria-labelledby="exampleModalLabel2" aria-hidden="true">
+<div class="modal fade" id="modalAddContactos" tabindex="-1" aria-labelledby="exampleModalLabel2" aria-hidden="true">
   <div class="modal-dialog modal-xl">
     <div class="modal-content">
       <div class="modal-header">
@@ -388,55 +385,44 @@
           </div>
         </div>
         <div class="form-add-nuevo-contacto-body">
-          <label class="col-form-label">Región</label>
-          <div class="dropdown">
-            <button class="btn btn-light dropdown-toggle" type="button" id="dropdownRegion" data-bs-toggle="dropdown" aria-expanded="false">
-              Seleccionar región
-            </button>
-            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-              <li><a class="dropdown-item" href="#">Action</a></li>
-              <li><a class="dropdown-item" href="#">Another action</a></li>
-              <li><a class="dropdown-item" href="#">Something else here</a></li>
-            </ul>
+          <div class="region">
+            <label class="col-form-label">Región</label>
+            <select id="selectRegionContactos" class="form-select" aria-label="Default select example" required onchange="loadPaises(selectPaisContactos,selectRegionContactos);">
+              <option selected>Seleccionar región</option>              
+            </select>
+          </div>          
+          <div class="pais-contacto">
+            <label class="col-form-label">Pais</label>
+            <select id="selectPaisContactos" class="form-select" aria-label="Default select example" required onchange="loadCiudades(selectCiudadContactos,selectPaisContactos);">
+              <option selected>Seleccionar pais</option>              
+            </select>
+          </div>          
+          <div class="ciudad-contacto">
+            <label class="col-form-label">Ciudad</label>
+            <select id="selectCiudadContactos" class="form-select" aria-label="Default select example" required>
+              <option selected>Seleccionar ciudad</option>              
+            </select>
+          </div>          
+          <div class="direccion-contacto">
+            <label class="col-form-label">Dirección</label>          
+            <input type="text" class="form-control" id="inputModalContactoDireccion" required disabled>
+            <div class="valid-feedback">         
+            </div>
+            <div class="invalid-feedback">
+              Debe ingresar la dirección
+            </div>
           </div>
-          <label class="col-form-label">Pais</label>
-          <div class="dropdown">
-            <button class="btn btn-light dropdown-toggle" type="button" id="dropdownPais" data-bs-toggle="dropdown" aria-expanded="false">
-              Seleccionar pais
-            </button>
-            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-              <li><a class="dropdown-item" href="#">Action</a></li>
-              <li><a class="dropdown-item" href="#">Another action</a></li>
-              <li><a class="dropdown-item" href="#">Something else here</a></li>
-            </ul>
+          <div class="interes">
+            <label class="col-form-label">Interés</label>          
+            <select id="selectInteres" class="form-select" aria-label="Default select example" required>
+              <option selected>0%</option>
+              <option value="1">25%</option>            
+              <option value="2">50%</option>            
+              <option value="3">75%</option>            
+              <option value="4">100%</option>            
+            </select>
           </div>
-          <label class="col-form-label">Ciudad</label>
-          <div class="dropdown">
-            <button class="btn btn-light dropdown-toggle" type="button" id="dropdownCiudad" data-bs-toggle="dropdown" aria-expanded="false">
-              Seleccionar ciudad
-            </button>
-            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-              <li><a class="dropdown-item" href="#">Action</a></li>
-              <li><a class="dropdown-item" href="#">Another action</a></li>
-              <li><a class="dropdown-item" href="#">Something else here</a></li>
-            </ul>
           </div>
-          <label class="col-form-label">Dirección</label>          
-          <input type="text" class="form-control" id="inputModalContactoDireccion" required>
-          <div class="valid-feedback">         
-          </div>
-          <div class="invalid-feedback">
-            Debe ingresar la dirección
-          </div>
-          <label class="col-form-label">Interés</label>          
-          <select id="selectInteres" class="form-select" aria-label="Default select example" required>
-            <option selected>0%</option>
-            <option value="1">25%</option>            
-            <option value="2">50%</option>            
-            <option value="3">75%</option>            
-            <option value="4">100%</option>            
-          </select>
-        </div>
         <div class="canales-contactos">
           <div class="canales">
             <label class="col-form-label">Canal de contacto</label>
