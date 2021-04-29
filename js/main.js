@@ -59,6 +59,8 @@ let btnAddContactos = document.getElementById("btnAddContactos");
 let selectCiudadContactos = document.getElementById("selectCiudadContactos");
 let selectPaisContactos = document.getElementById("selectPaisContactos");
 let inputModalContactoDireccion = document.getElementById("inputModalContactoDireccion");
+let selectContactos = document.getElementById("selectContacto");
+let selectPreferencia = document.getElementById("selectPreferencia");
 
 function activeLink(){
     let menu = document.getElementById("menu");
@@ -511,7 +513,8 @@ btnAddCompanias.addEventListener("click",async()=>{
 
 btnAddContactos.addEventListener("click",async()=>{  
   await loadOptions(optionsGroupContactos);
-
+  await loadCanales();
+  await loadPreferencias();
 })
 
 linkEliminar.addEventListener("click", async()=>{
@@ -836,8 +839,40 @@ async function loadCanales(){
         'Authorization': `Bearer ${localStorage.getItem("jwt")}`
       },
     });
-    let canales = await res.json();
-
+    let canales = await res.json();    
+    clearOptions(selectContactos);        
+    let emptyOption = document.createElement("option");
+    emptyOption.setAttribute("selected","");
+    selectContactos.appendChild(emptyOption);
+    for (let i = 0; i < canales.length; i++) {      
+      let option = document.createElement("option");            
+      option.textContent = canales[i].nombre        
+      option.setAttribute("value",canales[i].id);
+      selectContactos.appendChild(option);      
+    }    
+  } catch (error) {
+    console.log(error);
+  }
+}
+async function loadPreferencias(){
+  try {
+    let res = await fetch("http://localhost:3000/preferencias",{
+      headers:{
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${localStorage.getItem("jwt")}`
+      },
+    });
+    let preferencias = await res.json()
+    clearOptions(selectPreferencia);        
+    let emptyOption = document.createElement("option");
+    emptyOption.setAttribute("selected","");
+    selectPreferencia.appendChild(emptyOption);
+    for (let i = 0; i < preferencias.length; i++) {      
+      let option = document.createElement("option");            
+      option.textContent = preferencias[i].nombre        
+      option.setAttribute("value",preferencias[i].id);
+      selectPreferencia.appendChild(option);      
+    }
   } catch (error) {
     console.log(error);
   }

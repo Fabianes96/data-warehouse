@@ -558,8 +558,34 @@ server.delete("/contactos/:id",authorization, isAdmin,async(req,res)=>{
     res.status(500);
     res.json("Ha ocurrido un error inesperado");
   }
-})
+});
 
+server.get("/canales",authorization,async(req,res)=>{
+  try {
+    let consulta = await db.sequelize.query("SELECT * FROM canales",{
+      type: db.sequelize.QueryTypes.SELECT
+    });      
+    res.status(200);
+    res.json(consulta)
+  } catch (error) {
+    console.log(error);
+    res.status(500);
+    res.json("Ha ocurrido un error inesperado");
+  }
+});
+server.get("/preferencias",authorization,async(req,res)=>{
+  try {
+    let consulta = await db.sequelize.query("SELECT * FROM preferencias",{
+      type: db.sequelize.QueryTypes.SELECT
+    });      
+    res.status(200);
+    res.json(consulta)
+  } catch (error) {
+    console.log(error);
+    res.status(500);
+    res.json("Ha ocurrido un error inesperado");
+  }
+});
 server.listen(process.env.PORT || 3000, () => {
     console.log("Server on port 3000");
 });
