@@ -404,14 +404,14 @@ header nav .container ul li:hover a {
   margin: 20px 0;
 }
 
-#modalContactos #masCanales button {
+#modalContactos #masCanales span {
   -ms-flex-item-align: center;
       -ms-grid-row-align: center;
       align-self: center;
   justify-self: flex-start;
 }
 
-#modalContactos #masCanales > :last-child {
+#modalContactos #masCanales :nth-child(5n) {
   position: relative;
   right: 100px;
 }

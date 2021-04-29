@@ -59,8 +59,11 @@ let btnAddContactos = document.getElementById("btnAddContactos");
 let selectCiudadContactos = document.getElementById("selectCiudadContactos");
 let selectPaisContactos = document.getElementById("selectPaisContactos");
 let inputModalContactoDireccion = document.getElementById("inputModalContactoDireccion");
-let selectContactos = document.getElementById("selectContacto");
+let selectCanal = document.getElementById("selectCanal");
 let selectPreferencia = document.getElementById("selectPreferencia");
+let inputCuentaContacto = document.getElementById("inputCuentaContacto")
+let agregarCanal = document.getElementById("agregarCanal");
+let masCanales = document.getElementById("masCanales");
 
 function activeLink(){
     let menu = document.getElementById("menu");
@@ -513,8 +516,11 @@ btnAddCompanias.addEventListener("click",async()=>{
 
 btnAddContactos.addEventListener("click",async()=>{  
   await loadOptions(optionsGroupContactos);
-  await loadCanales();
-  await loadPreferencias();
+  await loadCanales();  
+})
+
+agregarCanal.addEventListener("click",async()=>{
+  await addCanalToModal()
 })
 
 linkEliminar.addEventListener("click", async()=>{
@@ -838,23 +844,27 @@ async function loadCanales(){
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${localStorage.getItem("jwt")}`
       },
-    });
+    });    
     let canales = await res.json();    
-    clearOptions(selectContactos);        
+    clearOptions(selectCanal);        
     let emptyOption = document.createElement("option");
     emptyOption.setAttribute("selected","");
-    selectContactos.appendChild(emptyOption);
+    selectCanal.appendChild(emptyOption);
     for (let i = 0; i < canales.length; i++) {      
       let option = document.createElement("option");            
       option.textContent = canales[i].nombre        
       option.setAttribute("value",canales[i].id);
-      selectContactos.appendChild(option);      
+      selectCanal.appendChild(option);      
     }    
   } catch (error) {
     console.log(error);
   }
 }
-async function loadPreferencias(){
+function check(e){  
+  e.preventDefault()
+  
+}
+async function loadPreferencias(selectP){
   try {
     let res = await fetch("http://localhost:3000/preferencias",{
       headers:{
@@ -862,16 +872,20 @@ async function loadPreferencias(){
         'Authorization': `Bearer ${localStorage.getItem("jwt")}`
       },
     });
+    if(selectP=== selectPreferencia){
+      selectPreferencia.disabled = false;
+      inputCuentaContacto.disabled = false
+    }
     let preferencias = await res.json()
-    clearOptions(selectPreferencia);        
+    clearOptions(selectP);        
     let emptyOption = document.createElement("option");
     emptyOption.setAttribute("selected","");
-    selectPreferencia.appendChild(emptyOption);
+    selectP.appendChild(emptyOption);
     for (let i = 0; i < preferencias.length; i++) {      
       let option = document.createElement("option");            
       option.textContent = preferencias[i].nombre        
       option.setAttribute("value",preferencias[i].id);
-      selectPreferencia.appendChild(option);      
+      selectP.appendChild(option);      
     }
   } catch (error) {
     console.log(error);
@@ -1117,6 +1131,67 @@ function addContactos(){
     tr.appendChild(tdAcciones);
 
     bodyTablaContactos.appendChild(tr);    
+  }
+}
+async function addCanalToModal(){
+  if(selectCanal.value != "" && inputCuentaContacto.value != "" && selectPreferencia.value != ""){
+
+    let input = document.createElement("input")
+    input.setAttribute("type","text");
+    input.setAttribute("class","form-control");
+    input.setAttribute("required","");
+    input.setAttribute("disabled","");
+    input.value = selectCanal.selectedOptions[0].label
+    
+    let inputCC = document.createElement("input");
+    inputCC.setAttribute("type","text");
+    inputCC.setAttribute("class","form-control");
+    inputCC.setAttribute("required","");
+    inputCC.setAttribute("disabled","");
+    inputCC.value = inputCuentaContacto.value
+  
+    let select = document.createElement("select");      
+    select.setAttribute("class","form-select");
+    select.setAttribute("required","")
+    select.setAttribute("disabled","");
+    
+    await loadPreferencias(select);
+    select.value = selectPreferencia.value    
+
+    let spanPrimary = document.createElement("span");
+    let iconEdit = document.createElement("i");
+    let spanEditar = document.createElement("span");
+    spanEditar.textContent = "Editar canal"
+    iconEdit.setAttribute("class","fas");
+    iconEdit.classList.add("fa-pen")
+    spanPrimary.setAttribute("class","btn");
+    spanPrimary.classList.add("btn-outline-primary");
+    spanPrimary.appendChild(iconEdit);
+    spanPrimary.appendChild(spanEditar);
+
+    let spanDelete = document.createElement("span");
+    let iconDelete = document.createElement("i");
+    let spanEliminar = document.createElement("span");
+    spanEliminar.textContent = "Eliminar canal";
+    iconDelete.setAttribute("class","fas");
+    iconDelete.classList.add("fa-trash-alt");
+    spanDelete.setAttribute("class","btn");
+    spanDelete.classList.add("btn-outline-secondary");
+    spanDelete.appendChild(iconDelete);
+    spanDelete.appendChild(spanEliminar);        
+
+    spanDelete.addEventListener("click",()=>{
+      masCanales.removeChild(input)
+      masCanales.removeChild(inputCC)
+      masCanales.removeChild(select)
+      masCanales.removeChild(spanPrimary)
+      masCanales.removeChild(spanDelete)
+    })    
+    masCanales.appendChild(input);
+    masCanales.appendChild(inputCC);
+    masCanales.appendChild(select);
+    masCanales.appendChild(spanPrimary);
+    masCanales.appendChild(spanDelete);
   }
 }
 activeLink()

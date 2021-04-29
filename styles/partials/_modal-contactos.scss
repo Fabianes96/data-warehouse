@@ -66,11 +66,11 @@
         grid-template-columns: repeat(3, 1fr) 216px 216px;
         gap: 35px;
         margin: 20px 0;        
-        button{
+        span{
             align-self: center;
             justify-self: flex-start;
         }
-        > :last-child{
+        :nth-child(5n){
             position: relative;
             right: 100px;
         }

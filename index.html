@@ -423,51 +423,41 @@
             </select>
           </div>
           </div>
-        <div class="canales-contactos">
+        <form class="canales-contactos" onsubmit="check(event)">
           <div class="canales">
             <label class="col-form-label">Canal de contacto</label>
-            <select id="selectContacto" class="form-select" aria-label="Default select example" required>
+            <select id="selectCanal" class="form-select" aria-label="Default select example" onchange="loadPreferencias(selectPreferencia)" required>
               <option selected>Seleccionar canal</option>              
             </select>
           </div>
           <div class="cuenta-usuario">
             <label class="col-form-label">Cuenta de usuario</label>          
-            <input type="text" class="form-control" id="inputCuentaContacto" required>
-            <div class="valid-feedback">         
-            </div>
-            <div class="invalid-feedback">
-              Debe ingresar la cuenta de usuario
-            </div>
+            <input type="text" class="form-control" id="inputCuentaContacto" required disabled>            
           </div>
           <div class="preferencias">
             <label class="col-form-label">Preferencias</label>
-            <select id="selectPreferencia" class="form-select" aria-label="Default select example" required>
+            <select id="selectPreferencia" class="form-select" aria-label="Default select example" required disabled>
               <option selected>Sin preferencias</option>              
             </select>
           </div>
-            <button id="agregarCanal" class="btn btn-primary">Agregar canal</button>            
-        </div>
+            <button id="agregarCanal" class="btn btn-primary" type="submit">Agregar canal</button>            
+        </form>
         <div id="masCanales">
-          <input type="text" class="form-control" required>
-          <div class="valid-feedback">         
+          <!-- <input type="text" class="form-control" required disabled>          
+          <input type="text" class="form-control" required disabled>          
+          <div class="preferencias">            
+            <select class="form-select" required disabled>
+              <option selected></option>              
+            </select>
           </div>
-          <div class="invalid-feedback">
-            Debe ingresar la cuenta de usuario
-          </div>
-          <input type="text" class="form-control" required>
-          <div class="valid-feedback">         
-          </div>
-          <div class="invalid-feedback">
-            Debe ingresar la cuenta de usuario
-          </div>
-          <input type="text" class="form-control" required>
-          <div class="valid-feedback">         
-          </div>
-          <div class="invalid-feedback">
-            Debe ingresar la cuenta de usuario
-          </div>
-          <button class="btn btn-primary">Agregar canal</button>            
-          <button class="btn btn-primary">Agregar canal</button>            
+          <span class="btn btn-outline-primary">
+            <i class="fas fa-pen"></i>
+            <span>Editar canal</span>
+          </span>            
+          <span class="btn btn-outline-secondary">
+            <i class="far fa-trash-alt" aria-hidden="true"></i>
+            <span>Eliminar canal</span>
+          </span> -->
         </div>        
       </div>
       <div class="modal-footer">
