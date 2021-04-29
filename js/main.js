@@ -57,6 +57,8 @@ let opCabecera = contactos.firstElementChild
 let linkEliminar = document.getElementById("eliminar-contacto")
 let btnAddContactos = document.getElementById("btnAddContactos");
 let selectCiudadContactos = document.getElementById("selectCiudadContactos");
+let selectPaisContactos = document.getElementById("selectPaisContactos");
+let inputModalContactoDireccion = document.getElementById("inputModalContactoDireccion");
 
 function activeLink(){
     let menu = document.getElementById("menu");
@@ -509,6 +511,7 @@ btnAddCompanias.addEventListener("click",async()=>{
 
 btnAddContactos.addEventListener("click",async()=>{  
   await loadOptions(optionsGroupContactos);
+
 })
 
 linkEliminar.addEventListener("click", async()=>{
@@ -825,6 +828,20 @@ async function loadContactos(){
     console.log(error);
   }  
 }
+async function loadCanales(){
+  try {
+    let res = await fetch("http://localhost:3000/canales",{
+      headers:{
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${localStorage.getItem("jwt")}`
+      },
+    });
+    let canales = await res.json();
+
+  } catch (error) {
+    console.log(error);
+  }
+}
 async function loadOptions(options){
   try {
     let res = await fetch("http://localhost:3000/regiones",{
@@ -859,6 +876,9 @@ async function loadPaises(options, previewsOptions){
     if(selectCiudadContactos.length>1){
       clearOptions(selectCiudadContactos);
     }
+    if(selectPaisContactos === options){      
+      selectPaisContactos.disabled = false;
+    }
     let emptyOption = document.createElement("option");
     emptyOption.setAttribute("selected","");
     options.appendChild(emptyOption);
@@ -879,6 +899,9 @@ async function loadCiudades(options,previewsOptions){
     let res = await fetch("http://localhost:3000/ciudades");
     let arrayCiudades = await res.json();  
     clearOptions(options);
+    if(selectCiudadContactos === options){      
+      selectCiudadContactos.disabled = false;
+    }
     let emptyOption = document.createElement("option");
     emptyOption.setAttribute("selected","");
     options.appendChild(emptyOption);
@@ -893,6 +916,9 @@ async function loadCiudades(options,previewsOptions){
   } catch (error) {
     console.log(error);
   }
+}
+function enableDireccion(){
+  inputModalContactoDireccion.disabled = false;
 }
 async function deleteContacto(id){
   try {

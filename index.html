@@ -393,13 +393,13 @@
           </div>          
           <div class="pais-contacto">
             <label class="col-form-label">Pais</label>
-            <select id="selectPaisContactos" class="form-select" aria-label="Default select example" required onchange="loadCiudades(selectCiudadContactos,selectPaisContactos);">
+            <select id="selectPaisContactos" class="form-select" aria-label="Default select example" required onchange="loadCiudades(selectCiudadContactos,selectPaisContactos);" disabled>
               <option selected>Seleccionar pais</option>              
             </select>
           </div>          
           <div class="ciudad-contacto">
             <label class="col-form-label">Ciudad</label>
-            <select id="selectCiudadContactos" class="form-select" aria-label="Default select example" required>
+            <select id="selectCiudadContactos" class="form-select" aria-label="Default select example" required disabled onchange="enableDireccion()">
               <option selected>Seleccionar ciudad</option>              
             </select>
           </div>          
@@ -426,16 +426,9 @@
         <div class="canales-contactos">
           <div class="canales">
             <label class="col-form-label">Canal de contacto</label>
-            <div class="dropdown">
-              <button class="btn btn-light dropdown-toggle" type="button" id="dropdownCanal" data-bs-toggle="dropdown" aria-expanded="false">
-                Seleccionar canal
-              </button>
-              <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                <li><a class="dropdown-item" href="#">Action</a></li>
-                <li><a class="dropdown-item" href="#">Another action</a></li>
-                <li><a class="dropdown-item" href="#">Something else here</a></li>
-              </ul>
-            </div>        
+            <select id="selectContacto" class="form-select" aria-label="Default select example" required>
+              <option selected>Seleccionar canal</option>              
+            </select>
           </div>
           <div class="cuenta-usuario">
             <label class="col-form-label">Cuenta de usuario</label>          
@@ -448,20 +441,34 @@
           </div>
           <div class="preferencias">
             <label class="col-form-label">Preferencias</label>
-              <div class="dropdown">
-                <button class="btn btn-light dropdown-toggle" type="button" id="dropdownPreferencia" data-bs-toggle="dropdown" aria-expanded="false">
-                  Sin preferencia
-                </button>
-                <ul class="dropdown-menu" aria-labelledby="dropdownPreferencias">
-                  <li><a class="dropdown-item" href="#">Action</a></li>
-                  <li><a class="dropdown-item" href="#">Another action</a></li>
-                  <li><a class="dropdown-item" href="#">Something else here</a></li>
-                </ul>
-              </div>
+            <select id="selectPreferencia" class="form-select" aria-label="Default select example" required>
+              <option selected>Sin preferencias</option>              
+            </select>
           </div>
             <button id="agregarCanal" class="btn btn-primary">Agregar canal</button>            
         </div>
-        
+        <div id="masCanales">
+          <input type="text" class="form-control" required>
+          <div class="valid-feedback">         
+          </div>
+          <div class="invalid-feedback">
+            Debe ingresar la cuenta de usuario
+          </div>
+          <input type="text" class="form-control" required>
+          <div class="valid-feedback">         
+          </div>
+          <div class="invalid-feedback">
+            Debe ingresar la cuenta de usuario
+          </div>
+          <input type="text" class="form-control" required>
+          <div class="valid-feedback">         
+          </div>
+          <div class="invalid-feedback">
+            Debe ingresar la cuenta de usuario
+          </div>
+          <button class="btn btn-primary">Agregar canal</button>            
+          <button class="btn btn-primary">Agregar canal</button>            
+        </div>        
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>

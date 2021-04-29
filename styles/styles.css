@@ -395,6 +395,37 @@ header nav .container ul li:hover a {
       align-self: flex-end;
 }
 
+#modalContactos #masCanales {
+  display: -ms-grid;
+  display: grid;
+  -ms-grid-columns: (1fr)[3] 216px 216px;
+      grid-template-columns: repeat(3, 1fr) 216px 216px;
+  gap: 35px;
+  margin: 20px 0;
+}
+
+#modalContactos #masCanales button {
+  -ms-flex-item-align: center;
+      -ms-grid-row-align: center;
+      align-self: center;
+  justify-self: flex-start;
+}
+
+#modalContactos #masCanales > :last-child {
+  position: relative;
+  right: 100px;
+}
+
+@media screen and (max-width: 1200px) {
+  #modalContactos #masCanales {
+    -ms-grid-columns: (1fr)[5];
+        grid-template-columns: repeat(5, 1fr);
+  }
+  #modalContactos #masCanales > :last-child {
+    right: 0;
+  }
+}
+
 #usuarios .usuarios {
   width: 50%;
   display: -webkit-box;
