@@ -332,17 +332,23 @@ header nav .container ul li:hover a {
   background-color: #FFFFFF;
 }
 
-#modalContactos .form-nuevo-contacto input {
+#modalContactos .form-nuevo-contacto input, #modalContactos .form-nuevo-contacto select {
   -webkit-box-ordinal-group: 2;
       -ms-flex-order: 1;
           order: 1;
 }
 
+#modalContactos .form-nuevo-contacto .valid-feedback, #modalContactos .form-nuevo-contacto .invalid-feedback {
+  -webkit-box-ordinal-group: 3;
+      -ms-flex-order: 2;
+          order: 2;
+}
+
 #modalContactos .form-add-nuevo-contacto-body {
   display: -ms-grid;
   display: grid;
-  -ms-grid-columns: (1fr)[3] 2fr 80px;
-      grid-template-columns: repeat(3, 1fr) 2fr 80px;
+  -ms-grid-columns: (1fr)[4] 150px;
+      grid-template-columns: repeat(4, 1fr) 150px;
   -webkit-column-gap: 30px;
           column-gap: 30px;
   position: relative;

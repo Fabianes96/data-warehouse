@@ -64,6 +64,9 @@ let selectPreferencia = document.getElementById("selectPreferencia");
 let inputCuentaContacto = document.getElementById("inputCuentaContacto")
 let agregarCanal = document.getElementById("agregarCanal");
 let masCanales = document.getElementById("masCanales");
+let selectCompanias = document.getElementById("selectContactoCompania");
+let btnAddContactoForm = document.getElementById("btnSubmitContacto");
+let btnAddNuevoContacto = document.getElementById("btnAddNuevoContacto");
 
 function activeLink(){
     let menu = document.getElementById("menu");
@@ -515,6 +518,7 @@ btnAddCompanias.addEventListener("click",async()=>{
 })
 
 btnAddContactos.addEventListener("click",async()=>{  
+  await loadCompaniaToModal();
   await loadOptions(optionsGroupContactos);
   await loadCanales();  
 })
@@ -530,6 +534,10 @@ linkEliminar.addEventListener("click", async()=>{
   }
   window.location.reload()
 });
+
+btnAddNuevoContacto.addEventListener("click",()=>{  
+  btnAddContactoForm.click();
+})
 
 async function queryToJSON(){
   try {
@@ -1192,6 +1200,29 @@ async function addCanalToModal(){
     masCanales.appendChild(select);
     masCanales.appendChild(spanPrimary);
     masCanales.appendChild(spanDelete);
+  }
+}
+async function loadCompaniaToModal(){
+  try {
+    let res = await fetch("http://localhost:3000/companias",{
+    headers:{
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${localStorage.getItem("jwt")}`
+      }
+    });
+    clearOptions(selectCompanias);
+    arrayCompanias = await res.json();  
+    let emptyOption = document.createElement("option");
+    emptyOption.setAttribute("selected","");
+    selectCompanias.appendChild(emptyOption);
+    for (let i = 0; i < arrayCompanias.length; i++) {      
+      let option = document.createElement("option");            
+      option.textContent = arrayCompanias[i].compania        
+      option.setAttribute("value",arrayCompanias[i].id_compania);
+      selectCompanias.appendChild(option);      
+    }      
+  } catch (error) {
+    console.log(error);    
   }
 }
 activeLink()

@@ -24,13 +24,16 @@
         position: relative;
         bottom: 65px;
         background-color: #FFFFFF;
-        input{
+        input, select{
             order: 1;
+        }    
+        .valid-feedback, .invalid-feedback{
+            order: 2;
         }        
     }
     .form-add-nuevo-contacto-body{
         display: grid;
-        grid-template-columns: repeat(3,1fr) 2fr 80px;
+        grid-template-columns: repeat(4,1fr) 150px;
         column-gap: 30px;
         position: relative;
         bottom: 40px;
