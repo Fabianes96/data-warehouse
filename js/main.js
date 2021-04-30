@@ -67,6 +67,12 @@ let masCanales = document.getElementById("masCanales");
 let selectCompanias = document.getElementById("selectContactoCompania");
 let btnAddContactoForm = document.getElementById("btnSubmitContacto");
 let btnAddNuevoContacto = document.getElementById("btnAddNuevoContacto");
+let inputModalContactoNombre = document.getElementById("inputModalContactoNombre");
+let inputModalContactoApellido = document.getElementById("inputModalContactoApellido");
+let inputModalContactoCargo = document.getElementById("inputModalContactoCargo");
+let inputModalContactEmail = document.getElementById("inputModalContactoEmail");
+let selectInteres = document.getElementById("selectInteres");
+
 
 function activeLink(){
     let menu = document.getElementById("menu");
@@ -520,7 +526,7 @@ btnAddCompanias.addEventListener("click",async()=>{
 btnAddContactos.addEventListener("click",async()=>{  
   await loadCompaniaToModal();
   await loadOptions(optionsGroupContactos);
-  await loadCanales();  
+  await loadCanales(selectCanal);  
 })
 
 agregarCanal.addEventListener("click",async()=>{
@@ -535,8 +541,72 @@ linkEliminar.addEventListener("click", async()=>{
   window.location.reload()
 });
 
-btnAddNuevoContacto.addEventListener("click",()=>{  
-  btnAddContactoForm.click();
+btnAddContactoForm.addEventListener("click",async(e)=>{
+  try {    
+    let res = await fetch("http://localhost:3000/contactos",{
+      method: "POST",
+      headers:{
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${localStorage.getItem("jwt")}`
+      },
+      body: JSON.stringify({
+          nombre: inputModalContactoNombre.value,
+          apellido: inputModalContactoApellido.value, 
+          cargo: inputModalContactoCargo.value,         
+          email: inputModalContactEmail.value,
+          compania: selectCompanias.value,
+          ciudad: selectCiudadContactos.value,
+          interes: selectInteres.value,
+          direccion: inputModalContactoDireccion.value          
+      })
+    });
+    if(res.ok){
+      let resAsJSON = await res.json()      
+      if(masCanales.childElementCount != 0){
+        let iCanal ="";
+        let iCuenta="";
+        let iPreferencia ="";
+        for (let i = 0; i < masCanales.childElementCount; i++) {
+          let children = masCanales.children[i]
+          if(!children.classList.contains("btn")){            
+            if(i%5 == 0){
+              iCanal = children.value
+            }else if(i%5==1){
+              iCuenta = children.value
+            }else if(i%5==2){
+              iPreferencia = children.value
+            }
+          }else{
+            if(i%5 ==3){         
+              let res = await fetch("http://localhost:3000/canalesporcontactos",{
+                method: "POST",
+                headers:{
+                  'Content-Type': 'application/json',
+                  'Authorization': `Bearer ${localStorage.getItem("jwt")}`
+                },
+                body: JSON.stringify({
+                    contacto: resAsJSON[0],
+                    canal: iCanal,
+                    preferencia: iPreferencia,
+                    cuenta: iCuenta
+                })
+              });
+              let mensaje = await res.json()
+              if(!res.ok){
+                throw mensaje;
+              }
+            }
+          }
+        }        
+      }
+    }
+    e.preventDefault()
+  } catch (error) {
+    console.log(error);
+  }
+});
+btnAddNuevoContacto.addEventListener("click",async()=>{  
+  await btnAddContactoForm.click();
 })
 
 async function queryToJSON(){
@@ -845,7 +915,7 @@ async function loadContactos(){
     console.log(error);
   }  
 }
-async function loadCanales(){
+async function loadCanales(select){
   try {
     let res = await fetch("http://localhost:3000/canales",{
       headers:{
@@ -854,15 +924,15 @@ async function loadCanales(){
       },
     });    
     let canales = await res.json();    
-    clearOptions(selectCanal);        
+    clearOptions(select);        
     let emptyOption = document.createElement("option");
     emptyOption.setAttribute("selected","");
-    selectCanal.appendChild(emptyOption);
+    select.appendChild(emptyOption);
     for (let i = 0; i < canales.length; i++) {      
       let option = document.createElement("option");            
       option.textContent = canales[i].nombre        
       option.setAttribute("value",canales[i].id);
-      selectCanal.appendChild(option);      
+      select.appendChild(option);      
     }    
   } catch (error) {
     console.log(error);
@@ -1144,12 +1214,13 @@ function addContactos(){
 async function addCanalToModal(){
   if(selectCanal.value != "" && inputCuentaContacto.value != "" && selectPreferencia.value != ""){
 
-    let input = document.createElement("input")
-    input.setAttribute("type","text");
-    input.setAttribute("class","form-control");
-    input.setAttribute("required","");
-    input.setAttribute("disabled","");
-    input.value = selectCanal.selectedOptions[0].label
+    let selectC = document.createElement("select");      
+    selectC.setAttribute("class","form-select");
+    selectC.setAttribute("required","")
+    selectC.setAttribute("disabled","");
+
+    await loadCanales(selectC);
+    selectC.value = selectCanal.value    
     
     let inputCC = document.createElement("input");
     inputCC.setAttribute("type","text");
@@ -1189,13 +1260,13 @@ async function addCanalToModal(){
     spanDelete.appendChild(spanEliminar);        
 
     spanDelete.addEventListener("click",()=>{
-      masCanales.removeChild(input)
+      masCanales.removeChild(selectC)
       masCanales.removeChild(inputCC)
       masCanales.removeChild(select)
       masCanales.removeChild(spanPrimary)
       masCanales.removeChild(spanDelete)
     })    
-    masCanales.appendChild(input);
+    masCanales.appendChild(selectC);
     masCanales.appendChild(inputCC);
     masCanales.appendChild(select);
     masCanales.appendChild(spanPrimary);

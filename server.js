@@ -542,6 +542,60 @@ server.get("/contactos/",authorization, async(req,res)=>{
     res.json("Ha ocurrido un error inesperado");
   }
 });
+server.post("/contactos",authorization,isAdmin,async(req,res)=>{
+  try {
+    const {nombre,apellido,cargo,email,compania,ciudad,interes,direccion} = req.body
+    if(!(nombre ||apellido ||cargo||email||compania||ciudad||interes||direccion)){
+      res.status(400);
+      res.json("Falta algún parámetro");
+      return
+    }
+    let consulta = await db.sequelize.query("INSERT into contactos (nombre,apellido,cargo,email,compania,ciudad,interes,direccion) VALUES(:nombre, :apellido, :cargo, :email, :compania, :ciudad, :interes, :direccion)",{
+      replacements:{
+        nombre: nombre,
+        apellido: apellido,
+        cargo: cargo,
+        email: email,
+        compania: compania,
+        ciudad: ciudad,
+        interes: interes,
+        direccion: direccion
+      }, type: db.sequelize.QueryTypes.INSERT
+    })
+    console.log("Contacto añadido");
+    res.status(201);
+    res.json(consulta);    
+  } catch (error) {
+    console.log(error);
+    res.status(500); 
+    res.json("Ha ocurrido un error inesperado");
+  }
+});
+server.post("/canalesporcontactos",authorization,isAdmin, async(req,res)=>{
+  try {
+    const {contacto, canal, preferencia,cuenta} = req.body;
+    if(!(contacto || canal || preferencia || cuenta)){
+      res.status(400);
+      res.json("Falta algún parámetro");
+      return
+    }
+    let consulta = await db.sequelize.query("INSERT INTO canalesPorContactos (contacto, canal, preferencia, cuenta) VALUES (:contacto, :canal, :preferencia, :cuenta)", {
+      replacements:{
+        contacto: contacto,
+        canal: canal,
+        preferencia: preferencia,
+        cuenta: cuenta
+      }, type: db.sequelize.QueryTypes.INSERT
+    });
+    console.log("Cuenta añadida");
+    res.status(201);
+    res.json(consulta);    
+  } catch (error) {
+    console.log(error);
+    res.status(500);
+    res.json("Ha ocurrido un error inesperado");
+  }
+});
 server.delete("/contactos/:id",authorization, isAdmin,async(req,res)=>{
   try {
     const id = req.params.id;
@@ -559,7 +613,6 @@ server.delete("/contactos/:id",authorization, isAdmin,async(req,res)=>{
     res.json("Ha ocurrido un error inesperado");
   }
 });
-
 server.get("/canales",authorization,async(req,res)=>{
   try {
     let consulta = await db.sequelize.query("SELECT * FROM canales",{
