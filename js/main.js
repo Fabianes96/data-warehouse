@@ -536,10 +536,12 @@ btnAddContactos.addEventListener("click",async()=>{
 })
 
 agregarCanal.addEventListener("click",async()=>{
-  await addCanalToModal()
-  selectCanal.value = ""
-  inputCuentaContacto.value = ""
-  selectPreferencia.value =""
+  if(selectCanal.value!="" && inputCuentaContacto.value != "" && selectPreferencia.value != ""){
+    await addCanalToModal(selectCanal.value,inputCuentaContacto.value,selectPreferencia.value);
+    selectCanal.value = ""
+    inputCuentaContacto.value = ""
+    selectPreferencia.value = ""
+  }
 })
 
 linkEliminar.addEventListener("click", async()=>{
@@ -1095,8 +1097,7 @@ function clearModalCompania(){
     clearOptions(optionsCiudad);
 }
 
-function addContactos(){  
-  console.log(arrayContactos);  
+function addContactos(){    
   for (let i = 0; i < arrayContactos.length; i++) {    
     let tr = document.createElement("tr");
     tr.setAttribute("cid",arrayContactos[i].id)
@@ -1246,7 +1247,20 @@ function addContactos(){
           selectInteres.value = 1                  
           break;  
       }
-    })
+      let res = await fetch(`http://localhost:3000/canalesporcontactos?contacto=${arrayContactos[i].id}`,{
+        headers:{
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${localStorage.getItem("jwt")}`
+        }
+      });
+      if(!res.ok){
+        throw 'Error al consultar los registros de la base de datos';
+      }
+      let cuentas = await res.json();      
+      for (let i = 0; i < cuentas.length; i++) {
+        await addCanalToModal(cuentas[i].canal,cuentas[i].cuenta,cuentas[i].preferencia,cuentas[i].id_canal,cuentas[i].id_preferencia);              
+      }      
+    })    
     spanLinkPrimary.appendChild(iconEdit);
     
     let spanLinkDanger = document.createElement("span");
@@ -1263,8 +1277,7 @@ function addContactos(){
     bodyTablaContactos.appendChild(tr);    
   }
 }
-async function addCanalToModal(){
-  if(selectCanal.value != "" && inputCuentaContacto.value != "" && selectPreferencia.value != ""){
+async function addCanalToModal(selectCanalValue,inputCuentaContactoValue, selectPreferenciaValue, pos1=0,pos2=0){  
 
     let selectC = document.createElement("select");      
     selectC.setAttribute("class","form-select");
@@ -1272,14 +1285,18 @@ async function addCanalToModal(){
     selectC.setAttribute("disabled","");
 
     await loadCanales(selectC);
-    selectC.value = selectCanal.value    
+    if(pos1!=0){
+      selectC.value = pos1
+    }else{
+      selectC.value = selectCanalValue    
+    }
     
     let inputCC = document.createElement("input");
     inputCC.setAttribute("type","text");
     inputCC.setAttribute("class","form-control");
     inputCC.setAttribute("required","");
     inputCC.setAttribute("disabled","");
-    inputCC.value = inputCuentaContacto.value
+    inputCC.value = inputCuentaContactoValue
   
     let select = document.createElement("select");      
     select.setAttribute("class","form-select");
@@ -1287,7 +1304,11 @@ async function addCanalToModal(){
     select.setAttribute("disabled","");
     
     await loadPreferencias(select);
-    select.value = selectPreferencia.value    
+    if(pos2!=0){
+      select.value = pos2;
+    }else{
+      select.value = selectPreferenciaValue;
+    }
 
     let spanPrimary = document.createElement("span");
     let iconEdit = document.createElement("i");
@@ -1329,7 +1350,7 @@ async function addCanalToModal(){
     masCanales.appendChild(select);
     masCanales.appendChild(spanPrimary);
     masCanales.appendChild(spanDelete);
-  }
+  
 }
 async function loadCompaniaToModal(){
   try {

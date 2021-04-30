@@ -571,6 +571,22 @@ server.post("/contactos",authorization,isAdmin,async(req,res)=>{
     res.json("Ha ocurrido un error inesperado");
   }
 });
+server.get("/canalesporcontactos",authorization,async(req,res)=>{
+  try {
+    const contacto = req.query.contacto;    
+    let consulta = await db.sequelize.query(`SELECT canales.id AS id_canal, canales.nombre AS canal, preferencias.id AS id_preferencia, preferencias.nombre AS preferencia, cuenta  FROM canalesPorContactos JOIN canales ON canales.id = canalesPorContactos.canal JOIN preferencias ON preferencias.id = canalesPorContactos.preferencia WHERE contacto = :contacto`,{
+      replacements:{
+        contacto: contacto
+      }, type: db.sequelize.QueryTypes.SELECT
+    });
+    res.status(200);
+    res.json(consulta);    
+  } catch (error) {
+    console.log(error);
+    res.status(500);
+    res.json("Ha ocurrido un error inesperado");
+  }
+})
 server.post("/canalesporcontactos",authorization,isAdmin, async(req,res)=>{
   try {
     const {contacto, canal, preferencia,cuenta} = req.body;
