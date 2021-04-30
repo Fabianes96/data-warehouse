@@ -72,7 +72,10 @@ let inputModalContactoApellido = document.getElementById("inputModalContactoApel
 let inputModalContactoCargo = document.getElementById("inputModalContactoCargo");
 let inputModalContactEmail = document.getElementById("inputModalContactoEmail");
 let selectInteres = document.getElementById("selectInteres");
-
+let selectRegionContactos = document.getElementById("selectRegionContactos");
+let modalAddContactos = document.getElementById("modalAddContactos");
+let btnCancelModalAddContacto = document.getElementById("btnCancelModalAddContacto");
+let btnCloseModalAddContactos = document.getElementById("btnCloseModalAddContactos");
 
 function activeLink(){
     let menu = document.getElementById("menu");
@@ -97,7 +100,7 @@ function noLinkUsuarios(){
     contactos.classList.remove("none");
     usuarios.classList.add("none");
 }
-window.onclick = function(e){  
+window.onclick = function(e){    
   if(e.target == modal || e.target == btnClose || e.target == xClose){    
     modalLabel.textContent = "";
     labelAddInModal.textContent = "";
@@ -109,6 +112,9 @@ window.onclick = function(e){
   }
   if(e.target == modalCompania || e.target == btnCloseCompania || e.target == xCloseCompania){
     clearModalCompania()
+  }
+  if(e.target == modalAddContactos || e.target == btnCloseModalAddContactos || e.target == btnCancelModalAddContacto){
+    clearModalContactos();
   }
 }
 window.onload = async()=>{
@@ -543,64 +549,70 @@ linkEliminar.addEventListener("click", async()=>{
 
 btnAddContactoForm.addEventListener("click",async(e)=>{
   try {    
-    let res = await fetch("http://localhost:3000/contactos",{
-      method: "POST",
-      headers:{
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${localStorage.getItem("jwt")}`
-      },
-      body: JSON.stringify({
-          nombre: inputModalContactoNombre.value,
-          apellido: inputModalContactoApellido.value, 
-          cargo: inputModalContactoCargo.value,         
-          email: inputModalContactEmail.value,
-          compania: selectCompanias.value,
-          ciudad: selectCiudadContactos.value,
-          interes: selectInteres.value,
-          direccion: inputModalContactoDireccion.value          
-      })
-    });
-    if(res.ok){
-      let resAsJSON = await res.json()      
-      if(masCanales.childElementCount != 0){
-        let iCanal ="";
-        let iCuenta="";
-        let iPreferencia ="";
-        for (let i = 0; i < masCanales.childElementCount; i++) {
-          let children = masCanales.children[i]
-          if(!children.classList.contains("btn")){            
-            if(i%5 == 0){
-              iCanal = children.value
-            }else if(i%5==1){
-              iCuenta = children.value
-            }else if(i%5==2){
-              iPreferencia = children.value
-            }
-          }else{
-            if(i%5 ==3){         
-              let res = await fetch("http://localhost:3000/canalesporcontactos",{
-                method: "POST",
-                headers:{
-                  'Content-Type': 'application/json',
-                  'Authorization': `Bearer ${localStorage.getItem("jwt")}`
-                },
-                body: JSON.stringify({
-                    contacto: resAsJSON[0],
-                    canal: iCanal,
-                    preferencia: iPreferencia,
-                    cuenta: iCuenta
-                })
-              });
-              let mensaje = await res.json()
-              if(!res.ok){
-                throw mensaje;
+    if(inputModalContactoNombre.value != "" && inputModalContactoApellido.value != "" && inputModalContactoCargo.value != "" && inputModalContactEmail.value != "" && selectCompanias.value != "" && selectCiudadContactos.value != "" && selectInteres.value != "" && inputModalContactoDireccion.value != ""){
+      if(selectCanal.value != "" && inputCuentaContacto.value == "" || selectPreferencia.value == ""){
+        console.log("Faltan parámetros");
+        return;
+      }
+      let res = await fetch("http://localhost:3000/contactos",{
+        method: "POST",
+        headers:{
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${localStorage.getItem("jwt")}`
+        },
+        body: JSON.stringify({
+            nombre: inputModalContactoNombre.value,
+            apellido: inputModalContactoApellido.value, 
+            cargo: inputModalContactoCargo.value,         
+            email: inputModalContactEmail.value,
+            compania: selectCompanias.value,
+            ciudad: selectCiudadContactos.value,
+            interes: selectInteres.value,
+            direccion: inputModalContactoDireccion.value          
+        })
+      });
+      if(res.ok){
+        let resAsJSON = await res.json()      
+        if(masCanales.childElementCount != 0){
+          let iCanal ="";
+          let iCuenta="";
+          let iPreferencia ="";
+          for (let i = 0; i < masCanales.childElementCount; i++) {
+            let children = masCanales.children[i]
+            if(!children.classList.contains("btn")){            
+              if(i%5 == 0){
+                iCanal = children.value
+              }else if(i%5==1){
+                iCuenta = children.value
+              }else if(i%5==2){
+                iPreferencia = children.value
+              }
+            }else{
+              if(i%5 ==3){         
+                let res = await fetch("http://localhost:3000/canalesporcontactos",{
+                  method: "POST",
+                  headers:{
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${localStorage.getItem("jwt")}`
+                  },
+                  body: JSON.stringify({
+                      contacto: resAsJSON[0],
+                      canal: iCanal,
+                      preferencia: iPreferencia,
+                      cuenta: iCuenta
+                  })
+                });
+                let mensaje = await res.json()
+                if(!res.ok){
+                  throw mensaje;
+                }
               }
             }
-          }
-        }        
+          }        
+        }
       }
+      clearModalContactos();      
     }
-    e.preventDefault()
   } catch (error) {
     console.log(error);
   }
@@ -1295,6 +1307,22 @@ async function loadCompaniaToModal(){
   } catch (error) {
     console.log(error);    
   }
+}
+function clearModalContactos(){
+  inputModalContactoNombre.value = "";
+  inputModalContactoApellido.value = "";
+  inputModalContactoCargo.value = "";
+  inputModalContactEmail.value = "";
+  clearOptions(selectPaisContactos);
+  selectPaisContactos.setAttribute("disabled","");
+  clearOptions(selectCiudadContactos);
+  selectCiudadContactos.setAttribute("disabled","");
+  inputModalContactoDireccion.value = "";
+  inputModalContactoDireccion.setAttribute("disabled","");  
+  inputCuentaContacto.value = ""
+  inputCuentaContacto.setAttribute("disabled","");
+  selectPreferencia.setAttribute("disabled","");
+  clearOptions(masCanales)  
 }
 activeLink()
 formB()
