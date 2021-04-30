@@ -100,7 +100,7 @@ function noLinkUsuarios(){
     contactos.classList.remove("none");
     usuarios.classList.add("none");
 }
-window.onclick = function(e){    
+window.onclick = function(e){      
   if(e.target == modal || e.target == btnClose || e.target == xClose){    
     modalLabel.textContent = "";
     labelAddInModal.textContent = "";
@@ -537,6 +537,9 @@ btnAddContactos.addEventListener("click",async()=>{
 
 agregarCanal.addEventListener("click",async()=>{
   await addCanalToModal()
+  selectCanal.value = ""
+  inputCuentaContacto.value = ""
+  selectPreferencia.value =""
 })
 
 linkEliminar.addEventListener("click", async()=>{
@@ -1093,6 +1096,7 @@ function clearModalCompania(){
 }
 
 function addContactos(){  
+  console.log(arrayContactos);  
   for (let i = 0; i < arrayContactos.length; i++) {    
     let tr = document.createElement("tr");
     tr.setAttribute("cid",arrayContactos[i].id)
@@ -1208,7 +1212,43 @@ function addContactos(){
     let iconEdit = document.createElement("i");
     iconEdit.setAttribute("class","far");
     iconEdit.classList.add("fa-edit");
+    iconEdit.setAttribute("data-bs-toggle","modal")
+    iconEdit.setAttribute("data-bs-target","#modalAddContactos")
+    iconEdit.addEventListener("click",async()=>{
+      inputModalContactoNombre.value = arrayContactos[i].nombre
+      inputModalContactoApellido.value = arrayContactos[i].apellido
+      inputModalContactoCargo.value = arrayContactos[i].cargo
+      inputModalContactEmail.value = arrayContactos[i].email
+      inputModalContactoDireccion.value = arrayContactos[i].direccion
+      inputModalContactoDireccion.disabled = false;
+      await loadCompaniaToModal()
+      selectCompanias.value = arrayContactos[i].id_compania;
+      await loadOptions(optionsGroupContactos);
+      optionsGroupContactos.value = arrayContactos[i].id_region      
+      await loadPaises(selectPaisContactos,optionsGroupContactos);
+      selectPaisContactos.value = arrayContactos[i].id_pais
+      await loadCiudades(selectCiudadContactos,selectPaisContactos);
+      selectCiudadContactos.value = arrayContactos[i].id_ciudad;
+      switch (porcentaje) {
+        case 100:
+          selectInteres.value = 5
+          break;
+        case 75:
+          selectInteres.value = 4
+          break;
+        case 50:
+          selectInteres.value = 3
+          break;
+        case 25:
+          selectInteres.value = 2
+          break;
+        default:
+          selectInteres.value = 1                  
+          break;  
+      }
+    })
     spanLinkPrimary.appendChild(iconEdit);
+    
     let spanLinkDanger = document.createElement("span");
     spanLinkDanger.setAttribute("class","link-danger");
     let iconDelete = document.createElement("i");
@@ -1259,6 +1299,12 @@ async function addCanalToModal(){
     spanPrimary.classList.add("btn-outline-primary");
     spanPrimary.appendChild(iconEdit);
     spanPrimary.appendChild(spanEditar);
+    
+    spanPrimary.addEventListener("click",()=>{
+      selectC.disabled = false;
+      inputCC.disabled = false;
+      select.disabled = false;
+    })
 
     let spanDelete = document.createElement("span");
     let iconDelete = document.createElement("i");
@@ -1322,6 +1368,7 @@ function clearModalContactos(){
   inputCuentaContacto.value = ""
   inputCuentaContacto.setAttribute("disabled","");
   selectPreferencia.setAttribute("disabled","");
+  selectInteres.value = 1
   clearOptions(masCanales)  
 }
 activeLink()

@@ -432,6 +432,14 @@ header nav .container ul li:hover a {
   }
 }
 
+#modalContactos .modal-footer {
+  border-top: 0;
+}
+
+#modalContactos .modal-footer #btnAddNuevoContacto {
+  height: 42px;
+}
+
 #usuarios .usuarios {
   width: 50%;
   display: -webkit-box;

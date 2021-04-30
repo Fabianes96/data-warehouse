@@ -84,4 +84,10 @@
             }
         }
     }
+    .modal-footer{
+        border-top: 0;
+        #btnAddNuevoContacto{
+            height: 42px;
+        }
+    }
 }
