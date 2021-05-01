@@ -69,4 +69,23 @@ let btnCloseModalAddContactos = document.getElementById("btnCloseModalAddContact
 let btnEliminarModalAddContacto = document.getElementById("btnEliminarModalAddContacto");
 let btnEditarNuevoContacto = document.getElementById("btnEditarNuevoContacto");
 
-export {linkContactos, linkCompanias, linkUsuarios, linkRegiones, opcionesContactos, companias, usuarios, btnCrearUsuario,inputNombre,inputApellido,inputEmailUsuario, perfil,inputPasswordUsuario,regionCiudad,regiones,modalLabel, btnAceptarModal,btnEliminar,labelAddInModal,labelWarning, inputModal,btnAgregarRegion,btnClose,xClose, modal,modalCompania,xCloseCompania, btnCloseCompania, bodyTabla, bodyTablaContactos,btnAddCompanias,inputModalCompaniaNombre,inputModalCompaniaTelefono,inputModalCompaniaEmail, inputModalCompaniaDireccion, optionsGroup,optionsGroupContactos,optionsCiudad, optionsPais,flexCheck, divSearch, inputSearch,btnAceptarModalCompania,nroSeleccion,opCabecera,linkEliminar,btnAddContactos,selectCiudadContactos,selectPaisContactos, inputModalContactoDireccion,selectCanal,selectPreferencia,inputCuentaContacto,agregarCanal,masCanales,selectCompanias,btnAddContactoForm,btnAddNuevoContacto,inputModalContactoNombre,inputModalContactoApellido,inputModalContactoCargo,inputModalContactEmail,selectInteres,selectRegionContactos,modalAddContactos,btnCancelModalAddContacto,btnEliminarModalAddContacto,btnCloseModalAddContactos,btnEditarNuevoContacto,contactos}
+function clearOptions(options){
+    while(options.firstElementChild){
+      options.removeChild(options.firstElementChild);
+    }
+}
+function formB () {   
+    var forms = document.querySelectorAll('.needs-validation')  
+    Array.prototype.slice.call(forms)
+      .forEach(function (form) {
+        form.addEventListener('submit', function (event) {
+          if (!form.checkValidity()) {
+            event.preventDefault()
+            event.stopPropagation()
+          }
+          form.classList.add('was-validated')
+        }, false)
+      })
+}
+
+export {linkContactos, linkCompanias, linkUsuarios, linkRegiones, opcionesContactos, companias, usuarios, btnCrearUsuario,inputNombre,inputApellido,inputEmailUsuario, perfil,inputPasswordUsuario,regionCiudad,regiones,modalLabel, btnAceptarModal,btnEliminar,labelAddInModal,labelWarning, inputModal,btnAgregarRegion,btnClose,xClose, modal,modalCompania,xCloseCompania, btnCloseCompania, bodyTabla, bodyTablaContactos,btnAddCompanias,inputModalCompaniaNombre,inputModalCompaniaTelefono,inputModalCompaniaEmail, inputModalCompaniaDireccion, optionsGroup,optionsGroupContactos,optionsCiudad, optionsPais,flexCheck, divSearch, inputSearch,btnAceptarModalCompania,nroSeleccion,opCabecera,linkEliminar,btnAddContactos,selectCiudadContactos,selectPaisContactos, inputModalContactoDireccion,selectCanal,selectPreferencia,inputCuentaContacto,agregarCanal,masCanales,selectCompanias,btnAddContactoForm,btnAddNuevoContacto,inputModalContactoNombre,inputModalContactoApellido,inputModalContactoCargo,inputModalContactEmail,selectInteres,selectRegionContactos,modalAddContactos,btnCancelModalAddContacto,btnEliminarModalAddContacto,btnCloseModalAddContactos,btnEditarNuevoContacto,contactos, clearOptions, formB}

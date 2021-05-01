@@ -271,7 +271,7 @@
                   <div class="opciones-modal">
                     <div class="mb-3">
                       <label for="perfil" class="form-label">Region</label>
-                      <select id="optionsGroup" class="form-select" aria-label="Default select example" onchange="loadPaises(optionsPais,optionsGroup);" required>
+                      <select id="optionsGroup" class="form-select" aria-label="Default select example" required>
                         <option selected></option>                          
                       </select>    
                       <div class="valid-feedback">         
@@ -282,7 +282,7 @@
                     </div>        
                     <div class="mb-3">
                       <label for="perfil" class="form-label">Pais</label>
-                      <select id="optionsPais" class="form-select" aria-label="Default select example" onchange="loadCiudades(optionsCiudad,optionsPais);" required>
+                      <select id="optionsPais" class="form-select" aria-label="Default select example" required>
                         <option selected></option>                        
                       </select>  
                       <div class="valid-feedback">         
@@ -381,19 +381,19 @@
           <div class="form-add-nuevo-contacto-body">
             <div class="region">
               <label class="col-form-label">Región</label>
-              <select id="selectRegionContactos" class="form-select" aria-label="Default select example" required onchange="loadPaises(selectPaisContactos,selectRegionContactos);">
+              <select id="selectRegionContactos" class="form-select" aria-label="Default select example" required>
                 <option selected>Seleccionar región</option>              
               </select>
             </div>          
             <div class="pais-contacto">
               <label class="col-form-label">Pais</label>
-              <select id="selectPaisContactos" class="form-select" aria-label="Default select example" required onchange="loadCiudades(selectCiudadContactos,selectPaisContactos);" disabled>
+              <select id="selectPaisContactos" class="form-select" aria-label="Default select example" required disabled>
                 <option selected>Seleccionar pais</option>              
               </select>
             </div>          
             <div class="ciudad-contacto">
               <label class="col-form-label">Ciudad</label>
-              <select id="selectCiudadContactos" class="form-select" aria-label="Default select example" required disabled onchange="enableDireccion()">
+              <select id="selectCiudadContactos" class="form-select" aria-label="Default select example" required disabled>
                 <option selected>Seleccionar ciudad</option>              
               </select>
             </div>          
@@ -421,7 +421,7 @@
         <form class="canales-contactos" onsubmit="check(event)">
           <div class="canales">
             <label class="col-form-label">Canal de contacto</label>
-            <select id="selectCanal" class="form-select" aria-label="Default select example" onchange="loadPreferencias(selectPreferencia)" required>
+            <select id="selectCanal" class="form-select" aria-label="Default select example" required>
               <option selected>Seleccionar canal</option>              
             </select>
           </div>
@@ -470,7 +470,6 @@
       crossorigin="anonymous"
     ></script>
     <script src="/node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="js/main.js" type="module"></script>
-    
+    <script src="js/main.js" type="module"></script>   
 </body>
 </html>
