@@ -76,7 +76,8 @@ let selectRegionContactos = document.getElementById("selectRegionContactos");
 let modalAddContactos = document.getElementById("modalAddContactos");
 let btnCancelModalAddContacto = document.getElementById("btnCancelModalAddContacto");
 let btnCloseModalAddContactos = document.getElementById("btnCloseModalAddContactos");
-
+let btnEliminarModalAddContacto = document.getElementById("btnEliminarModalAddContacto");
+let btnEditarNuevoContacto = document.getElementById("btnEditarNuevoContacto");
 function activeLink(){
     let menu = document.getElementById("menu");
     let a = menu.getElementsByClassName("links");      
@@ -530,6 +531,10 @@ btnAddCompanias.addEventListener("click",async()=>{
 })
 
 btnAddContactos.addEventListener("click",async()=>{  
+  btnCancelModalAddContacto.classList.remove("none");
+  btnAddNuevoContacto.classList.remove("none");
+  btnEditarNuevoContacto.classList.add("none");
+  btnEliminarModalAddContacto.classList.add("none");
   await loadCompaniaToModal();
   await loadOptions(optionsGroupContactos);
   await loadCanales(selectCanal);  
@@ -537,7 +542,7 @@ btnAddContactos.addEventListener("click",async()=>{
 
 agregarCanal.addEventListener("click",async()=>{
   if(selectCanal.value!="" && inputCuentaContacto.value != "" && selectPreferencia.value != ""){
-    await addCanalToModal(selectCanal.value,inputCuentaContacto.value,selectPreferencia.value);
+    await addCanalToModal(selectCanal.value,inputCuentaContacto.value,selectPreferencia.value,false);
     selectCanal.value = ""
     inputCuentaContacto.value = ""
     selectPreferencia.value = ""
@@ -552,10 +557,10 @@ linkEliminar.addEventListener("click", async()=>{
   window.location.reload()
 });
 
-btnAddContactoForm.addEventListener("click",async(e)=>{
+btnAddContactoForm.addEventListener("click",async()=>{
   try {    
     if(inputModalContactoNombre.value != "" && inputModalContactoApellido.value != "" && inputModalContactoCargo.value != "" && inputModalContactEmail.value != "" && selectCompanias.value != "" && selectCiudadContactos.value != "" && selectInteres.value != "" && inputModalContactoDireccion.value != ""){
-      if(selectCanal.value != "" && inputCuentaContacto.value == "" || selectPreferencia.value == ""){
+      if(selectCanal.value != "" && (inputCuentaContacto.value == "" || selectPreferencia.value == "")){
         console.log("Faltan parámetros");
         return;
       }
@@ -579,44 +584,11 @@ btnAddContactoForm.addEventListener("click",async(e)=>{
       if(res.ok){
         let resAsJSON = await res.json()      
         if(masCanales.childElementCount != 0){
-          let iCanal ="";
-          let iCuenta="";
-          let iPreferencia ="";
-          for (let i = 0; i < masCanales.childElementCount; i++) {
-            let children = masCanales.children[i]
-            if(!children.classList.contains("btn")){            
-              if(i%5 == 0){
-                iCanal = children.value
-              }else if(i%5==1){
-                iCuenta = children.value
-              }else if(i%5==2){
-                iPreferencia = children.value
-              }
-            }else{
-              if(i%5 ==3){         
-                let res = await fetch("http://localhost:3000/canalesporcontactos",{
-                  method: "POST",
-                  headers:{
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${localStorage.getItem("jwt")}`
-                  },
-                  body: JSON.stringify({
-                      contacto: resAsJSON[0],
-                      canal: iCanal,
-                      preferencia: iPreferencia,
-                      cuenta: iCuenta
-                  })
-                });
-                let mensaje = await res.json()
-                if(!res.ok){
-                  throw mensaje;
-                }
-              }
-            }
-          }        
+          await addCanales(resAsJSON[0]);
         }
       }
       clearModalContactos();      
+      window.location.reload()
     }
   } catch (error) {
     console.log(error);
@@ -624,6 +596,44 @@ btnAddContactoForm.addEventListener("click",async(e)=>{
 });
 btnAddNuevoContacto.addEventListener("click",async()=>{  
   await btnAddContactoForm.click();
+})
+btnEditarNuevoContacto.addEventListener("click",async()=>{
+  try {
+    if(inputModalContactoNombre.value != "" && inputModalContactoApellido.value != "" && inputModalContactoCargo.value != "" && inputModalContactEmail.value != "" && selectCompanias.value != "" && selectCiudadContactos.value != "" && selectInteres.value != "" && inputModalContactoDireccion.value != ""){
+      let idContacto = modalAddContactos.getAttribute("id_c")
+      let res = await fetch(`http://localhost:3000/contactos/${idContacto}`,{
+        method: "PATCH",
+        headers:{
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${localStorage.getItem("jwt")}`
+        },
+        body: JSON.stringify({
+            nombre: inputModalContactoNombre.value,
+            apellido: inputModalContactoApellido.value, 
+            cargo: inputModalContactoCargo.value,         
+            email: inputModalContactEmail.value,
+            compania: selectCompanias.value,
+            ciudad: selectCiudadContactos.value,
+            interes: selectInteres.value,
+            direccion: inputModalContactoDireccion.value          
+        })
+      });          
+      let contador = modalAddContactos.getAttribute("cuentas");    
+      let children = masCanales.childElementCount;
+      if(children != 0 && contador == 0){      
+        await addCanales(idContacto);
+      }else{
+      await editCanales(idContacto,contador);
+      }
+      if(!res.ok){
+        throw 'Error al actualizar datos';
+      }      
+      window.location.reload()  
+    }        
+  } catch (error) {
+    console.log(error);
+  }
+  
 })
 
 async function queryToJSON(){
@@ -1216,6 +1226,11 @@ function addContactos(){
     iconEdit.setAttribute("data-bs-toggle","modal")
     iconEdit.setAttribute("data-bs-target","#modalAddContactos")
     iconEdit.addEventListener("click",async()=>{
+      btnCancelModalAddContacto.classList.add("none");
+      btnAddNuevoContacto.classList.add("none");
+      btnEditarNuevoContacto.classList.remove("none");
+      btnEliminarModalAddContacto.classList.remove("none");
+      modalAddContactos.setAttribute("id_c", arrayContactos[i].id);
       inputModalContactoNombre.value = arrayContactos[i].nombre
       inputModalContactoApellido.value = arrayContactos[i].apellido
       inputModalContactoCargo.value = arrayContactos[i].cargo
@@ -1230,6 +1245,7 @@ function addContactos(){
       selectPaisContactos.value = arrayContactos[i].id_pais
       await loadCiudades(selectCiudadContactos,selectPaisContactos);
       selectCiudadContactos.value = arrayContactos[i].id_ciudad;
+      await loadCanales(selectCanal);  
       switch (porcentaje) {
         case 100:
           selectInteres.value = 5
@@ -1257,8 +1273,9 @@ function addContactos(){
         throw 'Error al consultar los registros de la base de datos';
       }
       let cuentas = await res.json();      
+      modalAddContactos.setAttribute("cuentas", cuentas.length);      
       for (let i = 0; i < cuentas.length; i++) {
-        await addCanalToModal(cuentas[i].canal,cuentas[i].cuenta,cuentas[i].preferencia,cuentas[i].id_canal,cuentas[i].id_preferencia);              
+        await addCanalToModal(cuentas[i].canal,cuentas[i].cuenta,cuentas[i].preferencia,true,cuentas[i].id_canal,cuentas[i].id_preferencia, cuentas[i].id);              
       }      
     })    
     spanLinkPrimary.appendChild(iconEdit);
@@ -1277,7 +1294,7 @@ function addContactos(){
     bodyTablaContactos.appendChild(tr);    
   }
 }
-async function addCanalToModal(selectCanalValue,inputCuentaContactoValue, selectPreferenciaValue, pos1=0,pos2=0){  
+async function addCanalToModal(selectCanalValue,inputCuentaContactoValue, selectPreferenciaValue, edicion, pos1=0,pos2=0, id_reg=0){  
 
     let selectC = document.createElement("select");      
     selectC.setAttribute("class","form-select");
@@ -1308,8 +1325,10 @@ async function addCanalToModal(selectCanalValue,inputCuentaContactoValue, select
       select.value = pos2;
     }else{
       select.value = selectPreferenciaValue;
-    }
+    }    
+    if(edicion){
 
+    }
     let spanPrimary = document.createElement("span");
     let iconEdit = document.createElement("i");
     let spanEditar = document.createElement("span");
@@ -1320,7 +1339,9 @@ async function addCanalToModal(selectCanalValue,inputCuentaContactoValue, select
     spanPrimary.classList.add("btn-outline-primary");
     spanPrimary.appendChild(iconEdit);
     spanPrimary.appendChild(spanEditar);
-    
+    if(id_reg!=0){
+     spanPrimary.setAttribute("id_reg",id_reg); 
+    }    
     spanPrimary.addEventListener("click",()=>{
       selectC.disabled = false;
       inputCC.disabled = false;
@@ -1348,7 +1369,9 @@ async function addCanalToModal(selectCanalValue,inputCuentaContactoValue, select
     masCanales.appendChild(selectC);
     masCanales.appendChild(inputCC);
     masCanales.appendChild(select);
-    masCanales.appendChild(spanPrimary);
+    if(edicion){
+      masCanales.appendChild(spanPrimary);
+    }
     masCanales.appendChild(spanDelete);
   
 }
@@ -1373,6 +1396,89 @@ async function loadCompaniaToModal(){
     }      
   } catch (error) {
     console.log(error);    
+  }
+}
+async function addCanales(contacto,i=0){
+  let iCanal ="";
+  let iCuenta="";
+  let iPreferencia ="";
+  for (i; i < masCanales.childElementCount; i++) {
+    let children = masCanales.children[i]
+    if(!children.classList.contains("btn")){            
+      if(i%5 == 0){
+        iCanal = children.value
+      }else if(i%5==1){
+        iCuenta = children.value
+      }else if(i%5==2){
+        iPreferencia = children.value
+      }
+    }else{
+      if(i%5 ==3){         
+        let res = await fetch("http://localhost:3000/canalesporcontactos",{
+          method: "POST",
+          headers:{
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${localStorage.getItem("jwt")}`
+          },
+          body: JSON.stringify({
+              contacto: contacto,
+              canal: iCanal,
+              preferencia: iPreferencia,
+              cuenta: iCuenta
+          })
+        });
+        let mensaje = await res.json()
+        if(!res.ok){
+          throw mensaje;
+        }
+      }
+    }
+  }
+}
+async function editCanales(contacto,cont){
+  let iCanal ="";
+  let iCuenta="";
+  let iPreferencia ="";
+  let i = 0;
+  let count = masCanales.childElementCount
+  for (i; i < count; i++) {
+    let children = masCanales.children[i]
+    if(!children.classList.contains("btn")){            
+      if(i%5 == 0){
+        iCanal = children.value
+      }else if(i%5==1){
+        iCuenta = children.value
+      }else if(i%5==2){
+        iPreferencia = children.value
+      }
+    }else{
+      if(i%5 ==3 && cont!=0){         
+        let res = await fetch(`http://localhost:3000/canalesporcontactos/${children.getAttribute("id_reg")}`,{
+          method: "PATCH",
+          headers:{
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${localStorage.getItem("jwt")}`
+          },
+          body: JSON.stringify({              
+              canal: iCanal,
+              preferencia: iPreferencia,
+              cuenta: iCuenta
+          })
+        });
+        let mensaje = await res.json()
+        if(!res.ok){
+          throw mensaje;
+        }
+        cont--
+      }      
+      if(cont==0){
+        break;
+      }
+    }
+  }
+  console.log(i);
+  if(i+1!=count-1){
+    await addCanales(contacto,i)
   }
 }
 function clearModalContactos(){

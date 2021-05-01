@@ -571,10 +571,44 @@ server.post("/contactos",authorization,isAdmin,async(req,res)=>{
     res.json("Ha ocurrido un error inesperado");
   }
 });
+server.patch("/contactos/:id",authorization,isAdmin,async(req,res)=>{
+  try {
+    const id = req.params.id;
+    const {nombre, apellido, cargo, email, compania,ciudad,interes,direccion} = req.body;
+    if(!nombre || !email || !direccion || !apellido || !ciudad || !cargo || !compania ||!interes){
+      res.status(400);
+      res.json("Falta algún parámetro");
+      return;
+    } 
+    let consulta = await db.sequelize.query("UPDATE contactos SET nombre = :nombre, apellido = :apellido, cargo = :cargo, email = :email, compania = :compania, ciudad = :ciudad, interes = :interes, direccion = :direccion WHERE id = :id",{
+      replacements:{
+        id: id,
+        nombre: nombre,
+        apellido: apellido,
+        cargo: cargo,
+        email: email,
+        compania: compania,
+        ciudad: ciudad,
+        interes: interes,
+        direccion: direccion,        
+      }, type: db.sequelize.QueryTypes.UPDATE
+    });
+    if(consulta.length === 0){
+      res.status(404);
+      res.json("Contacto no encontrado");
+      return
+    }
+    res.status(200);
+    res.json(consulta);    
+  } catch (error) {
+    console.log(error);
+    res.status(500);
+  }
+});
 server.get("/canalesporcontactos",authorization,async(req,res)=>{
   try {
     const contacto = req.query.contacto;    
-    let consulta = await db.sequelize.query(`SELECT canales.id AS id_canal, canales.nombre AS canal, preferencias.id AS id_preferencia, preferencias.nombre AS preferencia, cuenta  FROM canalesPorContactos JOIN canales ON canales.id = canalesPorContactos.canal JOIN preferencias ON preferencias.id = canalesPorContactos.preferencia WHERE contacto = :contacto`,{
+    let consulta = await db.sequelize.query(`SELECT canalesPorContactos.id AS id, canales.id AS id_canal, canales.nombre AS canal, preferencias.id AS id_preferencia, preferencias.nombre AS preferencia, cuenta  FROM canalesPorContactos JOIN canales ON canales.id = canalesPorContactos.canal JOIN preferencias ON preferencias.id = canalesPorContactos.preferencia WHERE contacto = :contacto`,{
       replacements:{
         contacto: contacto
       }, type: db.sequelize.QueryTypes.SELECT
@@ -585,6 +619,35 @@ server.get("/canalesporcontactos",authorization,async(req,res)=>{
     console.log(error);
     res.status(500);
     res.json("Ha ocurrido un error inesperado");
+  }
+});
+server.patch("/canalesporcontactos/:id",authorization,isAdmin,async(req,res)=>{
+  try {
+    const id = req.params.id;
+    const {canal, preferencia, cuenta} = req.body;
+    if(!canal || !preferencia|| !cuenta){
+      res.status(400);
+      res.json("Falta algún parámetro");
+      return;
+    } 
+    let consulta = await db.sequelize.query("UPDATE canalesPorContactos SET canal = :canal, preferencia = :preferencia, cuenta = :cuenta WHERE id = :id",{
+      replacements:{
+        id: id,        
+        canal: canal,
+        preferencia: preferencia,
+        cuenta: cuenta
+      }, type: db.sequelize.QueryTypes.UPDATE
+    });
+    if(consulta.length === 0){
+      res.status(404);
+      res.json("Registro no encontrado");
+      return
+    }
+    res.status(200);
+    res.json(consulta);    
+  } catch (error) {
+    console.log(error);
+    res.status(500);
   }
 })
 server.post("/canalesporcontactos",authorization,isAdmin, async(req,res)=>{
