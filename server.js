@@ -675,6 +675,23 @@ server.post("/canalesporcontactos",authorization,isAdmin, async(req,res)=>{
     res.json("Ha ocurrido un error inesperado");
   }
 });
+server.delete("/canalesporcontactos/:id",authorization,isAdmin,async(req,res)=>{
+  try {
+    const id = req.params.id;
+    let consulta = await db.sequelize.query("DELETE FROM canalesPorContactos WHERE id = :id",{
+      replacements: {
+        id: id,
+      },type: db.sequelize.QueryTypes.DELETE
+    });    
+    res.status(200)
+    console.log("Registro eliminado");
+    res.json(consulta);
+  } catch (error) {
+    console.log(error);
+    res.status(500);
+    res.json("Ha ocurrido un error inesperado");
+  }
+})
 server.delete("/contactos/:id",authorization, isAdmin,async(req,res)=>{
   try {
     const id = req.params.id;

@@ -399,6 +399,10 @@ btnAgregarRegion.addEventListener("click",()=>{
   labelAddInModal.textContent = "Escriba el nombre de la región a agregar";  
   flag = true
 });
+btnEliminarModalAddContacto.addEventListener("click",()=>{
+  labelWarning.textContent = `Está seguro que desea eliminar este contacto?`
+  labelWarning.setAttribute("contacto",modalAddContactos.getAttribute("id_c"));  
+})
 btnEliminar.addEventListener("click",async()=>{
   try {
     if(labelWarning.getAttribute("pais")){
@@ -453,6 +457,9 @@ btnEliminar.addEventListener("click",async()=>{
           throw 'Error al eliminar los datos';
         }
         console.log("Compania eliminada");      
+    } else if(labelWarning.getAttribute("contacto")){
+      deleteContacto(labelWarning.getAttribute("contacto"));      
+      labelWarning.removeAttribute("contacto");
     }
     window.location.reload();
   } catch (error) {
@@ -1284,7 +1291,13 @@ function addContactos(){
     spanLinkDanger.setAttribute("class","link-danger");
     let iconDelete = document.createElement("i");
     iconDelete.setAttribute("class","far")
-    iconDelete.classList.add("fa-times-circle")
+    iconDelete.classList.add("fa-times-circle");    
+    iconDelete.setAttribute("data-bs-target","#warningModal");
+    iconDelete.setAttribute("data-bs-toggle","modal")
+    iconDelete.addEventListener("click",()=>{
+      labelWarning.textContent = `Está seguro que desea eliminar este contacto?`
+      labelWarning.setAttribute("contacto",arrayContactos[i].id);  
+    })
     spanLinkDanger.appendChild(iconDelete);
     divOpciones.appendChild(spanLinkPrimary);
     divOpciones.appendChild(spanLinkDanger);
@@ -1325,10 +1338,7 @@ async function addCanalToModal(selectCanalValue,inputCuentaContactoValue, select
       select.value = pos2;
     }else{
       select.value = selectPreferenciaValue;
-    }    
-    if(edicion){
-
-    }
+    }        
     let spanPrimary = document.createElement("span");
     let iconEdit = document.createElement("i");
     let spanEditar = document.createElement("span");
@@ -1359,12 +1369,24 @@ async function addCanalToModal(selectCanalValue,inputCuentaContactoValue, select
     spanDelete.appendChild(iconDelete);
     spanDelete.appendChild(spanEliminar);        
 
-    spanDelete.addEventListener("click",()=>{
+    spanDelete.addEventListener("click",async()=>{
       masCanales.removeChild(selectC)
       masCanales.removeChild(inputCC)
       masCanales.removeChild(select)
       masCanales.removeChild(spanPrimary)
       masCanales.removeChild(spanDelete)
+      if(edicion){
+        let res = await fetch(`http://localhost:3000/canalesporcontactos/${id_reg}`,{
+          method: 'DELETE',
+          headers:{
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${localStorage.getItem("jwt")}`
+          },
+        })
+        if(!res.ok){
+          throw 'Error al eliminar el registro';
+        }
+      }
     })    
     masCanales.appendChild(selectC);
     masCanales.appendChild(inputCC);
