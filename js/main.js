@@ -1,83 +1,14 @@
-let linkContactos = document.getElementsByClassName("links")[0];
-let linkCompanias = document.getElementsByClassName("links")[1];
-let linkUsuarios = document.getElementsByClassName("links")[2];
-let linkRegiones = document.getElementsByClassName("links")[3];
-let opcionesContactos = document.getElementById("opciones-contactos");
-let companias = document.getElementById("companias");
-let contactos = document.getElementById("contactos");
-let usuarios = document.getElementById("usuarios");
-let btnCrearUsuario = document.getElementById("btn-crear-usuario");
-let inputNombre = document.getElementById("inputNombre");
-let inputApellido = document.getElementById("inputApellido");
-let inputEmailUsuario = document.getElementById("inputEmailUsuario");
-let perfil = document.getElementById("perfil");
-let inputPasswordUsuario = document.getElementById("inputPasswordUsuario");
-let regionCiudad = document.getElementById("region-ciudad");
-let regiones = document.getElementById("regiones")
-let modalLabel = document.getElementById("addModalLabel");
-let btnAceptarModal = document.getElementById("btnAceptarModal");
-let btnEliminar = document.getElementById("btnAceptarWarningModal");
-let labelAddInModal = document.getElementById("labelInfoAdd");
-let labelWarning = document.getElementById("labelWarning");
-let inputModal = document.getElementById("inputModal");
-let btnAgregarRegion = document.getElementById("btnAgregarRegion");
-let vector = []
-let flag = false;
-let btnClose = document.getElementById("close");
-let xClose =document.getElementById("xclose");
-let modal = document.getElementById("exampleModal");
-let modalCompania = document.getElementById("modalCompania")
-let xCloseCompania = document.getElementById("xcloseCompania");
-let btnCloseCompania = document.getElementById("btnCloseModalCompania")
-let bodyTabla = document.getElementById("tbody");
-let bodyTablaContactos = document.getElementById("tbodyContactos");
-let btnAddCompanias = document.getElementById("addCompanias");
-let inputModalCompaniaNombre = document.getElementById("inputModalCompaniaNombre")
-let inputModalCompaniaDireccion = document.getElementById("inputModalCompaniaDireccion")
-let inputModalCompaniaEmail = document.getElementById("inputModalCompaniaEmail")
-let inputModalCompaniaTelefono = document.getElementById("inputModalCompaniaTelefono")
-let optionsGroup = document.getElementById("optionsGroup");    
-let optionsGroupContactos =document.getElementById("selectRegionContactos");
-let optionsCiudad = document.getElementById("optionsCiudad");  
-let optionsPais = document.getElementById("optionsPais");  
-let flexCheck = document.getElementById("flexCheck");
-let divSearch = document.getElementById("div-icon-search");
-let inputSearch = document.getElementById("inputSearch");
+import * as global from "./global.js";
 let objeto = {
   "region": {      
   }
 }
 let arrayCompanias = [];
 let arrayContactos = [];
+let vector = []
+let flag = false;
 let flagCompania = true;
-let btnAceptarModalCompania = document.getElementById("btnAceptarModalCompania");
-let contadorSeleccionadas = 0;
-let nroSeleccion = document.getElementById("nro-seleccion");
-let opCabecera = contactos.firstElementChild
-let linkEliminar = document.getElementById("eliminar-contacto")
-let btnAddContactos = document.getElementById("btnAddContactos");
-let selectCiudadContactos = document.getElementById("selectCiudadContactos");
-let selectPaisContactos = document.getElementById("selectPaisContactos");
-let inputModalContactoDireccion = document.getElementById("inputModalContactoDireccion");
-let selectCanal = document.getElementById("selectCanal");
-let selectPreferencia = document.getElementById("selectPreferencia");
-let inputCuentaContacto = document.getElementById("inputCuentaContacto")
-let agregarCanal = document.getElementById("agregarCanal");
-let masCanales = document.getElementById("masCanales");
-let selectCompanias = document.getElementById("selectContactoCompania");
-let btnAddContactoForm = document.getElementById("btnSubmitContacto");
-let btnAddNuevoContacto = document.getElementById("btnAddNuevoContacto");
-let inputModalContactoNombre = document.getElementById("inputModalContactoNombre");
-let inputModalContactoApellido = document.getElementById("inputModalContactoApellido");
-let inputModalContactoCargo = document.getElementById("inputModalContactoCargo");
-let inputModalContactEmail = document.getElementById("inputModalContactoEmail");
-let selectInteres = document.getElementById("selectInteres");
-let selectRegionContactos = document.getElementById("selectRegionContactos");
-let modalAddContactos = document.getElementById("modalAddContactos");
-let btnCancelModalAddContacto = document.getElementById("btnCancelModalAddContacto");
-let btnCloseModalAddContactos = document.getElementById("btnCloseModalAddContactos");
-let btnEliminarModalAddContacto = document.getElementById("btnEliminarModalAddContacto");
-let btnEditarNuevoContacto = document.getElementById("btnEditarNuevoContacto");
+let contadorSeleccionadas = 0;  
 function activeLink(){
     let menu = document.getElementById("menu");
     let a = menu.getElementsByClassName("links");      
@@ -97,24 +28,24 @@ function activeLink(){
     }
 }
 function noLinkUsuarios(){
-    opcionesContactos.classList.remove("none");
-    contactos.classList.remove("none");
-    usuarios.classList.add("none");
+    global.opcionesContactos.classList.remove("none");
+    global.contactos.classList.remove("none");
+    global.usuarios.classList.add("none");
 }
 window.onclick = function(e){      
-  if(e.target == modal || e.target == btnClose || e.target == xClose){    
-    modalLabel.textContent = "";
-    labelAddInModal.textContent = "";
-    inputModal.value = ""    
-    labelAddInModal.removeAttribute("region");
-    labelAddInModal.removeAttribute("pais");
-    labelAddInModal.removeAttribute("epais");
-    labelAddInModal.removeAttribute("eciudad");
+  if(e.target == global.modal || e.target == global.btnClose || e.target == global.xClose){    
+    global.modalLabel.textContent = "";
+    global.labelAddInModal.textContent = "";
+    global.inputModal.value = ""    
+    global.labelAddInModal.removeAttribute("region");
+    global.labelAddInModal.removeAttribute("pais");
+    global.labelAddInModal.removeAttribute("epais");
+    global.labelAddInModal.removeAttribute("eciudad");
   }
-  if(e.target == modalCompania || e.target == btnCloseCompania || e.target == xCloseCompania){
+  if(e.target == global.modalCompania || e.target == global.btnCloseCompania || e.target == global.xCloseCompania){
     clearModalCompania()
   }
-  if(e.target == modalAddContactos || e.target == btnCloseModalAddContactos || e.target == btnCancelModalAddContacto){
+  if(e.target == global.modalAddContactos || e.target == global.btnCloseModalAddContactos || e.target == global.btnCancelModalAddContacto){
     clearModalContactos();
   }
 }
@@ -122,47 +53,47 @@ window.onload = async()=>{
   await loadContactos()
   addContactos()
 }
-linkContactos.addEventListener("click",async()=>{
-  opcionesContactos.classList.add("none");
-  regiones.classList.add("none")
-  usuarios.classList.add("none");
-  companias.classList.add("none");
-  contactos.classList.remove("none");
-  if(bodyTablaContactos.firstElementChild){
-    clearOptions(bodyTablaContactos)
+global.linkContactos.addEventListener("click",async()=>{
+  global.opcionesContactos.classList.add("none");
+  global.regiones.classList.add("none")
+  global.usuarios.classList.add("none");
+  global.companias.classList.add("none");
+  global.contactos.classList.remove("none");
+  if(global.bodyTablaContactos.firstElementChild){
+    clearOptions(global.bodyTablaContactos)
   }
   await loadContactos();
   addContactos()
 });
-divSearch.addEventListener("click",async()=>{
-  if(!inputSearch.value ==""){
+global.divSearch.addEventListener("click",async()=>{
+  if(!global.inputSearch.value ==""){
     try {
-      let res = await fetch(`http://localhost:3000/busqueda?termino=${inputSearch.value}`,{
+      let res = await fetch(`http://localhost:3000/busqueda?termino=${global.inputSearch.value}`,{
         headers:{
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${localStorage.getItem("jwt")}`
         },        
       });
       arrayContactos = await res.json();
-      clearOptions(bodyTablaContactos);
+      clearOptions(global.bodyTablaContactos);
       addContactos()
     } catch (error) {
       console.log("Algo salió mal ", error);
     }
   }
 })
-inputSearch.addEventListener("keypress",async(e)=>{
+global.inputSearch.addEventListener("keypress",async(e)=>{
   if(e.key === "Enter"){
-    if(!inputSearch.value ==""){
+    if(!global.inputSearch.value ==""){
       try {
-        let res = await fetch(`http://localhost:3000/busqueda?termino=${inputSearch.value}`,{
+        let res = await fetch(`http://localhost:3000/busqueda?termino=${global.inputSearch.value}`,{
           headers:{
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${localStorage.getItem("jwt")}`
           },        
         });
         arrayContactos = await res.json();
-        clearOptions(bodyTablaContactos);
+        clearOptions(global.bodyTablaContactos);
         addContactos()
       } catch (error) {
         console.log("Algo salió mal ", error);
@@ -170,12 +101,12 @@ inputSearch.addEventListener("keypress",async(e)=>{
     }  
   }
 })
-linkCompanias.addEventListener("click",async()=>{
-  opcionesContactos.classList.add("none");
-  contactos.classList.add("none");
-  regiones.classList.add("none")
-  usuarios.classList.add("none");
-  companias.classList.remove("none");
+global.linkCompanias.addEventListener("click",async()=>{
+  global.opcionesContactos.classList.add("none");
+  global.contactos.classList.add("none");
+  global.regiones.classList.add("none")
+  global.usuarios.classList.add("none");
+  global.companias.classList.remove("none");
   let res = await fetch("http://localhost:3000/companias",{
     headers:{
       'Content-Type': 'application/json',
@@ -185,19 +116,19 @@ linkCompanias.addEventListener("click",async()=>{
   arrayCompanias = await res.json()  
   addCompaniesToTable();
 });
-linkUsuarios.addEventListener("click",()=>{
-    opcionesContactos.classList.add("none");
-    contactos.classList.add("none");
-    regiones.classList.add("none")    
-    usuarios.classList.remove("none");
+global.linkUsuarios.addEventListener("click",()=>{
+  global.opcionesContactos.classList.add("none");
+  global.contactos.classList.add("none");
+  global.regiones.classList.add("none")    
+  global.usuarios.classList.remove("none");
 });
-linkRegiones.addEventListener("click",async()=>{  
-  opcionesContactos.classList.add("none");
-  contactos.classList.add("none");
-  usuarios.classList.add("none");
-  regiones.classList.remove("none");  
-  while(regionCiudad.firstElementChild){
-    regionCiudad.removeChild(regionCiudad.firstElementChild);
+global.linkRegiones.addEventListener("click",async()=>{  
+  global.opcionesContactos.classList.add("none");
+  global.contactos.classList.add("none");
+  global.usuarios.classList.add("none");
+  global.regiones.classList.remove("none");  
+  while(global.regionCiudad.firstElementChild){
+    global.regionCiudad.removeChild(global.regionCiudad.firstElementChild);
     objeto = {
       "region": {      
       }
@@ -205,7 +136,7 @@ linkRegiones.addEventListener("click",async()=>{
   }
   await queryToJSON()
 });
-flexCheck.addEventListener("change",(e)=>{
+global.flexCheck.addEventListener("change",(e)=>{
   let checklist = document.getElementsByClassName("to-be-checked");
   if(e.currentTarget.checked){    
     for (let i = 0; i < checklist.length; i++) {            
@@ -216,7 +147,7 @@ flexCheck.addEventListener("change",(e)=>{
       check.checked = true      
     }
     contadorSeleccionadas = checklist.length;
-    nroSeleccion.firstElementChild.textContent = contadorSeleccionadas + " selecciondas";    
+    global.nroSeleccion.firstElementChild.textContent = contadorSeleccionadas + " selecciondas";    
   }
   else{
     for (let i = 0; i < checklist.length; i++) {      
@@ -229,12 +160,12 @@ flexCheck.addEventListener("change",(e)=>{
     contadorSeleccionadas = 0;
   
   }
-  opCabecera.classList.toggle("none");
-  opCabecera.classList.toggle("opciones-cabecera");
+  global.opCabecera.classList.toggle("none");
+  global.opCabecera.classList.toggle("opciones-cabecera");
 })
-btnCrearUsuario.addEventListener("click",async()=>{
+global.btnCrearUsuario.addEventListener("click",async()=>{
   let admin = "0";
-  if(perfil.value =="Admin"){
+  if(global.perfil.value =="Admin"){
     admin = "1"
   }
   try {
@@ -245,19 +176,18 @@ btnCrearUsuario.addEventListener("click",async()=>{
         'Authorization': `Bearer ${localStorage.getItem("jwt")}`
       },
       body: JSON.stringify({
-          nombre: inputNombre.value,
-          apellido: inputApellido.value,          
-          email: inputEmailUsuario.value,
+          nombre: global.inputNombre.value,
+          apellido: global.inputApellido.value,          
+          email: global.inputEmailUsuario.value,
           perfil: admin,
-          password: inputPasswordUsuario.value
+          password: global.inputPasswordUsuario.value
       })
     })
-    inputNombre.value = "";
-    inputApellido.value ="";
-    inputEmailUsuario.value = "";
+    global.inputNombre.value = "";
+    global.inputApellido.value ="";
+    global.inputEmailUsuario.value = "";
     admin = "";
-    inputPasswordUsuario.value = "";
-
+    global.inputPasswordUsuario.value = "";
     if(!res.ok){
       throw "Error al registrar usuario";
     }      
@@ -266,9 +196,9 @@ btnCrearUsuario.addEventListener("click",async()=>{
     console.log("Algo salió mal: ", error);
   }
 })
-btnAceptarModal.addEventListener("click",async()=>{
+global.btnAceptarModal.addEventListener("click",async()=>{
   try {    
-    if(labelAddInModal.getAttribute("region")){
+    if(global.labelAddInModal.getAttribute("region")){
       const res = await fetch("http://localhost:3000/paises",{
       method: 'POST',
       headers:{
@@ -276,19 +206,19 @@ btnAceptarModal.addEventListener("click",async()=>{
         'Authorization': `Bearer ${localStorage.getItem("jwt")}`
       },
       body:JSON.stringify({
-        nombre: inputModal.value,
-        region: labelAddInModal.getAttribute("region")
+        nombre: global.inputModal.value,
+        region: global.labelAddInModal.getAttribute("region")
       })
     })
-      inputModal.value = "";
-      labelAddInModal.removeAttribute("region");      
+      global.inputModal.value = "";
+      global.labelAddInModal.removeAttribute("region");      
       let mensaje = await res.json()      
       if(!res.ok){
         throw mensaje;
       }
       console.log("Pais registrado");
       window.location.reload();
-    } else if(labelAddInModal.getAttribute("pais")){      
+    } else if(global.labelAddInModal.getAttribute("pais")){      
       const res = await fetch("http://localhost:3000/ciudades",{
       method: 'POST',
       headers:{
@@ -296,8 +226,8 @@ btnAceptarModal.addEventListener("click",async()=>{
         'Authorization': `Bearer ${localStorage.getItem("jwt")}`
       },
       body:JSON.stringify({
-        nombre: inputModal.value,
-        pais: labelAddInModal.getAttribute("pais")
+        nombre: global.inputModal.value,
+        pais: global.labelAddInModal.getAttribute("pais")
       })
     })
       if(!res.ok){
@@ -305,31 +235,31 @@ btnAceptarModal.addEventListener("click",async()=>{
         throw mensaje;
       }
       console.log("Ciudad registrada");
-      inputModal.value = "";
-      labelAddInModal.removeAttribute("pais");      
+      global.inputModal.value = "";
+      global.labelAddInModal.removeAttribute("pais");      
       window.location.reload();      
     
-    }else if(labelAddInModal.getAttribute("epais")){
-      const res = await fetch(`http://localhost:3000/paises/${labelAddInModal.getAttribute("epais")}`,{
+    }else if(global.labelAddInModal.getAttribute("epais")){
+      const res = await fetch(`http://localhost:3000/paises/${global.labelAddInModal.getAttribute("epais")}`,{
       method: 'PATCH',
       headers:{
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${localStorage.getItem("jwt")}`
       },
       body:JSON.stringify({
-        nombre: inputModal.value,        
+        nombre: global.inputModal.value,        
       })
     })
-      inputModal.value = "";
-      labelAddInModal.removeAttribute("epais");      
+      global.inputModal.value = "";
+      global.labelAddInModal.removeAttribute("epais");      
       let mensaje = await res.json()      
       if(!res.ok){
         throw mensaje;
       }
       console.log("Pais actualizado");
       window.location.reload();
-    }else if(labelAddInModal.getAttribute("eciudad")){
-      const res = await fetch(`http://localhost:3000/ciudades/${labelAddInModal.getAttribute("eciudad")}`,{
+    }else if(global.labelAddInModal.getAttribute("eciudad")){
+      const res = await fetch(`http://localhost:3000/ciudades/${global.labelAddInModal.getAttribute("eciudad")}`,{
       method: 'PATCH',
       headers:{
         'Content-Type': 'application/json',
@@ -339,8 +269,8 @@ btnAceptarModal.addEventListener("click",async()=>{
         nombre: inputModal.value,        
       })
     })
-      inputModal.value = "";
-      labelAddInModal.removeAttribute("eciudad");      
+      global.inputModal.value = "";
+      global.labelAddInModal.removeAttribute("eciudad");      
       let mensaje = await res.json()      
       if(!res.ok){
         throw mensaje;
@@ -359,7 +289,7 @@ btnAceptarModal.addEventListener("click",async()=>{
             nombre: inputModal.value,        
           })
         });
-        inputModal.value = "";        
+        global.inputModal.value = "";        
         flag = false;
         let mensaje = await res.json()
         if(!res.ok){
@@ -370,19 +300,19 @@ btnAceptarModal.addEventListener("click",async()=>{
       } catch (error) {
         console.log(error);
       }
-    }else if(labelAddInModal.getAttribute("eregion")){
-      const res = await fetch(`http://localhost:3000/regiones/${labelAddInModal.getAttribute("eregion")}`,{
+    }else if(global.labelAddInModal.getAttribute("eregion")){
+      const res = await fetch(`http://localhost:3000/regiones/${global.labelAddInModal.getAttribute("eregion")}`,{
       method: 'PATCH',
       headers:{
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${localStorage.getItem("jwt")}`
       },
       body:JSON.stringify({
-        nombre: inputModal.value,        
+        nombre: global.inputModal.value,        
       })
     })
-      inputModal.value = "";
-      labelAddInModal.removeAttribute("eregion");      
+      global.inputModal.value = "";
+      global.labelAddInModal.removeAttribute("eregion");      
       let mensaje = await res.json()      
       if(!res.ok){
         throw mensaje;
@@ -394,72 +324,72 @@ btnAceptarModal.addEventListener("click",async()=>{
     console.log(error);
   }
 });
-btnAgregarRegion.addEventListener("click",()=>{
-  modalLabel.textContent = "Agregar región";
-  labelAddInModal.textContent = "Escriba el nombre de la región a agregar";  
+global.btnAgregarRegion.addEventListener("click",()=>{
+  global.modalLabel.textContent = "Agregar región";
+  global.labelAddInModal.textContent = "Escriba el nombre de la región a agregar";  
   flag = true
 });
-btnEliminarModalAddContacto.addEventListener("click",()=>{
-  labelWarning.textContent = `Está seguro que desea eliminar este contacto?`
-  labelWarning.setAttribute("contacto",modalAddContactos.getAttribute("id_c"));  
+global.btnEliminarModalAddContacto.addEventListener("click",()=>{
+  global.labelWarning.textContent = `Está seguro que desea eliminar este contacto?`
+  global.labelWarning.setAttribute("contacto",global.modalAddContactos.getAttribute("id_c"));  
 })
-btnEliminar.addEventListener("click",async()=>{
+global.btnEliminar.addEventListener("click",async()=>{
   try {
-    if(labelWarning.getAttribute("pais")){
-      const res = await fetch(`http://localhost:3000/paises/${labelWarning.getAttribute("pais")}`,{
+    if(global.labelWarning.getAttribute("pais")){
+      const res = await fetch(`http://localhost:3000/paises/${global.labelWarning.getAttribute("pais")}`,{
       method: 'DELETE',
       headers:{
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${localStorage.getItem("jwt")}`
       },      
     })      
-      labelWarning.removeAttribute("pais");            
+    global.labelWarning.removeAttribute("pais");            
       if(!res.ok){
         throw 'Error al eliminar los datos';
       }
       console.log("Pais eliminado");      
-    }else if(labelWarning.getAttribute("ciudad")){
-      const res = await fetch(`http://localhost:3000/ciudades/${labelWarning.getAttribute("ciudad")}`,{
+    }else if(global.labelWarning.getAttribute("ciudad")){
+      const res = await fetch(`http://localhost:3000/ciudades/${global.labelWarning.getAttribute("ciudad")}`,{
       method: 'DELETE',
       headers:{
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${localStorage.getItem("jwt")}`
       },      
     })      
-      labelWarning.removeAttribute("ciudad");            
+      global.labelWarning.removeAttribute("ciudad");            
       if(!res.ok){
         throw 'Error al eliminar los datos';
       }
       console.log("Ciudad eliminada");      
-    } else if(labelWarning.getAttribute("region")){
-      const res = await fetch(`http://localhost:3000/regiones/${labelWarning.getAttribute("region")}`,{
+    } else if(global.labelWarning.getAttribute("region")){
+      const res = await fetch(`http://localhost:3000/regiones/${global.labelWarning.getAttribute("region")}`,{
         method: 'DELETE',
         headers:{
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${localStorage.getItem("jwt")}`
         },      
       })      
-        labelWarning.removeAttribute("region");            
+        global.labelWarning.removeAttribute("region");            
         if(!res.ok){
           throw 'Error al eliminar los datos';
         }
         console.log("Región eliminada");      
-    } else if(labelWarning.getAttribute("compania")){
-      const res = await fetch(`http://localhost:3000/companias/${labelWarning.getAttribute("compania")}`,{
+    } else if(global.labelWarning.getAttribute("compania")){
+      const res = await fetch(`http://localhost:3000/companias/${global.labelWarning.getAttribute("compania")}`,{
         method: 'DELETE',
         headers:{
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${localStorage.getItem("jwt")}`
         },      
       })      
-        labelWarning.removeAttribute("region");            
+      global.labelWarning.removeAttribute("region");            
         if(!res.ok){
           throw 'Error al eliminar los datos';
         }
         console.log("Compania eliminada");      
-    } else if(labelWarning.getAttribute("contacto")){
-      deleteContacto(labelWarning.getAttribute("contacto"));      
-      labelWarning.removeAttribute("contacto");
+    } else if(global.labelWarning.getAttribute("contacto")){
+      deleteContacto(global.labelWarning.getAttribute("contacto"));      
+      global.labelWarning.removeAttribute("contacto");
     }
     window.location.reload();
   } catch (error) {
@@ -480,9 +410,9 @@ function formB () {
       }, false)
     })
 }
-btnAceptarModalCompania.addEventListener("click",async()=>{
+global.btnAceptarModalCompania.addEventListener("click",async()=>{
   try {    
-    let comp = modalCompania.getAttribute("compania");    
+    let comp = global.modalCompania.getAttribute("compania");    
     if(!comp){
       let res = await fetch("http://localhost:3000/companias",{
         method: 'POST',
@@ -491,11 +421,11 @@ btnAceptarModalCompania.addEventListener("click",async()=>{
           'Authorization': `Bearer ${localStorage.getItem("jwt")}`
         },
         body:JSON.stringify({
-          nombre: inputModalCompaniaNombre.value,        
-          email: inputModalCompaniaEmail.value,
-          direccion: inputModalCompaniaDireccion.value,
-          telefono: inputModalCompaniaTelefono.value,
-          ciudad: optionsCiudad.value
+          nombre: global.inputModalCompaniaNombre.value,        
+          email: global.inputModalCompaniaEmail.value,
+          direccion: global.inputModalCompaniaDireccion.value,
+          telefono: global.inputModalCompaniaTelefono.value,
+          ciudad: global.optionsCiudad.value
         })
       });
       clearModalCompania()        
@@ -506,18 +436,18 @@ btnAceptarModalCompania.addEventListener("click",async()=>{
       console.log("Compañia agregada con exito");
       window.location.reload()
     }else{
-      let res = await fetch(`http://localhost:3000/companias/${modalCompania.getAttribute("compania")}`,{
+      let res = await fetch(`http://localhost:3000/companias/${global.modalCompania.getAttribute("compania")}`,{
         method: 'PATCH',
         headers:{
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${localStorage.getItem("jwt")}`
         },
         body:JSON.stringify({
-          nombre: inputModalCompaniaNombre.value,        
-          email: inputModalCompaniaEmail.value,
-          direccion: inputModalCompaniaDireccion.value,
-          telefono: inputModalCompaniaTelefono.value,
-          ciudad: optionsCiudad.value
+          nombre: global.inputModalCompaniaNombre.value,        
+          email: global.inputModalCompaniaEmail.value,
+          direccion: global.inputModalCompaniaDireccion.value,
+          telefono: global.inputModalCompaniaTelefono.value,
+          ciudad: global.optionsCiudad.value
         })
       })
         clearModalCompania()             
@@ -533,30 +463,30 @@ btnAceptarModalCompania.addEventListener("click",async()=>{
     }
 })
 
-btnAddCompanias.addEventListener("click",async()=>{
-  await loadOptions(optionsGroup);  
+global.btnAddCompanias.addEventListener("click",async()=>{
+  await loadOptions(global.optionsGroup);  
 })
 
-btnAddContactos.addEventListener("click",async()=>{  
-  btnCancelModalAddContacto.classList.remove("none");
-  btnAddNuevoContacto.classList.remove("none");
-  btnEditarNuevoContacto.classList.add("none");
-  btnEliminarModalAddContacto.classList.add("none");
+global.btnAddContactos.addEventListener("click",async()=>{  
+  global.btnCancelModalAddContacto.classList.remove("none");
+  global.btnAddNuevoContacto.classList.remove("none");
+  global.btnEditarNuevoContacto.classList.add("none");
+  global.btnEliminarModalAddContacto.classList.add("none");
   await loadCompaniaToModal();
-  await loadOptions(optionsGroupContactos);
-  await loadCanales(selectCanal);  
+  await loadOptions(global.optionsGroupContactos);
+  await loadCanales(global.selectCanal);  
 })
 
-agregarCanal.addEventListener("click",async()=>{
-  if(selectCanal.value!="" && inputCuentaContacto.value != "" && selectPreferencia.value != ""){
-    await addCanalToModal(selectCanal.value,inputCuentaContacto.value,selectPreferencia.value,false);
-    selectCanal.value = ""
-    inputCuentaContacto.value = ""
-    selectPreferencia.value = ""
+global.agregarCanal.addEventListener("click",async()=>{
+  if(global.selectCanal.value!="" && global.inputCuentaContacto.value != "" && global.selectPreferencia.value != ""){
+    await addCanalToModal(global.selectCanal.value,global.inputCuentaContacto.value,global.selectPreferencia.value,false);
+    global.selectCanal.value = ""
+    global.inputCuentaContacto.value = ""
+    global.selectPreferencia.value = ""
   }
 })
 
-linkEliminar.addEventListener("click", async()=>{
+global.linkEliminar.addEventListener("click", async()=>{
   let allChecked = document.getElementsByClassName("tr-hover");
   for (let i = 0; i < allChecked.length; i++) {    
     await deleteContacto(allChecked[i].attributes.cid.value);    
@@ -564,10 +494,10 @@ linkEliminar.addEventListener("click", async()=>{
   window.location.reload()
 });
 
-btnAddContactoForm.addEventListener("click",async()=>{
+global.btnAddContactoForm.addEventListener("click",async()=>{
   try {    
-    if(inputModalContactoNombre.value != "" && inputModalContactoApellido.value != "" && inputModalContactoCargo.value != "" && inputModalContactEmail.value != "" && selectCompanias.value != "" && selectCiudadContactos.value != "" && selectInteres.value != "" && inputModalContactoDireccion.value != ""){
-      if(selectCanal.value != "" && (inputCuentaContacto.value == "" || selectPreferencia.value == "")){
+    if(global.inputModalContactoNombre.value != "" && global.inputModalContactoApellido.value != "" && global.inputModalContactoCargo.value != "" && global.inputModalContactEmail.value != "" && global.selectCompanias.value != "" && global.selectCiudadContactos.value != "" && global.selectInteres.value != "" && global.inputModalContactoDireccion.value != ""){
+      if(global.selectCanal.value != "" && (global.inputCuentaContacto.value == "" || global.selectPreferencia.value == "")){
         console.log("Faltan parámetros");
         return;
       }
@@ -578,19 +508,19 @@ btnAddContactoForm.addEventListener("click",async()=>{
           'Authorization': `Bearer ${localStorage.getItem("jwt")}`
         },
         body: JSON.stringify({
-            nombre: inputModalContactoNombre.value,
-            apellido: inputModalContactoApellido.value, 
-            cargo: inputModalContactoCargo.value,         
-            email: inputModalContactEmail.value,
-            compania: selectCompanias.value,
-            ciudad: selectCiudadContactos.value,
-            interes: selectInteres.value,
-            direccion: inputModalContactoDireccion.value          
+            nombre: global.inputModalContactoNombre.value,
+            apellido: global.inputModalContactoApellido.value, 
+            cargo: global.inputModalContactoCargo.value,         
+            email: global.inputModalContactEmail.value,
+            compania: global.selectCompanias.value,
+            ciudad: global.selectCiudadContactos.value,
+            interes: global.selectInteres.value,
+            direccion: global.inputModalContactoDireccion.value          
         })
       });
       if(res.ok){
         let resAsJSON = await res.json()      
-        if(masCanales.childElementCount != 0){
+        if(global.masCanales.childElementCount != 0){
           await addCanales(resAsJSON[0]);
         }
       }
@@ -601,13 +531,13 @@ btnAddContactoForm.addEventListener("click",async()=>{
     console.log(error);
   }
 });
-btnAddNuevoContacto.addEventListener("click",async()=>{  
-  await btnAddContactoForm.click();
+global.btnAddNuevoContacto.addEventListener("click",async()=>{  
+  await global.btnAddContactoForm.click();
 })
-btnEditarNuevoContacto.addEventListener("click",async()=>{
+global.btnEditarNuevoContacto.addEventListener("click",async()=>{
   try {
-    if(inputModalContactoNombre.value != "" && inputModalContactoApellido.value != "" && inputModalContactoCargo.value != "" && inputModalContactEmail.value != "" && selectCompanias.value != "" && selectCiudadContactos.value != "" && selectInteres.value != "" && inputModalContactoDireccion.value != ""){
-      let idContacto = modalAddContactos.getAttribute("id_c")
+    if(global.inputModalContactoNombre.value != "" && global.inputModalContactoApellido.value != "" && global.inputModalContactoCargo.value != "" && global.inputModalContactEmail.value != "" && global.selectCompanias.value != "" && global.selectCiudadContactos.value != "" && global.selectInteres.value != "" && global.inputModalContactoDireccion.value != ""){
+      let idContacto = global.modalAddContactos.getAttribute("id_c")
       let res = await fetch(`http://localhost:3000/contactos/${idContacto}`,{
         method: "PATCH",
         headers:{
@@ -615,18 +545,18 @@ btnEditarNuevoContacto.addEventListener("click",async()=>{
           'Authorization': `Bearer ${localStorage.getItem("jwt")}`
         },
         body: JSON.stringify({
-            nombre: inputModalContactoNombre.value,
-            apellido: inputModalContactoApellido.value, 
-            cargo: inputModalContactoCargo.value,         
-            email: inputModalContactEmail.value,
-            compania: selectCompanias.value,
-            ciudad: selectCiudadContactos.value,
-            interes: selectInteres.value,
-            direccion: inputModalContactoDireccion.value          
+            nombre: global.inputModalContactoNombre.value,
+            apellido: global.inputModalContactoApellido.value, 
+            cargo: global.inputModalContactoCargo.value,         
+            email: global.inputModalContactEmail.value,
+            compania: global.selectCompanias.value,
+            ciudad: global.selectCiudadContactos.value,
+            interes: global.selectInteres.value,
+            direccion: global.inputModalContactoDireccion.value          
         })
       });          
-      let contador = modalAddContactos.getAttribute("cuentas");    
-      let children = masCanales.childElementCount;
+      let contador = global.modalAddContactos.getAttribute("cuentas");    
+      let children = global.masCanales.childElementCount;
       if(children != 0 && contador == 0){      
         await addCanales(idContacto);
       }else{
@@ -707,24 +637,24 @@ function addContentToTree(obj){
     button.setAttribute("data-bs-target", "#exampleModal")
     button.setAttribute("data-bs-toggle", "modal")
     button.addEventListener("click",()=>{            
-      modalLabel.textContent = "Añadir pais";      
-      labelAddInModal.setAttribute("region",obj[region].id);
-      labelAddInModal.textContent = "Escriba el nombre del pais a agregar"
+      global.modalLabel.textContent = "Añadir pais";      
+      global.labelAddInModal.setAttribute("region",obj[region].id);
+      global.labelAddInModal.textContent = "Escriba el nombre del pais a agregar"
     })
 
     buttonEdit.setAttribute("data-bs-target", "#exampleModal")
     buttonEdit.setAttribute("data-bs-toggle", "modal");
     buttonEdit.addEventListener("click",()=>{            
-      modalLabel.textContent = "Editar región";            
-      labelAddInModal.setAttribute("eregion",obj[region].id);
-      inputModal.value = region
+      global.modalLabel.textContent = "Editar región";            
+      global.labelAddInModal.setAttribute("eregion",obj[region].id);
+      global.inputModal.value = region
     });
 
     buttonDelete.setAttribute("data-bs-target", "#warningModal");
     buttonDelete.setAttribute("data-bs-toggle","modal");
     buttonDelete.addEventListener("click",()=>{
-      labelWarning.textContent = `Está seguro que desea eliminar '${region}'?`
-      labelWarning.setAttribute("region",obj[region].id);
+      global.labelWarning.textContent = `Está seguro que desea eliminar '${region}'?`
+      global.labelWarning.setAttribute("region",obj[region].id);
     })
 
     let spanBtn = document.createElement("span");
@@ -772,9 +702,9 @@ function addContentToTree(obj){
         spanSuccess.setAttribute("data-bs-target", "#exampleModal")
         spanSuccess.setAttribute("data-bs-toggle", "modal");
         spanSuccess.addEventListener("click",()=>{                  
-          modalLabel.textContent = "Añadir ciudad";          
-          labelAddInModal.textContent = `Escriba el nombre de la ciudad a agregar en ${spanOpciones.getAttribute("pais")}.`          
-          labelAddInModal.setAttribute("pais", spanOpciones.getAttribute("id_pais"));
+          global.modalLabel.textContent = "Añadir ciudad";          
+          global.labelAddInModal.textContent = `Escriba el nombre de la ciudad a agregar en ${spanOpciones.getAttribute("pais")}.`          
+          global.labelAddInModal.setAttribute("pais", spanOpciones.getAttribute("id_pais"));
         })
         spanSuccess.appendChild(iconPlus);
 
@@ -783,10 +713,10 @@ function addContentToTree(obj){
         spanLinkPrimary.setAttribute("data-bs-target", "#exampleModal");
         spanLinkPrimary.setAttribute("data-bs-toggle","modal");
         spanLinkPrimary.addEventListener("click",()=>{
-          modalLabel.textContent = "Editar pais";
-          labelAddInModal.textContent = ""
-          inputModal.value = spanOpciones.getAttribute("pais");
-          labelAddInModal.setAttribute("epais", spanOpciones.getAttribute("id_pais"));
+          global.modalLabel.textContent = "Editar pais";
+          global.labelAddInModal.textContent = ""
+          global.inputModal.value = spanOpciones.getAttribute("pais");
+          global.labelAddInModal.setAttribute("epais", spanOpciones.getAttribute("id_pais"));
         })
         let iconEdit = document.createElement("i")
         iconEdit.setAttribute("class", "far fa-edit");
@@ -801,8 +731,8 @@ function addContentToTree(obj){
         spanLinkDanger.setAttribute("data-bs-target", "#warningModal");
         spanLinkDanger.setAttribute("data-bs-toggle","modal");
         spanLinkDanger.addEventListener("click",()=>{
-          labelWarning.textContent = `Está seguro que desea eliminar '${spanOpciones.getAttribute("pais")}'?`
-          labelWarning.setAttribute("pais",spanOpciones.getAttribute("id_pais"));
+          global.labelWarning.textContent = `Está seguro que desea eliminar '${spanOpciones.getAttribute("pais")}'?`
+          global.labelWarning.setAttribute("pais",spanOpciones.getAttribute("id_pais"));
         })
         
         spanOpciones.appendChild(spanSuccess);
@@ -843,8 +773,8 @@ function addContentToTree(obj){
             spanLinkDanger.setAttribute("data-bs-target", "#warningModal");
             spanLinkDanger.setAttribute("data-bs-toggle","modal");
             spanLinkDanger.addEventListener("click",()=>{
-              labelWarning.textContent = `Está seguro que desea eliminar '${spanOpciones.getAttribute("ciudad")}'?`
-              labelWarning.setAttribute("ciudad",spanOpciones.getAttribute("id_ciudad"));
+              global.labelWarning.textContent = `Está seguro que desea eliminar '${spanOpciones.getAttribute("ciudad")}'?`
+              global.labelWarning.setAttribute("ciudad",spanOpciones.getAttribute("id_ciudad"));
             })
             let iconDelete = document.createElement("i")        
             iconDelete.setAttribute("class", "far fa-trash-alt");
@@ -857,8 +787,7 @@ function addContentToTree(obj){
             liCiudades.appendChild(spanOpciones);
             ulNested.appendChild(liCiudades);        
           }
-        }      
-  
+        }        
         li.appendChild(spanCaret);
         li.appendChild(spanOpciones);
         li.appendChild(ulNested);
@@ -870,7 +799,7 @@ function addContentToTree(obj){
     divCardBody.appendChild(divTreeList)   
 
     divCardRegion.appendChild(divCardBody);
-    regionCiudad.appendChild(divCardRegion);    
+    global.regionCiudad.appendChild(divCardRegion);    
   }
 }
 
@@ -897,17 +826,17 @@ function addCompaniesToTable(){
     iEdit.setAttribute("data-bs-toggle","modal")
     iEdit.setAttribute("data-bs-target","#modalCompania")
     iEdit.addEventListener("click",async()=>{
-      inputModalCompaniaNombre.value = arrayCompanias[i].compania;
-      inputModalCompaniaEmail.value = arrayCompanias[i].email;
-      inputModalCompaniaDireccion.value = arrayCompanias[i].direccion;
-      inputModalCompaniaTelefono.value = arrayCompanias[i].telefono;
-      modalCompania.setAttribute("compania", arrayCompanias[i].id_compania);
-      await loadOptions(optionsGroup);
-      optionsGroup.value = arrayCompanias[i].id_region;      
-      await loadPaises(optionsPais,optionsGroup);      
-      optionsPais.value = arrayCompanias[i].id_pais;
-      await loadCiudades(optionsCiudad, optionsPais);
-      optionsCiudad.value = arrayCompanias[i].id_ciudad;      
+      global.inputModalCompaniaNombre.value = arrayCompanias[i].compania;
+      global.inputModalCompaniaEmail.value = arrayCompanias[i].email;
+      global.inputModalCompaniaDireccion.value = arrayCompanias[i].direccion;
+      global.inputModalCompaniaTelefono.value = arrayCompanias[i].telefono;
+      global.modalCompania.setAttribute("compania", arrayCompanias[i].id_compania);
+      await loadOptions(global.optionsGroup);
+      global.optionsGroup.value = arrayCompanias[i].id_region;      
+      await loadPaises(global.optionsPais,global.optionsGroup);      
+      global.optionsPais.value = arrayCompanias[i].id_pais;
+      await loadCiudades(global.optionsCiudad, global.optionsPais);
+      global.optionsCiudad.value = arrayCompanias[i].id_ciudad;      
       flagCompania = false
     });
     spanPrimary.appendChild(iEdit);
@@ -918,8 +847,8 @@ function addCompaniesToTable(){
     iDelete.setAttribute("data-bs-target", "#warningModal");
     iDelete.setAttribute("data-bs-toggle","modal");
     iDelete.addEventListener("click",()=>{
-      labelWarning.textContent = `Está seguro que desea eliminar '${arrayCompanias[i].compania}'?`
-      labelWarning.setAttribute("compania",arrayCompanias[i].id_compania);
+      global.labelWarning.textContent = `Está seguro que desea eliminar '${arrayCompanias[i].compania}'?`
+      global.labelWarning.setAttribute("compania",arrayCompanias[i].id_compania);
     })    
     spanDelete.appendChild(iDelete);
     divOpciones.appendChild(spanPrimary)
@@ -932,7 +861,7 @@ function addCompaniesToTable(){
     tr.appendChild(tdTelefono);
     tr.appendChild(tdDireccion);
     tr.appendChild(tdOpciones);
-    bodyTabla.appendChild(tr)
+    global.bodyTabla.appendChild(tr)
   }
 }
 
@@ -985,8 +914,8 @@ async function loadPreferencias(selectP){
       },
     });
     if(selectP=== selectPreferencia){
-      selectPreferencia.disabled = false;
-      inputCuentaContacto.disabled = false
+      global.selectPreferencia.disabled = false;
+      global.inputCuentaContacto.disabled = false
     }
     let preferencias = await res.json()
     clearOptions(selectP);        
@@ -1031,14 +960,14 @@ async function loadPaises(options, previewsOptions){
     let res = await fetch("http://localhost:3000/paises");
     let arrayPaises = await res.json();      
     clearOptions(options);
-    if(optionsCiudad.length > 1){    
-      clearOptions(optionsCiudad);
+    if(global.optionsCiudad.length > 1){    
+      clearOptions(global.optionsCiudad);
     }
-    if(selectCiudadContactos.length>1){
-      clearOptions(selectCiudadContactos);
+    if(global.selectCiudadContactos.length>1){
+      clearOptions(global.selectCiudadContactos);
     }
-    if(selectPaisContactos === options){      
-      selectPaisContactos.disabled = false;
+    if(global.selectPaisContactos === options){      
+      global.selectPaisContactos.disabled = false;
     }
     let emptyOption = document.createElement("option");
     emptyOption.setAttribute("selected","");
@@ -1060,8 +989,8 @@ async function loadCiudades(options,previewsOptions){
     let res = await fetch("http://localhost:3000/ciudades");
     let arrayCiudades = await res.json();  
     clearOptions(options);
-    if(selectCiudadContactos === options){      
-      selectCiudadContactos.disabled = false;
+    if(global.selectCiudadContactos === options){      
+      global.selectCiudadContactos.disabled = false;
     }
     let emptyOption = document.createElement("option");
     emptyOption.setAttribute("selected","");
@@ -1077,9 +1006,6 @@ async function loadCiudades(options,previewsOptions){
   } catch (error) {
     console.log(error);
   }
-}
-function enableDireccion(){
-  inputModalContactoDireccion.disabled = false;
 }
 async function deleteContacto(id){
   try {
@@ -1103,15 +1029,13 @@ function clearOptions(options){
   }
 }
 function clearModalCompania(){
-    inputModalCompaniaNombre.value = "";
-    inputModalCompaniaDireccion.value = "";
-    inputModalCompaniaEmail.value = "";
-    inputModalCompaniaTelefono.value = "";
-    modalCompania.removeAttribute("compania");
-    optionsPais = document.getElementById("optionsPais");  
-    clearOptions(optionsPais);
-    optionsCiudad = document.getElementById("optionsCiudad");  
-    clearOptions(optionsCiudad);
+  global.inputModalCompaniaNombre.value = "";
+  global.inputModalCompaniaDireccion.value = "";
+  global.inputModalCompaniaEmail.value = "";
+  global.inputModalCompaniaTelefono.value = "";
+  global.modalCompania.removeAttribute("compania");  
+  clearOptions(global.optionsPais);  
+  clearOptions(global.optionsCiudad);
 }
 
 function addContactos(){    
@@ -1127,20 +1051,20 @@ function addContactos(){
     inputDiv.setAttribute("type","checkbox");
     tr.setAttribute("class","to-be-checked");
     inputDiv.addEventListener("change",(e)=>{
-      let sp = nroSeleccion.firstElementChild
+      let sp = global.nroSeleccion.firstElementChild;
       if(e.currentTarget.checked){
         tr.classList.add("tr-hover")
         contadorSeleccionadas++;
         sp.textContent = contadorSeleccionadas + " seleccionadas";
-        opCabecera.classList.remove("none");
-        opCabecera.classList.add("opciones-cabecera");
+        global.opCabecera.classList.remove("none");
+        global.opCabecera.classList.add("opciones-cabecera");
       }else{
         tr.classList.remove("tr-hover")
         contadorSeleccionadas = contadorSeleccionadas -1;         
         sp.textContent = contadorSeleccionadas + " selecciondas";
         if(contadorSeleccionadas==0){
-          opCabecera.classList.remove("opciones-cabecera");
-          opCabecera.classList.add("none");
+          global.opCabecera.classList.remove("opciones-cabecera");
+          global.opCabecera.classList.add("none");
         }
       }
       
@@ -1233,41 +1157,41 @@ function addContactos(){
     iconEdit.setAttribute("data-bs-toggle","modal")
     iconEdit.setAttribute("data-bs-target","#modalAddContactos")
     iconEdit.addEventListener("click",async()=>{
-      btnCancelModalAddContacto.classList.add("none");
-      btnAddNuevoContacto.classList.add("none");
-      btnEditarNuevoContacto.classList.remove("none");
-      btnEliminarModalAddContacto.classList.remove("none");
-      modalAddContactos.setAttribute("id_c", arrayContactos[i].id);
-      inputModalContactoNombre.value = arrayContactos[i].nombre
-      inputModalContactoApellido.value = arrayContactos[i].apellido
-      inputModalContactoCargo.value = arrayContactos[i].cargo
-      inputModalContactEmail.value = arrayContactos[i].email
-      inputModalContactoDireccion.value = arrayContactos[i].direccion
-      inputModalContactoDireccion.disabled = false;
+      global.btnCancelModalAddContacto.classList.add("none");
+      global.btnAddNuevoContacto.classList.add("none");
+      global.btnEditarNuevoContacto.classList.remove("none");
+      global.btnEliminarModalAddContacto.classList.remove("none");
+      global.modalAddContactos.setAttribute("id_c", arrayContactos[i].id);
+      global.inputModalContactoNombre.value = arrayContactos[i].nombre
+      global.inputModalContactoApellido.value = arrayContactos[i].apellido
+      global.inputModalContactoCargo.value = arrayContactos[i].cargo
+      global.inputModalContactEmail.value = arrayContactos[i].email
+      global.inputModalContactoDireccion.value = arrayContactos[i].direccion
+      global.inputModalContactoDireccion.disabled = false;
       await loadCompaniaToModal()
-      selectCompanias.value = arrayContactos[i].id_compania;
-      await loadOptions(optionsGroupContactos);
-      optionsGroupContactos.value = arrayContactos[i].id_region      
-      await loadPaises(selectPaisContactos,optionsGroupContactos);
-      selectPaisContactos.value = arrayContactos[i].id_pais
-      await loadCiudades(selectCiudadContactos,selectPaisContactos);
-      selectCiudadContactos.value = arrayContactos[i].id_ciudad;
-      await loadCanales(selectCanal);  
+      global.selectCompanias.value = arrayContactos[i].id_compania;
+      await loadOptions(global.optionsGroupContactos);
+      global.optionsGroupContactos.value = arrayContactos[i].id_region      
+      await loadPaises(global.selectPaisContactos,global.optionsGroupContactos);
+      global.selectPaisContactos.value = arrayContactos[i].id_pais
+      await loadCiudades(global.selectCiudadContactos,global.selectPaisContactos);
+      global.selectCiudadContactos.value = arrayContactos[i].id_ciudad;
+      await loadCanales(global.selectCanal);  
       switch (porcentaje) {
         case 100:
-          selectInteres.value = 5
+          global.selectInteres.value = 5
           break;
         case 75:
-          selectInteres.value = 4
+          global.selectInteres.value = 4
           break;
         case 50:
-          selectInteres.value = 3
+          global.selectInteres.value = 3
           break;
         case 25:
-          selectInteres.value = 2
+          global.selectInteres.value = 2
           break;
         default:
-          selectInteres.value = 1                  
+          global.selectInteres.value = 1                  
           break;  
       }
       let res = await fetch(`http://localhost:3000/canalesporcontactos?contacto=${arrayContactos[i].id}`,{
@@ -1280,7 +1204,7 @@ function addContactos(){
         throw 'Error al consultar los registros de la base de datos';
       }
       let cuentas = await res.json();      
-      modalAddContactos.setAttribute("cuentas", cuentas.length);      
+      global.modalAddContactos.setAttribute("cuentas", cuentas.length);      
       for (let i = 0; i < cuentas.length; i++) {
         await addCanalToModal(cuentas[i].canal,cuentas[i].cuenta,cuentas[i].preferencia,true,cuentas[i].id_canal,cuentas[i].id_preferencia, cuentas[i].id);              
       }      
@@ -1295,8 +1219,8 @@ function addContactos(){
     iconDelete.setAttribute("data-bs-target","#warningModal");
     iconDelete.setAttribute("data-bs-toggle","modal")
     iconDelete.addEventListener("click",()=>{
-      labelWarning.textContent = `Está seguro que desea eliminar este contacto?`
-      labelWarning.setAttribute("contacto",arrayContactos[i].id);  
+      global.labelWarning.textContent = `Está seguro que desea eliminar este contacto?`
+      global.labelWarning.setAttribute("contacto",arrayContactos[i].id);  
     })
     spanLinkDanger.appendChild(iconDelete);
     divOpciones.appendChild(spanLinkPrimary);
@@ -1304,7 +1228,7 @@ function addContactos(){
     tdAcciones.appendChild(divOpciones);
     tr.appendChild(tdAcciones);
 
-    bodyTablaContactos.appendChild(tr);    
+    global.bodyTablaContactos.appendChild(tr);    
   }
 }
 async function addCanalToModal(selectCanalValue,inputCuentaContactoValue, selectPreferenciaValue, edicion, pos1=0,pos2=0, id_reg=0){  
@@ -1370,11 +1294,11 @@ async function addCanalToModal(selectCanalValue,inputCuentaContactoValue, select
     spanDelete.appendChild(spanEliminar);        
 
     spanDelete.addEventListener("click",async()=>{
-      masCanales.removeChild(selectC)
-      masCanales.removeChild(inputCC)
-      masCanales.removeChild(select)
-      masCanales.removeChild(spanPrimary)
-      masCanales.removeChild(spanDelete)
+      global.masCanales.removeChild(selectC)
+      global.masCanales.removeChild(inputCC)
+      global.masCanales.removeChild(select)
+      global.masCanales.removeChild(spanPrimary)
+      global.masCanales.removeChild(spanDelete)
       if(edicion){
         let res = await fetch(`http://localhost:3000/canalesporcontactos/${id_reg}`,{
           method: 'DELETE',
@@ -1388,14 +1312,13 @@ async function addCanalToModal(selectCanalValue,inputCuentaContactoValue, select
         }
       }
     })    
-    masCanales.appendChild(selectC);
-    masCanales.appendChild(inputCC);
-    masCanales.appendChild(select);
+    global.masCanales.appendChild(selectC);
+    global.masCanales.appendChild(inputCC);
+    global.masCanales.appendChild(select);
     if(edicion){
-      masCanales.appendChild(spanPrimary);
+      global.masCanales.appendChild(spanPrimary);
     }
-    masCanales.appendChild(spanDelete);
-  
+    global.masCanales.appendChild(spanDelete);  
 }
 async function loadCompaniaToModal(){
   try {
@@ -1405,16 +1328,16 @@ async function loadCompaniaToModal(){
       'Authorization': `Bearer ${localStorage.getItem("jwt")}`
       }
     });
-    clearOptions(selectCompanias);
+    clearOptions(global.selectCompanias);
     arrayCompanias = await res.json();  
     let emptyOption = document.createElement("option");
     emptyOption.setAttribute("selected","");
-    selectCompanias.appendChild(emptyOption);
+    global.selectCompanias.appendChild(emptyOption);
     for (let i = 0; i < arrayCompanias.length; i++) {      
       let option = document.createElement("option");            
       option.textContent = arrayCompanias[i].compania        
       option.setAttribute("value",arrayCompanias[i].id_compania);
-      selectCompanias.appendChild(option);      
+      global.selectCompanias.appendChild(option);      
     }      
   } catch (error) {
     console.log(error);    
@@ -1462,9 +1385,9 @@ async function editCanales(contacto,cont){
   let iCuenta="";
   let iPreferencia ="";
   let i = 0;
-  let count = masCanales.childElementCount
+  let count = global.masCanales.childElementCount
   for (i; i < count; i++) {
-    let children = masCanales.children[i]
+    let children = global.masCanales.children[i]
     if(!children.classList.contains("btn")){            
       if(i%5 == 0){
         iCanal = children.value
@@ -1504,21 +1427,21 @@ async function editCanales(contacto,cont){
   }
 }
 function clearModalContactos(){
-  inputModalContactoNombre.value = "";
-  inputModalContactoApellido.value = "";
-  inputModalContactoCargo.value = "";
-  inputModalContactEmail.value = "";
-  clearOptions(selectPaisContactos);
-  selectPaisContactos.setAttribute("disabled","");
-  clearOptions(selectCiudadContactos);
-  selectCiudadContactos.setAttribute("disabled","");
-  inputModalContactoDireccion.value = "";
-  inputModalContactoDireccion.setAttribute("disabled","");  
-  inputCuentaContacto.value = ""
-  inputCuentaContacto.setAttribute("disabled","");
-  selectPreferencia.setAttribute("disabled","");
-  selectInteres.value = 1
-  clearOptions(masCanales)  
+  global.inputModalContactoNombre.value = "";
+  global.inputModalContactoApellido.value = "";
+  global.inputModalContactoCargo.value = "";
+  global.inputModalContactEmail.value = "";
+  clearOptions(global.selectPaisContactos);
+  global.selectPaisContactos.setAttribute("disabled","");
+  clearOptions(global.selectCiudadContactos);
+  global.selectCiudadContactos.setAttribute("disabled","");
+  global.inputModalContactoDireccion.value = "";
+  global.inputModalContactoDireccion.setAttribute("disabled","");  
+  global.inputCuentaContacto.value = ""
+  global.inputCuentaContacto.setAttribute("disabled","");
+  global.selectPreferencia.setAttribute("disabled","");
+  global.selectInteres.value = 1
+  clearOptions(global.masCanales)  
 }
 activeLink()
 formB()
