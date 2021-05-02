@@ -11,6 +11,7 @@ let objeto = {
 let arrayCompanias = [];
 let arrayContactos = [];
 let flag = false;
+let flagCompanias = false;
 
 
 window.onclick = function(e){      
@@ -31,6 +32,7 @@ window.onclick = function(e){
   }
 }
 window.onload = ()=>{
+  comprobacion()
   setTimeout(async()=>{
     arrayContactos = await contacto.loadContactos()
     contacto.addContactos(arrayContactos,arrayCompanias);
@@ -89,8 +91,9 @@ global.linkCompanias.addEventListener("click",async()=>{
   global.contactos.classList.add("none");
   global.regiones.classList.add("none")
   global.usuarios.classList.add("none");
-  global.companias.classList.remove("none");  
-  arrayCompanias = await compania.getCompanias();
+  global.companias.classList.remove("none");    
+  global.clearOptions(global.bodyTabla);
+  arrayCompanias = await compania.getCompanias();  
   compania.addCompaniesToTable(arrayCompanias);
 });
 global.linkUsuarios.addEventListener("click",()=>{
@@ -103,6 +106,7 @@ global.linkUsuarios.addEventListener("click",()=>{
 global.linkRegiones.addEventListener("click",async()=>{  
   global.opcionesContactos.classList.add("none");
   global.contactos.classList.add("none");
+  global.companias.classList.add("none");
   global.usuarios.classList.add("none");
   global.regiones.classList.remove("none");  
   while(global.regionCiudad.firstElementChild){
@@ -402,6 +406,13 @@ function activeLink(){
     })
   }
 }
-
+function comprobacion(){
+  let jwt = localStorage.getItem("jwt");  
+  let token = jwt.split(".");
+  let perfil = JSON.parse(atob(token[1]))
+  if(perfil.perfil!=1){
+    global.linkUsuarios.style.display = "none";
+  }  
+}
 activeLink()
 global.formB()
