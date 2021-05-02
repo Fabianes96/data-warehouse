@@ -11,7 +11,7 @@ let objeto = {
 let arrayCompanias = [];
 let arrayContactos = [];
 let flag = false;
-let contadorSeleccionadas = 0;  
+
 
 window.onclick = function(e){      
   if(e.target == global.modal || e.target == global.btnClose || e.target == global.xClose){    
@@ -33,7 +33,7 @@ window.onclick = function(e){
 window.onload = ()=>{
   setTimeout(async()=>{
     arrayContactos = await contacto.loadContactos()
-    contacto.addContactos(arrayContactos);
+    contacto.addContactos(arrayContactos,arrayCompanias);
   },500);
 }
 global.linkContactos.addEventListener("click",async()=>{
@@ -46,7 +46,7 @@ global.linkContactos.addEventListener("click",async()=>{
     global.clearOptions(global.bodyTablaContactos)
   }
   arrayContactos = await contacto.loadContactos();
-  contacto.addContactos(arrayContactos)
+  contacto.addContactos(arrayContactos,arrayCompanias)
 });
 global.divSearch.addEventListener("click",async()=>{
   if(!global.inputSearch.value ==""){
@@ -59,7 +59,7 @@ global.divSearch.addEventListener("click",async()=>{
       });
       arrayContactos = await res.json();
       global.clearOptions(global.bodyTablaContactos);
-      contacto.addContactos(arrayContactos);
+      contacto.addContactos(arrayContactos,arrayCompanias);
     } catch (error) {
       console.log("Algo salió mal ", error);
     }
@@ -77,7 +77,7 @@ global.inputSearch.addEventListener("keypress",async(e)=>{
         });
         arrayContactos = await res.json();
         global.clearOptions(global.bodyTablaContactos);
-        contacto.addContactos(arrayContactos)
+        contacto.addContactos(arrayContactos,arrayCompanias)
       } catch (error) {
         console.log("Algo salió mal ", error);
       }
@@ -96,6 +96,7 @@ global.linkCompanias.addEventListener("click",async()=>{
 global.linkUsuarios.addEventListener("click",()=>{
   global.opcionesContactos.classList.add("none");
   global.contactos.classList.add("none");
+  global.companias.classList.add("none");
   global.regiones.classList.add("none")    
   global.usuarios.classList.remove("none");
 });
@@ -114,31 +115,7 @@ global.linkRegiones.addEventListener("click",async()=>{
   await regiones.queryToJSON(objeto)
 });
 global.flexCheck.addEventListener("change",(e)=>{
-  let checklist = document.getElementsByClassName("to-be-checked");
-  if(e.currentTarget.checked){    
-    for (let i = 0; i < checklist.length; i++) {            
-      checklist[i].classList.add("tr-hover")
-      let th = checklist[i].firstElementChild;
-      let div = th.firstElementChild
-      let check = div.firstElementChild
-      check.checked = true      
-    }
-    contadorSeleccionadas = checklist.length;
-    global.nroSeleccion.firstElementChild.textContent = contadorSeleccionadas + " selecciondas";    
-  }
-  else{
-    for (let i = 0; i < checklist.length; i++) {      
-      checklist[i].classList.remove("tr-hover");
-      let th = checklist[i].firstElementChild;
-      let div = th.firstElementChild
-      let check = div.firstElementChild
-      check.checked = false
-    }
-    contadorSeleccionadas = 0;
-  
-  }
-  global.opCabecera.classList.toggle("none");
-  global.opCabecera.classList.toggle("opciones-cabecera");
+  contacto.toCheck(e)
 })
 global.btnCrearUsuario.addEventListener("click",async()=>{
   await usuarios.crearUsuarios()
@@ -226,7 +203,7 @@ global.btnAceptarModal.addEventListener("click",async()=>{
       window.location.reload();
     }else if(flag){
       try {
-        const res = await fetch("http://localhost:3000/infociudades",{
+        const res = await fetch("http://localhost:3000/regiones",{
           method: 'POST',
           headers:{
             'Content-Type': 'application/json',
@@ -389,24 +366,24 @@ global.btnEditarNuevoContacto.addEventListener("click",async()=>{
   await contacto.editContactoForm();
 });
 global.optionsGroup.addEventListener("change",async()=>{
-  await contacto.loadPaises(global.optionsPais,global.optionsGroup)  
+  await regiones.loadPaises(global.optionsPais,global.optionsGroup)  
 });
 global.optionsPais.addEventListener("change",async()=>{
-  await contacto.loadCiudades(global.optionsCiudad,global.optionsPais);
+  await regiones.loadCiudades(global.optionsCiudad,global.optionsPais);
 });
 global.selectRegionContactos.addEventListener("change",async()=>{
-  await contacto.loadPaises(global.selectPaisContactos,global.selectRegionContactos);
+  await regiones.loadPaises(global.selectPaisContactos,global.selectRegionContactos);
 });
 global.selectPaisContactos.addEventListener("change",async()=>{
-  await contacto.loadCiudades(global.selectCiudadContactos,global.selectPaisContactos);
+  await regiones.loadCiudades(global.selectCiudadContactos,global.selectPaisContactos);
 });
 global.selectCanal.addEventListener("click",async()=>{
   await contacto.loadPreferencias(global.selectPreferencia);
+});
+global.selectCiudadContactos.addEventListener("change",()=>{  
+  global.inputModalContactoDireccion.disabled = false;  
 })
 
-function check(e){  
-  e.preventDefault()  
-}
 function activeLink(){
   let menu = document.getElementById("menu");
   let a = menu.getElementsByClassName("links");      
@@ -425,5 +402,6 @@ function activeLink(){
     })
   }
 }
+
 activeLink()
 global.formB()

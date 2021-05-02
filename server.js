@@ -81,7 +81,7 @@ server.post("/usuarios",authorization,isAdmin,async(req,res)=>{
         res.json("Debe ingresar su apellido");
         return;
       }
-      if(!email){
+      if(!email || !email.includes("@")){
           res.status(400);
           res.json("Debe ingresar su email correctamente");
           return;
@@ -548,6 +548,11 @@ server.post("/contactos",authorization,isAdmin,async(req,res)=>{
     if(!(nombre ||apellido ||cargo||email||compania||ciudad||interes||direccion)){
       res.status(400);
       res.json("Falta algún parámetro");
+      return
+    }
+    if(!email.includes("@")){
+      res.status(400);
+      res.json("Debe escribir un correo");
       return
     }
     let consulta = await db.sequelize.query("INSERT into contactos (nombre,apellido,cargo,email,compania,ciudad,interes,direccion) VALUES(:nombre, :apellido, :cargo, :email, :compania, :ciudad, :interes, :direccion)",{

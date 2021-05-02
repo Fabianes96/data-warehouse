@@ -1,3 +1,5 @@
+import * as global from './global.js';
+
 function noLinkUsuarios(){
     global.opcionesContactos.classList.remove("none");
     global.contactos.classList.remove("none");
@@ -24,15 +26,16 @@ async function crearUsuarios(){
             password: global.inputPasswordUsuario.value
         })
       })
-      global.inputNombre.value = "";
-      global.inputApellido.value ="";
-      global.inputEmailUsuario.value = "";
-      admin = "";
-      global.inputPasswordUsuario.value = "";
       if(!res.ok){
         throw "Error al registrar usuario";
+      }else{
+        global.inputNombre.value = "";
+        global.inputApellido.value ="";
+        global.inputEmailUsuario.value = "";
+        admin = "";
+        global.inputPasswordUsuario.value = "";
+        console.log("Usuario registrado con exito");    
       }      
-      console.log("Usuario registrado con exito");    
     } catch (error) {    
       console.log("Algo salió mal: ", error);
     }

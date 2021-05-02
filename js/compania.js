@@ -1,5 +1,5 @@
 import * as global from "./global.js";
-
+import * as regiones from './regiones.js'
 async function loadCompaniaToModal(arrayCompanias) {
   try {
     let res = await fetch("http://localhost:3000/companias", {
@@ -29,6 +29,7 @@ function clearModalCompania() {
   global.inputModalCompaniaEmail.value = "";
   global.inputModalCompaniaTelefono.value = "";
   global.modalCompania.removeAttribute("compania");
+  global.formCompania.classList.remove("was-validated");
   global.clearOptions(global.optionsPais);
   global.clearOptions(global.optionsCiudad);
 }
@@ -76,9 +77,9 @@ function addCompaniesToTable(arrayCompanias) {
       );
       await regiones.loadOptions(global.optionsGroup);
       global.optionsGroup.value = arrayCompanias[i].id_region;
-      await loadPaises(global.optionsPais, global.optionsGroup);
+      await regiones.loadPaises(global.optionsPais, global.optionsGroup);
       global.optionsPais.value = arrayCompanias[i].id_pais;
-      await loadCiudades(global.optionsCiudad, global.optionsPais);
+      await regiones.loadCiudades(global.optionsCiudad, global.optionsPais);
       global.optionsCiudad.value = arrayCompanias[i].id_ciudad;
     });
     spanPrimary.appendChild(iEdit);
@@ -128,7 +129,7 @@ async function companiaActionsInModal() {
           ciudad: global.optionsCiudad.value,
         }),
       });
-      compania.clearModalCompania();
+      clearModalCompania();
       let mensaje = await res.json();
       if (!res.ok) {
         throw mensaje;
@@ -155,7 +156,7 @@ async function companiaActionsInModal() {
           }),
         }
       );
-      compania.clearModalCompania();
+      clearModalCompania();
       let mensaje = await res.json();
       if (!res.ok) {
         throw mensaje;

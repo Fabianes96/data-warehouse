@@ -1,5 +1,8 @@
 import * as global from './global.js';
+import * as compania from './compania.js'
+import * as regiones from './regiones.js'
 
+let contadorSeleccionadas = 0;  
 async function loadContactos(){
     try {
       let res = await fetch("http://localhost:3000/contactos",{
@@ -14,7 +17,7 @@ async function loadContactos(){
       console.log(error);
     }  
 }
-function addContactos(arrayContactos){    
+function addContactos(arrayContactos, arrayCompanias){    
     for (let i = 0; i < arrayContactos.length; i++) {    
       let tr = document.createElement("tr");
       tr.setAttribute("cid",arrayContactos[i].id)
@@ -40,10 +43,10 @@ function addContactos(arrayContactos){
           sp.textContent = contadorSeleccionadas + " selecciondas";
           if(contadorSeleccionadas==0){
             global.opCabecera.classList.remove("opciones-cabecera");
-            global.opCabecera.classList.add("none");
+            global.opCabecera.classList.add("none");            
+            global.flexCheck.checked = false;            
           }
-        }
-        
+        }        
       })
       let label = document.createElement("label");
       label.setAttribute("class", "form-check-label");
@@ -148,9 +151,9 @@ function addContactos(arrayContactos){
         global.selectCompanias.value = arrayContactos[i].id_compania;
         await regiones.loadOptions(global.optionsGroupContactos);
         global.optionsGroupContactos.value = arrayContactos[i].id_region      
-        await loadPaises(global.selectPaisContactos,global.optionsGroupContactos);
+        await regiones.loadPaises(global.selectPaisContactos,global.optionsGroupContactos);
         global.selectPaisContactos.value = arrayContactos[i].id_pais
-        await loadCiudades(global.selectCiudadContactos,global.selectPaisContactos);
+        await regiones.loadCiudades(global.selectCiudadContactos,global.selectPaisContactos);
         global.selectCiudadContactos.value = arrayContactos[i].id_ciudad;
         await loadCanales(global.selectCanal);  
         switch (porcentaje) {
@@ -205,7 +208,7 @@ function addContactos(arrayContactos){
       tr.appendChild(tdAcciones);
   
       global.bodyTablaContactos.appendChild(tr);    
-    }
+    }    
 }
 async function deleteContacto(id){
     try {
@@ -281,6 +284,7 @@ async function addCanalToModal(selectCanalValue,inputCuentaContactoValue, select
     selectC.setAttribute("disabled","");
 
     await loadCanales(selectC);
+    selectC.removeChild(selectC.firstElementChild);
     if(pos1!=0){
       selectC.value = pos1
     }else{
@@ -300,6 +304,7 @@ async function addCanalToModal(selectCanalValue,inputCuentaContactoValue, select
     select.setAttribute("disabled","");
     
     await loadPreferencias(select);
+    select.removeChild(select.firstElementChild);
     if(pos2!=0){
       select.value = pos2;
     }else{
@@ -357,9 +362,7 @@ async function addCanalToModal(selectCanalValue,inputCuentaContactoValue, select
     global.masCanales.appendChild(selectC);
     global.masCanales.appendChild(inputCC);
     global.masCanales.appendChild(select);
-    if(edicion){
-      global.masCanales.appendChild(spanPrimary);
-    }
+    global.masCanales.appendChild(spanPrimary);    
     global.masCanales.appendChild(spanDelete);  
 }
 async function addCanales(contacto,i=0){
@@ -444,58 +447,7 @@ async function editCanales(contacto,cont){
     await addCanales(contacto,i)
   }
 }
-async function loadPaises(options, previewsOptions){  
-    try {
-      let res = await fetch("http://localhost:3000/paises");
-      let arrayPaises = await res.json();      
-      global.clearOptions(options);
-      if(global.optionsCiudad.length > 1){    
-        global.clearOptions(global.optionsCiudad);
-      }
-      if(global.selectCiudadContactos.length>1){
-        global.clearOptions(global.selectCiudadContactos);
-      }
-      if(global.selectPaisContactos === options){      
-        global.selectPaisContactos.disabled = false;
-      }
-      let emptyOption = document.createElement("option");
-      emptyOption.setAttribute("selected","");
-      options.appendChild(emptyOption);
-      for (let i = 0; i < arrayPaises.length; i++) {      
-        let option = document.createElement("option");         
-        if(arrayPaises[i].region == previewsOptions.value){
-          option.textContent = arrayPaises[i].nombre  
-          option.setAttribute("value",arrayPaises[i].id);      
-          options.appendChild(option);    
-        }
-      }     
-    } catch (error) {
-      console.log(error);
-    }
-}
-async function loadCiudades(options,previewsOptions){  
-    try {
-      let res = await fetch("http://localhost:3000/ciudades");
-      let arrayCiudades = await res.json();  
-      global.clearOptions(options);
-      if(global.selectCiudadContactos === options){      
-        global.selectCiudadContactos.disabled = false;
-      }
-      let emptyOption = document.createElement("option");
-      emptyOption.setAttribute("selected","");
-      options.appendChild(emptyOption);
-      for (let i = 0; i < arrayCiudades.length; i++) {      
-        let option = document.createElement("option");         
-        if(arrayCiudades[i].pais == previewsOptions.value){
-          option.textContent = arrayCiudades[i].nombre        
-          option.setAttribute("value",arrayCiudades[i].id)
-          options.appendChild(option);    
-        }
-      }      
-    } catch (error) {
-      console.log(error);
-    }
-}
+
 function clearModalContactos(){
     global.inputModalContactoNombre.value = "";
     global.inputModalContactoApellido.value = "";
@@ -510,7 +462,8 @@ function clearModalContactos(){
     global.inputCuentaContacto.value = ""
     global.inputCuentaContacto.setAttribute("disabled","");
     global.selectPreferencia.setAttribute("disabled","");
-    global.selectInteres.value = 1
+    global.selectInteres.value = 1    
+    global.formContactos.classList.remove("was-validated");
     global.clearOptions(global.masCanales)  
 }
 async function addContactoForm(){
@@ -537,14 +490,16 @@ async function addContactoForm(){
                 direccion: global.inputModalContactoDireccion.value          
             })
           });
+          let resAsJSON = await res.json()      
           if(res.ok){
-            let resAsJSON = await res.json()      
             if(global.masCanales.childElementCount != 0){
-              await contacto.addCanales(resAsJSON[0]);
+              await addCanales(resAsJSON[0]);
             }
+            clearModalContactos();      
+            window.location.reload()
+          }else{
+            throw resAsJSON;
           }
-          contacto.clearModalContactos();      
-          window.location.reload()
         }
     } catch (error) {
         console.log(error);
@@ -587,5 +542,33 @@ async function editContactoForm(){
         console.log(error);
     }  
 }
+function toCheck(e){
+  let checklist = document.getElementsByClassName("to-be-checked");
+  if(e.currentTarget.checked){    
+    for (let i = 0; i < checklist.length; i++) {            
+      checklist[i].classList.add("tr-hover")
+      let th = checklist[i].firstElementChild;
+      let div = th.firstElementChild
+      let check = div.firstElementChild
+      check.checked = true      
+    }
+    contadorSeleccionadas = checklist.length;
+    global.nroSeleccion.firstElementChild.textContent = contadorSeleccionadas + " selecciondas";    
+  }
+  else{
+    for (let i = 0; i < checklist.length; i++) {      
+      checklist[i].classList.remove("tr-hover");
+      let th = checklist[i].firstElementChild;
+      let div = th.firstElementChild
+      let check = div.firstElementChild
+      check.checked = false
+    }    
+    contadorSeleccionadas = 0;  
+  }
+  if(!(e.currentTarget.checked && global.opCabecera.classList.contains("opciones-cabecera"))){
+    global.opCabecera.classList.toggle("none");
+    global.opCabecera.classList.toggle("opciones-cabecera");
+  }
+}
   
-export {loadContactos, addContactos, deleteContacto, loadCanales, addCanalToModal,editCanales,addCanales,clearModalContactos, addContactoForm, editContactoForm, loadPaises,loadCiudades, loadPreferencias}
+export {loadContactos, addContactos, deleteContacto, loadCanales, addCanalToModal,editCanales,addCanales,clearModalContactos, addContactoForm, editContactoForm, loadPreferencias, toCheck}

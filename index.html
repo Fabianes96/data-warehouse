@@ -232,7 +232,7 @@
               <button id="xcloseCompania" type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-              <form class="needs-validation" novalidate>
+              <form id="formCompania" class="needs-validation" novalidate>
                 <div class="mb-3">
                   <label for="recipient-name" class="col-form-label">Nombre</label>
                   <input type="text" class="form-control" id="inputModalCompaniaNombre" required>
@@ -347,7 +347,7 @@
         <button id="btnCloseModalAddContacto" type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        <form class="needs-validation" novalidate>
+        <form id="formContactos" class="needs-validation" novalidate>
           <div class="form-nuevo-contacto">          
             <label for="inputModalContactoNombre" class="col-form-label">Nombre*</label>
             <input type="text" class="form-control" id="inputModalContactoNombre" required>
@@ -369,10 +369,11 @@
             </div>
             <label for="inputModalContactoEmail" class="col-form-label">Email*</label>
             <input type="email" class="form-control" id="inputModalContactoEmail" required>
-            <div class="valid-feedback">         
-            </div>
             <div class="invalid-feedback">              
+              Debe ingresar un correo
             </div>
+            <div class="valid-feedback">         
+            </div>            
             <label for="selectContactoCompania" class="col-form-label">Compañia*</label>          
             <select id="selectContactoCompania" class="form-select" aria-label="Default select example"  required>
               <option selected>Ingrese la compañia</option>       
@@ -418,7 +419,7 @@
           </div>
           <button id="btnSubmitContacto" type="submit" class="none"></button>
         </form>
-        <form class="canales-contactos" onsubmit="check(event)">
+        <form class="canales-contactos">
           <div class="canales">
             <label class="col-form-label">Canal de contacto</label>
             <select id="selectCanal" class="form-select" aria-label="Default select example" required>

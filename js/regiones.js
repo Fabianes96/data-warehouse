@@ -1,6 +1,6 @@
 import * as global from './global.js';
 
-function addContentToTree(obj) {
+function addContentToTree(obj) {  
   for (let region in obj) {
     let divCardRegion = document.createElement("div");
     divCardRegion.setAttribute("class", "card region");
@@ -70,7 +70,7 @@ function addContentToTree(obj) {
     divTreeList.setAttribute("class", "list-tree");
 
     let ul = document.createElement("ul");
-    for (pais in obj[region]) {
+    for (let pais in obj[region]) {
       if (pais != "null" && pais != "id") {
         let li = document.createElement("li");
         let spanCaret = document.createElement("span");
@@ -157,10 +157,10 @@ function addContentToTree(obj) {
             spanLinkPrimary.setAttribute("data-bs-target", "#exampleModal");
             spanLinkPrimary.setAttribute("data-bs-toggle", "modal");
             spanLinkPrimary.addEventListener("click", () => {
-              modalLabel.textContent = "Editar ciudad";
-              labelAddInModal.textContent = "";
-              inputModal.value = spanOpciones.getAttribute("ciudad");
-              labelAddInModal.setAttribute(
+              global.modalLabel.textContent = "Editar ciudad";
+              global.labelAddInModal.textContent = "";
+              global.inputModal.value = spanOpciones.getAttribute("ciudad");
+              global.labelAddInModal.setAttribute(
                 "eciudad",
                 spanOpciones.getAttribute("id_ciudad")
               );
@@ -274,10 +274,62 @@ async function queryToJSON(objeto) {
           ciudad: obj.ciudad,
         });
       }
-    });
+    });    
     addContentToTree(objeto.region);
   } catch (error) {
     console.log(error);
   }
 }
-export { addContentToTree, loadOptions, queryToJSON };
+async function loadPaises(options, previewsOptions){  
+  try {
+    let res = await fetch("http://localhost:3000/paises");
+    let arrayPaises = await res.json();      
+    global.clearOptions(options);
+    if(global.optionsCiudad.length > 1){    
+      global.clearOptions(global.optionsCiudad);
+    }
+    if(global.selectCiudadContactos.length>1){
+      global.clearOptions(global.selectCiudadContactos);
+    }
+    if(global.selectPaisContactos === options){      
+      global.selectPaisContactos.disabled = false;
+    }
+    let emptyOption = document.createElement("option");
+    emptyOption.setAttribute("selected","");
+    options.appendChild(emptyOption);
+    for (let i = 0; i < arrayPaises.length; i++) {      
+      let option = document.createElement("option");         
+      if(arrayPaises[i].region == previewsOptions.value){
+        option.textContent = arrayPaises[i].nombre  
+        option.setAttribute("value",arrayPaises[i].id);      
+        options.appendChild(option);    
+      }
+    }     
+  } catch (error) {
+    console.log(error);
+  }
+}
+async function loadCiudades(options,previewsOptions){  
+  try {
+    let res = await fetch("http://localhost:3000/ciudades");
+    let arrayCiudades = await res.json();  
+    global.clearOptions(options);
+    if(global.selectCiudadContactos === options){      
+      global.selectCiudadContactos.disabled = false;
+    }
+    let emptyOption = document.createElement("option");
+    emptyOption.setAttribute("selected","");
+    options.appendChild(emptyOption);
+    for (let i = 0; i < arrayCiudades.length; i++) {      
+      let option = document.createElement("option");         
+      if(arrayCiudades[i].pais == previewsOptions.value){
+        option.textContent = arrayCiudades[i].nombre        
+        option.setAttribute("value",arrayCiudades[i].id)
+        options.appendChild(option);    
+      }
+    }      
+  } catch (error) {
+    console.log(error);
+  }
+}
+export { addContentToTree, loadOptions, queryToJSON, loadPaises, loadCiudades };
