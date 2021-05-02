@@ -96,12 +96,13 @@ global.linkCompanias.addEventListener("click",async()=>{
   arrayCompanias = await compania.getCompanias();  
   compania.addCompaniesToTable(arrayCompanias);
 });
-global.linkUsuarios.addEventListener("click",()=>{
+global.linkUsuarios.addEventListener("click",async()=>{
   global.opcionesContactos.classList.add("none");
   global.contactos.classList.add("none");
   global.companias.classList.add("none");
   global.regiones.classList.add("none")    
   global.usuarios.classList.remove("none");
+  await usuarios.addUsuarios();
 });
 global.linkRegiones.addEventListener("click",async()=>{  
   global.opcionesContactos.classList.add("none");

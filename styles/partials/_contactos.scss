@@ -25,10 +25,7 @@
             cursor: pointer;
         }
     }
-    #div-contactos{
-        height: 400px;
-        border: 1px solid $color-scundario;
-        overflow: auto;
+    #div-contactos{        
         #cabecera{
             border-bottom: 1px solid $color-scundario;
             tr > :last-child{

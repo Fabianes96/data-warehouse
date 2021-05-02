@@ -89,7 +89,29 @@
       </div>
     </section>
     <section id="usuarios" class="none">
-      <form class="usuarios needs-validation" novalidate>
+      <div>
+        <button class="btn btn-primary">Ver usuarios</button>
+        <button class="btn btn-success none">Crear usuario</button>
+      </div>      
+      <div class="table-container">
+        <table class="table table-borderless table-hover">
+          <thead id="cabeceraU">
+            <tr>
+              <th scope="col"><div class="form-check">
+                <input class="form-check-input" type="checkbox" value="" id="flexCheck">
+                <label class="form-check-label" for="flexCheck">                  
+                </label>
+              <th scope="col">Nombre</th>
+              <th scope="col">Apellido</th>
+              <th scope="col">Email</th>
+              <th scope="col">Perfil</th>
+            </tr>
+          </thead>
+          <tbody id="tbodyUsuarios">            
+          </tbody>
+        </table>        
+      </div>      
+      <form class="usuarios needs-validation none" novalidate>
         <h1>Crear Usuario</h1>
         <div class="mb-3">
           <label for="inputNombre" class="form-label">Nombre</label>
@@ -138,23 +160,11 @@
           <div class="invalid-feedback">
             Debe ingresar la contraseña
           </div>
-        </div>        
-        <div class="mb-3">
-          <label for="repetirContra" class="form-label">Repetir Contaseña</label>
-          <input name="repetir" id="repetir" type="password" class="form-control" id="repetirContra" required>
-          <div id="coinciden" class="valid-feedback">            
-          </div>
-          <div id="noCoinciden" class="invalid-feedback">
-            Las contraseñas no coinciden
-          </div>
-        </div>        
+        </div>                
         <button type="submit" id="btn-crear-usuario" class="btn btn-primary">Crear</button>
         <div class="alert alert-success" role="alert">
           Usuario registrado con éxito
-        </div>
-        <div class="alert alert-danger" role="alert">
-          Ha ocurrido un error inesperado
-        </div>
+        </div>        
       </form>
     </section>
     <section id="regiones" class="none">   
@@ -174,7 +184,7 @@
           </span>
         </div>
       </div>
-      <div id="div-contactos">        
+      <div id="div-contactos" class="table-container">        
         <table class="table table-borderless table-hover">
           <thead id="cabecera">
             <tr>

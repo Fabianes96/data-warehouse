@@ -69,6 +69,21 @@ server.post("/login",async(req,res)=>{
         res.end();
     }
 });
+server.get("/usuarios", authorization, isAdmin,async(req,res)=>{
+  try {
+    let consulta = await db.sequelize.query(
+      `SELECT id, nombre, apellido, email, perfil FROM usuarios`
+    ,{
+      type: db.sequelize.QueryTypes.SELECT,
+    });    
+    res.status(200)
+    res.json(consulta);
+  } catch (error) {
+    console.log(error);
+    res.status(500);
+    res.json("Ha ocurrido un error inesperado");
+  }
+});
 server.post("/usuarios",authorization,isAdmin,async(req,res)=>{
     const {nombre, apellido, email, perfil, password} = req.body;
     if (!nombre || nombre == "") {
