@@ -349,7 +349,8 @@ global.btnEliminar.addEventListener("click",async()=>{
         if(!res.ok){
           throw 'Error al eliminar los datos';
         }
-        console.log("Compania eliminada");      
+      global.cancelWarningModal.click()
+      global.linkCompanias.click();
     } else if(global.labelWarning.getAttribute("contacto")){
       await contacto.deleteContacto(global.labelWarning.getAttribute("contacto"));      
       global.labelWarning.removeAttribute("contacto");
@@ -370,16 +371,17 @@ global.btnEliminar.addEventListener("click",async()=>{
       global.labelWarning.removeAttribute("usuario");
       global.cancelWarningModal.click()
       global.linkUsuarios.click();
-    }
-    
-    //window.location.reload();
+    }        
   } catch (error) {
     console.log(error);
   }
 });
 
-global.btnAceptarModalCompania.addEventListener("click",async()=>{
+global.btnAceptarModalCompania.addEventListener("click",async(e)=>{
+  e.preventDefault()
   await compania.companiaActionsInModal();
+  global.btnCloseCompania.click()
+  global.linkCompanias.click();
 })
 
 global.btnAddCompanias.addEventListener("click",async()=>{

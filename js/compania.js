@@ -133,9 +133,7 @@ async function companiaActionsInModal() {
       let mensaje = await res.json();
       if (!res.ok) {
         throw mensaje;
-      }
-      console.log("Compañia agregada con exito");
-      window.location.reload();
+      }      
     } else {
       let res = await fetch(
         `http://localhost:3000/companias/${global.modalCompania.getAttribute(
@@ -160,9 +158,7 @@ async function companiaActionsInModal() {
       let mensaje = await res.json();
       if (!res.ok) {
         throw mensaje;
-      }
-      console.log("Compañia actualizada");
-      window.location.reload();
+      }      
     }
   } catch (error) {
     console.log(error);
