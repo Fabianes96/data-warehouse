@@ -175,9 +175,9 @@ global.btnAceptarModal.addEventListener("click",async()=>{
       let mensaje = await res.json()      
       if(!res.ok){
         throw mensaje;
-      }
-      console.log("Pais registrado");
-      window.location.reload();
+      }      
+      global.btnClose.click()
+      global.linkRegiones.click();
     } else if(global.labelAddInModal.getAttribute("pais")){      
       const res = await fetch("http://localhost:3000/ciudades",{
       method: 'POST',
@@ -193,11 +193,11 @@ global.btnAceptarModal.addEventListener("click",async()=>{
       if(!res.ok){
         let mensaje = await res.json()        
         throw mensaje;
-      }
-      console.log("Ciudad registrada");
+      }      
       global.inputModal.value = "";
       global.labelAddInModal.removeAttribute("pais");      
-      window.location.reload();      
+      global.btnClose.click()
+      global.linkRegiones.click();
     
     }else if(global.labelAddInModal.getAttribute("epais")){
       const res = await fetch(`http://localhost:3000/paises/${global.labelAddInModal.getAttribute("epais")}`,{
@@ -216,8 +216,8 @@ global.btnAceptarModal.addEventListener("click",async()=>{
       if(!res.ok){
         throw mensaje;
       }
-      console.log("Pais actualizado");
-      window.location.reload();
+      global.btnClose.click()
+      global.linkRegiones.click();
     }else if(global.labelAddInModal.getAttribute("eciudad")){
       const res = await fetch(`http://localhost:3000/ciudades/${global.labelAddInModal.getAttribute("eciudad")}`,{
       method: 'PATCH',
@@ -235,8 +235,8 @@ global.btnAceptarModal.addEventListener("click",async()=>{
       if(!res.ok){
         throw mensaje;
       }
-      console.log("Ciudad actualizada");
-      window.location.reload();
+      global.btnClose.click()
+      global.linkRegiones.click();
     }else if(flag){
       try {
         const res = await fetch("http://localhost:3000/regiones",{
@@ -255,8 +255,8 @@ global.btnAceptarModal.addEventListener("click",async()=>{
         if(!res.ok){
           throw mensaje
         }
-        console.log("Región agregada con exito");
-        window.location.reload()
+        global.btnClose.click()
+        global.linkRegiones.click();
       } catch (error) {
         console.log(error);
       }
@@ -277,8 +277,8 @@ global.btnAceptarModal.addEventListener("click",async()=>{
       if(!res.ok){
         throw mensaje;
       }
-      console.log("Región actualizada");
-      window.location.reload();
+      global.btnClose.click()
+      global.linkRegiones.click();
     }
   } catch (error) {
     console.log(error);
@@ -307,7 +307,8 @@ global.btnEliminar.addEventListener("click",async()=>{
       if(!res.ok){
         throw 'Error al eliminar los datos';
       }
-      console.log("Pais eliminado");      
+      global.cancelWarningModal.click()
+      global.linkRegiones.click();      
     }else if(global.labelWarning.getAttribute("ciudad")){
       const res = await fetch(`http://localhost:3000/ciudades/${global.labelWarning.getAttribute("ciudad")}`,{
       method: 'DELETE',
@@ -320,7 +321,8 @@ global.btnEliminar.addEventListener("click",async()=>{
       if(!res.ok){
         throw 'Error al eliminar los datos';
       }
-      console.log("Ciudad eliminada");      
+      global.cancelWarningModal.click()
+      global.linkRegiones.click();      
     } else if(global.labelWarning.getAttribute("region")){
       const res = await fetch(`http://localhost:3000/regiones/${global.labelWarning.getAttribute("region")}`,{
         method: 'DELETE',
@@ -333,7 +335,8 @@ global.btnEliminar.addEventListener("click",async()=>{
         if(!res.ok){
           throw 'Error al eliminar los datos';
         }
-        console.log("Región eliminada");      
+        global.cancelWarningModal.click()
+        global.linkRegiones.click();          
     } else if(global.labelWarning.getAttribute("compania")){
       const res = await fetch(`http://localhost:3000/companias/${global.labelWarning.getAttribute("compania")}`,{
         method: 'DELETE',
