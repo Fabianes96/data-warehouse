@@ -77,7 +77,7 @@ async function addUsuarios(contadorSeleccionadas){
       }else{
         tr.classList.remove("tr-hover")
         contadorSeleccionadas = contadorSeleccionadas -1;         
-        sp.textContent = contadorSeleccionadas + " selecciondas";
+        sp.textContent = contadorSeleccionadas + " seleccionadas";
         if(contadorSeleccionadas==0){
           global.opCabeceraUser.classList.remove("opciones-cabecera");
           global.opCabeceraUser.classList.add("none");            
@@ -212,5 +212,24 @@ async function editUsuario(id, perfil){
     console.log(error);
   }
 }
+async function editPassword(){
 
-export {noLinkUsuarios, crearUsuarios, addUsuarios, editUsuario, toCheckUser}
+}
+async function deleteUsuario(id){
+  try {
+    const res = await fetch(`http://localhost:3000/usuarios/${id}`,{
+      method: 'DELETE',
+      headers:{
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${localStorage.getItem("jwt")}`
+      },      
+    })        
+    if(!res.ok){
+      throw 'Error al eliminar los datos';
+    }      
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+export {noLinkUsuarios, crearUsuarios, addUsuarios, editUsuario, toCheckUser, deleteUsuario}

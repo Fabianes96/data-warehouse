@@ -3,6 +3,7 @@ import * as usuarios from './usuarios.js';
 import * as compania from './compania.js';
 import * as regiones from './regiones.js';
 import * as contacto from './contactos.js';
+import {MD5} from './utils.js';
 
 let objeto = {
   "region": {      
@@ -14,7 +15,7 @@ let flag = false;
 let flagCompanias = false;
 let contadorSeleccionadas = 0;
 let contadorSeleccionadasUser = 0;
-
+let user = "";
 
 window.onclick = function(e){      
   if(e.target == global.modal || e.target == global.btnClose || e.target == global.xClose){    
@@ -49,6 +50,7 @@ global.linkContactos.addEventListener("click",async()=>{
   global.opCabecera.classList.add("none");
   global.opCabecera.classList.remove("opciones-cabecera");
   contadorSeleccionadas = 0;
+  global.flexCheck.checked = false
   if(global.bodyTablaContactos.firstElementChild){
     global.clearOptions(global.bodyTablaContactos)
   }
@@ -109,7 +111,8 @@ global.linkUsuarios.addEventListener("click",async()=>{
   global.usuarios.classList.remove("none");
   global.opCabeceraUser.classList.add("none");
   global.opCabeceraUser.classList.remove("opciones-cabecera");
-  contadorSeleccionadasUser = 0;
+  contadorSeleccionadasUser = 0;  
+  global.flexCheckUsuarios.checked = false
   if(global.bodyTablaUsuarios.firstElementChild){
     global.clearOptions(global.bodyTablaUsuarios)
   }
@@ -136,8 +139,17 @@ global.flexCheck.addEventListener("change",(e)=>{
 global.flexCheckUsuarios.addEventListener("change",(e)=>{
   usuarios.toCheckUser(e,contadorSeleccionadasUser)
 })
-global.btnCrearUsuario.addEventListener("click",async()=>{
-  await usuarios.crearUsuarios()
+global.btnCrearUsuario.addEventListener("click",async(e)=>{
+  try {
+    e.preventDefault()
+    await usuarios.crearUsuarios();
+    global.addUsersForm.lastElementChild.classList.remove("none");
+    setTimeout(()=>{      
+      global.addUsersForm.lastElementChild.classList.add("none");
+    },10000);
+  } catch (error) {
+    console.log(error);
+  }
 })
 global.btnAceptarModal.addEventListener("click",async()=>{
   try {    
@@ -331,21 +343,21 @@ global.btnEliminar.addEventListener("click",async()=>{
         }
         console.log("Compania eliminada");      
     } else if(global.labelWarning.getAttribute("contacto")){
-      contacto.deleteContacto(global.labelWarning.getAttribute("contacto"));      
+      await contacto.deleteContacto(global.labelWarning.getAttribute("contacto"));      
       global.labelWarning.removeAttribute("contacto");
-    } else if(global.labelWarning.getAttribute("usuario")){
-      const res = await fetch(`http://localhost:3000/usuarios/${global.labelWarning.getAttribute("usuario")}`,{
-        method: 'DELETE',
-        headers:{
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${localStorage.getItem("jwt")}`
-        },      
-      })      
-      global.labelWarning.removeAttribute("usuario");            
-        if(!res.ok){
-          throw 'Error al eliminar los datos';
-        }
-        console.log("Usuario eliminada");      
+    }else if(global.labelWarning.getAttribute("contactos-varios")){
+      let allChecked = document.getElementsByClassName("tr-hover");
+      for (let i = 0; i < allChecked.length; i++) {    
+        await contacto.deleteContacto(allChecked[i].attributes.cid.value);    
+      }      
+    } else if(global.labelWarning.getAttribute("usuarios")){
+      let allChecked = document.getElementsByClassName("tr-hover");
+      for (let i = 0; i < allChecked.length; i++){    
+        await usuarios.deleteUsuario(allChecked[i].attributes.uid.value);    
+      }      
+    } else if(global.labelWarning.getAttribute("usuario")){      
+      await usuarios.deleteUsuario(global.labelWarning.getAttribute("usuario"));      
+      global.labelWarning.removeAttribute("usuario");
     }
     window.location.reload();
   } catch (error) {
@@ -381,11 +393,8 @@ global.agregarCanal.addEventListener("click",async()=>{
 })
 
 global.linkEliminar.addEventListener("click", async()=>{
-  let allChecked = document.getElementsByClassName("tr-hover");
-  for (let i = 0; i < allChecked.length; i++) {    
-    await contacto.deleteContacto(allChecked[i].attributes.cid.value);    
-  }
-  window.location.reload()
+  global.labelWarning.textContent = `Está seguro que desea eliminar los contactos seleccionados?`
+  global.labelWarning.setAttribute("contactos-varios","true");    
 });
 
 global.btnAddContactoForm.addEventListener("click",async()=>{  
@@ -417,11 +426,62 @@ global.selectCiudadContactos.addEventListener("change",()=>{
 });
 global.btnAceptarModalUsuario.addEventListener("click",async()=>{
   try {
-    await usuarios.editUsuario(global.modalUsuarios.getAttribute("uid"),global.usuarioPerfil.value);    
+    await usuarios.editUsuario(global.modalUsuarios.getAttribute("uid"),global.usuarioPerfil.value);        
+    if(global.inputEditPasswordUsuario.value != "" && global.newPasswordUsuario.value != ""){
+      let antPassCod = MD5(global.inputEditPasswordUsuario.value);             
+      if(antPassCod == user[0].password){
+        let res = await fetch(`http://localhost:3000/usuarios/${user[0].id}/password`,{
+          method: 'PATCH',
+          headers:{
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${localStorage.getItem("jwt")}`
+          },
+          body:JSON.stringify({
+            password: MD5(global.newPasswordUsuario.value),        
+          })          
+        });
+        if(!res.ok){
+          throw 'Error al actualizar los datos'
+        }
+      }
+    }
   } catch (error) {
     console.log(error);
   }
-})
+});
+global.toAddUserForm.addEventListener("click",()=>{
+  global.userHeader.classList.add("none");
+  global.addUsersForm.classList.remove("none");
+  global.divUsersTable.classList.add("none")
+});
+global.spanListaUsuarios.addEventListener("click",async()=>{  
+  global.clearOptions(global.bodyTablaUsuarios)  
+  await usuarios.addUsuarios(contadorSeleccionadasUser);  
+  global.userHeader.classList.remove("none");
+  global.addUsersForm.classList.add("none");
+  global.divUsersTable.classList.remove("none")
+});
+global.eliminarUsuarios.addEventListener("click",()=>{
+  global.labelWarning.textContent = `Está seguro que desea eliminar los usuarios seleccionados?`
+  global.labelWarning.setAttribute("usuarios","true");      
+});
+global.changePassword.addEventListener("click",async()=>{
+  try {
+    let res = await fetch(`http://localhost:3000/usuarios/${global.modalUsuarios.getAttribute("uid")}`,{
+      headers:{
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${localStorage.getItem("jwt")}`
+      },        
+    });    
+    user = await res.json();    
+    global.inputEditPasswordUsuario.setAttribute("required", "");
+    global.newPasswordUsuario.setAttribute("required", "");
+    global.changePassword.classList.add("none");  
+    global.divPassword.classList.remove("none");    
+  } catch (error) {
+    console.log(error);
+  }
+});
 
 function activeLink(){
   let menu = document.getElementById("menu");

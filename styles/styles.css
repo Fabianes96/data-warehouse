@@ -459,6 +459,22 @@ header nav .container ul li:hover a {
   top: 100px;
 }
 
+#usuarios #userHeader {
+  width: 100%;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+}
+
+#usuarios #userHeader button {
+  -ms-flex-item-align: center;
+      -ms-grid-row-align: center;
+      align-self: center;
+}
+
 #usuarios #nro-seleccion-user {
   width: 115px;
 }
@@ -489,6 +505,32 @@ header nav .container ul li:hover a {
   -ms-flex-item-align: center;
       -ms-grid-row-align: center;
       align-self: center;
+}
+
+#usuarios #spanListaUsuarios {
+  width: 150px;
+  margin-bottom: 15px;
+  cursor: pointer;
+}
+
+#usuarios #spanListaUsuarios:hover {
+  text-decoration: underline;
+}
+
+#usuarios #eliminar-usuario {
+  cursor: pointer;
+}
+
+#usuarios #eliminar-usuario:hover {
+  text-decoration: underline;
+}
+
+#sectionModalUsuarios #changePassword {
+  cursor: pointer;
+}
+
+#sectionModalUsuarios #changePassword:hover {
+  text-decoration: underline;
 }
 
 #regiones {

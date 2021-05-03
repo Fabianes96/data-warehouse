@@ -10,7 +10,15 @@
     }
     #div-users-table{
         position: relative;
-        top: 100px;
+        top: 100px;        
+    }    
+    #userHeader{
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        button{
+            align-self: center;
+        }
     }    
     #nro-seleccion-user{
         width: 115px;
@@ -30,6 +38,28 @@
         }
         #btn-crear-usuario{
             align-self: center;
+        }
+    }
+    #spanListaUsuarios{   
+        width: 150px;     
+        margin-bottom: 15px;
+        cursor: pointer;
+        &:hover{
+            text-decoration: underline;
+        }        
+    }
+    #eliminar-usuario{
+        cursor: pointer;
+        &:hover{
+            text-decoration: underline;
+        }
+    }    
+}
+#sectionModalUsuarios{
+    #changePassword{
+        cursor: pointer;
+        &:hover{
+            text-decoration: underline;
         }
     }
 }

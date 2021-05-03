@@ -83,7 +83,16 @@ let btnAceptarModalUsuario =document.getElementById("btnAceptarModalUsuario");
 let nroSeleccionUser = document.getElementById("nro-seleccion-user");
 let opCabeceraUser = document.getElementById("opCabeceraUser");
 let flexCheckUsuarios = document.getElementById("flexCheckUsuarios");
-
+let toAddUserForm = document.getElementById("toAddUserForm");
+let userHeader = document.getElementById("userHeader");
+let addUsersForm = document.getElementById("addUsersForm");
+let divUsersTable = document.getElementById("div-users-table");
+let spanListaUsuarios = document.getElementById("spanListaUsuarios");
+let eliminarUsuarios = document.getElementById("eliminar-usuario");
+let inputEditPasswordUsuario = document.getElementById("inputEditPasswordUsuario");
+let newPasswordUsuario = document.getElementById("newPasswordUsuario");
+let changePassword = document.getElementById("changePassword");
+let divPassword = document.getElementById("divPassword");
 function clearOptions(options){
     while(options.firstElementChild){
       options.removeChild(options.firstElementChild);
@@ -103,4 +112,4 @@ function formB () {
       })
 }
 
-export {linkContactos, linkCompanias, linkUsuarios, linkRegiones, opcionesContactos, companias, usuarios, btnCrearUsuario,inputNombre,inputApellido,inputEmailUsuario, perfil,inputPasswordUsuario,regionCiudad,regiones,modalLabel, btnAceptarModal,btnEliminar,labelAddInModal,labelWarning, inputModal,btnAgregarRegion,btnClose,xClose, modal,modalCompania,xCloseCompania, btnCloseCompania, bodyTabla, bodyTablaContactos,btnAddCompanias,inputModalCompaniaNombre,inputModalCompaniaTelefono,inputModalCompaniaEmail, inputModalCompaniaDireccion, optionsGroup,optionsGroupContactos,optionsCiudad, optionsPais,flexCheck, divSearch, inputSearch,btnAceptarModalCompania,nroSeleccion,opCabecera,linkEliminar,btnAddContactos,selectCiudadContactos,selectPaisContactos, inputModalContactoDireccion,selectCanal,selectPreferencia,inputCuentaContacto,agregarCanal,masCanales,selectCompanias,btnAddContactoForm,btnAddNuevoContacto,inputModalContactoNombre,inputModalContactoApellido,inputModalContactoCargo,inputModalContactEmail,selectInteres,selectRegionContactos,modalAddContactos,btnCancelModalAddContacto,btnEliminarModalAddContacto,btnCloseModalAddContactos,btnEditarNuevoContacto,contactos, clearOptions, formB,formContactos, formCompania, bodyTablaUsuarios,modalUsuarios,xcloseUsuario,formUsuario, inputModalUsuarioNombre, inputModalUsuarioApellido,inputModalUsuarioEmail,usuarioPerfil,btnCloseModalUsuario,btnAceptarModalUsuario,nroSeleccionUser,opCabeceraUser, flexCheckUsuarios}
+export {linkContactos, linkCompanias, linkUsuarios, linkRegiones, opcionesContactos, companias, usuarios, btnCrearUsuario,inputNombre,inputApellido,inputEmailUsuario, perfil,inputPasswordUsuario,regionCiudad,regiones,modalLabel, btnAceptarModal,btnEliminar,labelAddInModal,labelWarning, inputModal,btnAgregarRegion,btnClose,xClose, modal,modalCompania,xCloseCompania, btnCloseCompania, bodyTabla, bodyTablaContactos,btnAddCompanias,inputModalCompaniaNombre,inputModalCompaniaTelefono,inputModalCompaniaEmail, inputModalCompaniaDireccion, optionsGroup,optionsGroupContactos,optionsCiudad, optionsPais,flexCheck, divSearch, inputSearch,btnAceptarModalCompania,nroSeleccion,opCabecera,linkEliminar,btnAddContactos,selectCiudadContactos,selectPaisContactos, inputModalContactoDireccion,selectCanal,selectPreferencia,inputCuentaContacto,agregarCanal,masCanales,selectCompanias,btnAddContactoForm,btnAddNuevoContacto,inputModalContactoNombre,inputModalContactoApellido,inputModalContactoCargo,inputModalContactEmail,selectInteres,selectRegionContactos,modalAddContactos,btnCancelModalAddContacto,btnEliminarModalAddContacto,btnCloseModalAddContactos,btnEditarNuevoContacto,contactos, clearOptions, formB,formContactos, formCompania, bodyTablaUsuarios,modalUsuarios,xcloseUsuario,formUsuario, inputModalUsuarioNombre, inputModalUsuarioApellido,inputModalUsuarioEmail,usuarioPerfil,btnCloseModalUsuario,btnAceptarModalUsuario,nroSeleccionUser,opCabeceraUser, flexCheckUsuarios,toAddUserForm,userHeader, addUsersForm, divUsersTable, spanListaUsuarios,eliminarUsuarios, inputEditPasswordUsuario,changePassword,divPassword, newPasswordUsuario}

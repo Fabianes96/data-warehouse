@@ -1,10 +1,10 @@
 //Declaraciones
 const express = require("express");
 const server = express();
-const db = require("./js/db");
+const db = require("../js/db");
 const jwt = require("jsonwebtoken");
 const cors = require("cors");
-const utils = require("./js/utils");
+const utils = require("./utils");
 const secret = "jfausifuasoifjaewwtgc";
 
 //Middlewares
@@ -75,6 +75,24 @@ server.get("/usuarios", authorization, isAdmin,async(req,res)=>{
       `SELECT id, nombre, apellido, email, perfil FROM usuarios`
     ,{
       type: db.sequelize.QueryTypes.SELECT,
+    });    
+    res.status(200)
+    res.json(consulta);
+  } catch (error) {
+    console.log(error);
+    res.status(500);
+    res.json("Ha ocurrido un error inesperado");
+  }
+});
+server.get("/usuarios/:id", authorization, isAdmin,async(req,res)=>{
+  try {
+    const id = req.params.id;
+    let consulta = await db.sequelize.query(
+      `SELECT id, nombre, apellido, email, perfil, password FROM usuarios WHERE id = :id`
+    ,{
+      replacements:{
+        id:id
+      },type: db.sequelize.QueryTypes.SELECT,
     });    
     res.status(200)
     res.json(consulta);
@@ -175,6 +193,33 @@ server.patch("/usuarios/:id",authorization, isAdmin, async(req,res)=>{
     res.status(500);
   }
 });
+server.patch("/usuarios/:id/password",authorization,isAdmin,async(req,res)=>{
+  try {
+    const id = req.params.id;
+    const password = req.body.password;
+    if(password== "" || password ==null){
+      res.status(400);
+      res.json("Debe ingresar la contraseña");
+      return;
+    }    
+    let consulta = await db.sequelize.query("UPDATE usuarios SET password = :password WHERE id = :id",{
+      replacements:{
+        id: id,
+        password:password
+      }, type: db.sequelize.QueryTypes.UPDATE
+    });
+    if(consulta.length === 0){
+      res.status(404);
+      res.json("Usuario no encontrado");
+      return
+    }
+    res.status(200);
+    res.json(consulta);    
+  } catch (error) {
+    console.log(error);
+    res.status(500);
+  }
+})
 server.delete("/usuarios/:id",authorization,isAdmin,async(req,res)=>{
   try {
     const id = req.params.id;
