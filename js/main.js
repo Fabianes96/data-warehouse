@@ -141,12 +141,14 @@ global.flexCheckUsuarios.addEventListener("change",(e)=>{
 })
 global.btnCrearUsuario.addEventListener("click",async(e)=>{
   try {
-    e.preventDefault()
-    await usuarios.crearUsuarios();
-    global.addUsersForm.lastElementChild.classList.remove("none");
-    setTimeout(()=>{      
-      global.addUsersForm.lastElementChild.classList.add("none");
-    },10000);
+    if(global.inputPasswordUsuario.value == global.repeatPasswordUsuario.value){
+      e.preventDefault()
+      await usuarios.crearUsuarios();
+      global.addUsersForm.lastElementChild.classList.remove("none");
+      setTimeout(()=>{      
+        global.addUsersForm.lastElementChild.classList.add("none");
+      },10000);
+    }
   } catch (error) {
     console.log(error);
   }
@@ -424,27 +426,32 @@ global.selectCanal.addEventListener("click",async()=>{
 global.selectCiudadContactos.addEventListener("change",()=>{  
   global.inputModalContactoDireccion.disabled = false;  
 });
-global.btnAceptarModalUsuario.addEventListener("click",async()=>{
-  try {
-    await usuarios.editUsuario(global.modalUsuarios.getAttribute("uid"),global.usuarioPerfil.value);        
-    if(global.inputEditPasswordUsuario.value != "" && global.newPasswordUsuario.value != ""){
-      let antPassCod = MD5(global.inputEditPasswordUsuario.value);             
-      if(antPassCod == user[0].password){
-        let res = await fetch(`http://localhost:3000/usuarios/${user[0].id}/password`,{
-          method: 'PATCH',
-          headers:{
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${localStorage.getItem("jwt")}`
-          },
-          body:JSON.stringify({
-            password: MD5(global.newPasswordUsuario.value),        
-          })          
-        });
-        if(!res.ok){
-          throw 'Error al actualizar los datos'
+global.btnAceptarModalUsuario.addEventListener("click",async(e)=>{
+  try {    
+    if(!global.divPassword.classList.contains("none")){
+      if((global.inputEditPasswordUsuario.value != "" && global.newPasswordUsuario.value != "")){          
+        if(global.inputEditPasswordUsuario.value == global.newPasswordUsuario.value){
+          console.log("paso");
+          let res = await fetch(`http://localhost:3000/usuarios/${user[0].id}/password`,{
+            method: 'PATCH',
+            headers:{
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${localStorage.getItem("jwt")}`
+            },
+            body:JSON.stringify({
+              password: MD5(global.newPasswordUsuario.value),        
+            })          
+          });
+          if(!res.ok){
+            throw 'Error al actualizar los datos'
+          }else{            
+            await usuarios.editUsuario(global.modalUsuarios.getAttribute("uid"),global.usuarioPerfil.value);            
+          }
         }
-      }
-    }
+      }       
+    }else{      
+      await usuarios.editUsuario(global.modalUsuarios.getAttribute("uid"),global.usuarioPerfil.value);            
+    }    
   } catch (error) {
     console.log(error);
   }
@@ -482,6 +489,14 @@ global.changePassword.addEventListener("click",async()=>{
     console.log(error);
   }
 });
+global.formUsuario.addEventListener("input",()=>{
+  if(!global.divPassword.classList.contains("none")){
+    global.newPasswordUsuario.setCustomValidity(global.newPasswordUsuario.value != global.inputEditPasswordUsuario.value ? global.invalidNewPass.textContent = "Las contraseñas no son iguales" : "");
+  }  
+});
+global.addUsersForm.addEventListener("input",()=>{
+  global.repeatPasswordUsuario.setCustomValidity(global.repeatPasswordUsuario.value != global.inputPasswordUsuario.value ? global.invalidPass.textContent = "Las contraseñas no son iguales" : "");
+})
 
 function activeLink(){
   let menu = document.getElementById("menu");

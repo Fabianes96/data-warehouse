@@ -171,7 +171,16 @@
           <div class="invalid-feedback">
             Debe ingresar la contraseña
           </div>
-        </div>                
+        </div>                  
+        <div class="mb-3">
+          <label for="" class="form-label">Repetir contraseña</label>
+          <input name="contra2" type="password" class="form-control" id="repeatPasswordUsuario" required>
+          <div class="valid-feedback">            
+          </div>
+          <div id="invalidPass"  class="invalid-feedback">
+            Debe ingresar la contraseña
+          </div>
+        </div>                          
         <button type="submit" id="btn-crear-usuario" class="btn btn-primary">Crear</button>
         <span id="spanListaUsuarios" class="link-primary">Ir a lista de usuarios</span>
         <div class="alert alert-success none" role="alert">
@@ -361,7 +370,7 @@
                   <div class="valid-feedback">         
                   </div>
                   <div class="invalid-feedback">
-                    Debe ingresar la dirección
+                    Debe ingresar el apellido
                   </div>                  
                 </div>
                 <div class="mb-3">
@@ -388,7 +397,7 @@
                 <span id="changePassword" class="link-primary">Cambiar contraseña</span>
                 <div id="divPassword" class="none">
                   <div class="mb-3">
-                    <label for="" class="form-label">Contraseña anterior</label>
+                    <label for="" class="form-label">Nueva contraseña</label>
                     <input name="contra" type="password" class="form-control" id="inputEditPasswordUsuario">
                     <div class="valid-feedback">            
                     </div>
@@ -397,11 +406,11 @@
                     </div>
                   </div>                  
                   <div class="mb-3">
-                    <label for="" class="form-label">Nueva contraseña</label>
-                    <input name="contra" type="password" class="form-control" id="newPasswordUsuario">
+                    <label for="" class="form-label">Repetir contraseña</label>
+                    <input name="contra2" type="password" class="form-control" id="newPasswordUsuario">
                     <div class="valid-feedback">            
                     </div>
-                    <div class="invalid-feedback">
+                    <div id="invalidNewPass"  class="invalid-feedback">
                       Debe ingresar la contraseña
                     </div>
                   </div>                  
