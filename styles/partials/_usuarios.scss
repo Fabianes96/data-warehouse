@@ -1,6 +1,20 @@
 #usuarios{    
-    .table-container{
-        margin: 0 30px;
+    position: relative;
+    margin: 0 30px;
+    >:first-child{
+        position: relative;
+        top: 50px;        
+    }
+    #opCabeceraUser{
+        bottom: 300px;
+    }
+    #div-users-table{
+        position: relative;
+        top: 100px;
+    }    
+    #nro-seleccion-user{
+        width: 115px;
+        @extend %info-tag;
     }
     .usuarios{
         width: 50%;

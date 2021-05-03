@@ -2,7 +2,7 @@ import * as global from './global.js';
 import * as compania from './compania.js'
 import * as regiones from './regiones.js'
 
-let contadorSeleccionadas = 0;  
+
 async function loadContactos(){
     try {
       let res = await fetch("http://localhost:3000/contactos",{
@@ -17,7 +17,7 @@ async function loadContactos(){
       console.log(error);
     }  
 }
-function addContactos(arrayContactos, arrayCompanias){    
+function addContactos(arrayContactos, arrayCompanias,contadorSeleccionadas){    
     for (let i = 0; i < arrayContactos.length; i++) {    
       let tr = document.createElement("tr");
       tr.setAttribute("cid",arrayContactos[i].id)
@@ -542,7 +542,7 @@ async function editContactoForm(){
         console.log(error);
     }  
 }
-function toCheck(e){
+function toCheck(e,contadorSeleccionadas){
   let checklist = document.getElementsByClassName("to-be-checked");
   if(e.currentTarget.checked){    
     for (let i = 0; i < checklist.length; i++) {            

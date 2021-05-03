@@ -71,6 +71,18 @@ let btnEditarNuevoContacto = document.getElementById("btnEditarNuevoContacto");
 let formContactos = document.getElementById("formContactos")
 let formCompania = document.getElementById("formCompania")
 let bodyTablaUsuarios = document.getElementById("tbodyUsuarios");
+let modalUsuarios = document.getElementById("modalUsuarios");
+let xcloseUsuario = document.getElementById("xcloseUsuario");
+let formUsuario = document.getElementById("formUsuario");
+let inputModalUsuarioNombre = document.getElementById("inputModalUsuarioNombre");
+let inputModalUsuarioApellido = document.getElementById("inputModalUsuarioApellido");
+let inputModalUsuarioEmail = document.getElementById("inputModalUsuarioEmail")
+let usuarioPerfil = document.getElementById("usuarioPerfil");
+let btnCloseModalUsuario = document.getElementById("btnCloseModalUsuario");
+let btnAceptarModalUsuario =document.getElementById("btnAceptarModalUsuario");
+let nroSeleccionUser = document.getElementById("nro-seleccion-user");
+let opCabeceraUser = document.getElementById("opCabeceraUser");
+let flexCheckUsuarios = document.getElementById("flexCheckUsuarios");
 
 function clearOptions(options){
     while(options.firstElementChild){
@@ -91,4 +103,4 @@ function formB () {
       })
 }
 
-export {linkContactos, linkCompanias, linkUsuarios, linkRegiones, opcionesContactos, companias, usuarios, btnCrearUsuario,inputNombre,inputApellido,inputEmailUsuario, perfil,inputPasswordUsuario,regionCiudad,regiones,modalLabel, btnAceptarModal,btnEliminar,labelAddInModal,labelWarning, inputModal,btnAgregarRegion,btnClose,xClose, modal,modalCompania,xCloseCompania, btnCloseCompania, bodyTabla, bodyTablaContactos,btnAddCompanias,inputModalCompaniaNombre,inputModalCompaniaTelefono,inputModalCompaniaEmail, inputModalCompaniaDireccion, optionsGroup,optionsGroupContactos,optionsCiudad, optionsPais,flexCheck, divSearch, inputSearch,btnAceptarModalCompania,nroSeleccion,opCabecera,linkEliminar,btnAddContactos,selectCiudadContactos,selectPaisContactos, inputModalContactoDireccion,selectCanal,selectPreferencia,inputCuentaContacto,agregarCanal,masCanales,selectCompanias,btnAddContactoForm,btnAddNuevoContacto,inputModalContactoNombre,inputModalContactoApellido,inputModalContactoCargo,inputModalContactEmail,selectInteres,selectRegionContactos,modalAddContactos,btnCancelModalAddContacto,btnEliminarModalAddContacto,btnCloseModalAddContactos,btnEditarNuevoContacto,contactos, clearOptions, formB,formContactos, formCompania, bodyTablaUsuarios}
+export {linkContactos, linkCompanias, linkUsuarios, linkRegiones, opcionesContactos, companias, usuarios, btnCrearUsuario,inputNombre,inputApellido,inputEmailUsuario, perfil,inputPasswordUsuario,regionCiudad,regiones,modalLabel, btnAceptarModal,btnEliminar,labelAddInModal,labelWarning, inputModal,btnAgregarRegion,btnClose,xClose, modal,modalCompania,xCloseCompania, btnCloseCompania, bodyTabla, bodyTablaContactos,btnAddCompanias,inputModalCompaniaNombre,inputModalCompaniaTelefono,inputModalCompaniaEmail, inputModalCompaniaDireccion, optionsGroup,optionsGroupContactos,optionsCiudad, optionsPais,flexCheck, divSearch, inputSearch,btnAceptarModalCompania,nroSeleccion,opCabecera,linkEliminar,btnAddContactos,selectCiudadContactos,selectPaisContactos, inputModalContactoDireccion,selectCanal,selectPreferencia,inputCuentaContacto,agregarCanal,masCanales,selectCompanias,btnAddContactoForm,btnAddNuevoContacto,inputModalContactoNombre,inputModalContactoApellido,inputModalContactoCargo,inputModalContactEmail,selectInteres,selectRegionContactos,modalAddContactos,btnCancelModalAddContacto,btnEliminarModalAddContacto,btnCloseModalAddContactos,btnEditarNuevoContacto,contactos, clearOptions, formB,formContactos, formCompania, bodyTablaUsuarios,modalUsuarios,xcloseUsuario,formUsuario, inputModalUsuarioNombre, inputModalUsuarioApellido,inputModalUsuarioEmail,usuarioPerfil,btnCloseModalUsuario,btnAceptarModalUsuario,nroSeleccionUser,opCabeceraUser, flexCheckUsuarios}

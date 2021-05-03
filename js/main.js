@@ -12,6 +12,8 @@ let arrayCompanias = [];
 let arrayContactos = [];
 let flag = false;
 let flagCompanias = false;
+let contadorSeleccionadas = 0;
+let contadorSeleccionadasUser = 0;
 
 
 window.onclick = function(e){      
@@ -35,7 +37,7 @@ window.onload = ()=>{
   comprobacion()
   setTimeout(async()=>{
     arrayContactos = await contacto.loadContactos()
-    contacto.addContactos(arrayContactos,arrayCompanias);
+    contacto.addContactos(arrayContactos,arrayCompanias,contadorSeleccionadas);
   },500);
 }
 global.linkContactos.addEventListener("click",async()=>{
@@ -44,11 +46,14 @@ global.linkContactos.addEventListener("click",async()=>{
   global.usuarios.classList.add("none");
   global.companias.classList.add("none");
   global.contactos.classList.remove("none");
+  global.opCabecera.classList.add("none");
+  global.opCabecera.classList.remove("opciones-cabecera");
+  contadorSeleccionadas = 0;
   if(global.bodyTablaContactos.firstElementChild){
     global.clearOptions(global.bodyTablaContactos)
   }
   arrayContactos = await contacto.loadContactos();
-  contacto.addContactos(arrayContactos,arrayCompanias)
+  contacto.addContactos(arrayContactos,arrayCompanias,contadorSeleccionadas)
 });
 global.divSearch.addEventListener("click",async()=>{
   if(!global.inputSearch.value ==""){
@@ -61,7 +66,7 @@ global.divSearch.addEventListener("click",async()=>{
       });
       arrayContactos = await res.json();
       global.clearOptions(global.bodyTablaContactos);
-      contacto.addContactos(arrayContactos,arrayCompanias);
+      contacto.addContactos(arrayContactos,arrayCompanias,contadorSeleccionadas);
     } catch (error) {
       console.log("Algo salió mal ", error);
     }
@@ -79,7 +84,7 @@ global.inputSearch.addEventListener("keypress",async(e)=>{
         });
         arrayContactos = await res.json();
         global.clearOptions(global.bodyTablaContactos);
-        contacto.addContactos(arrayContactos,arrayCompanias)
+        contacto.addContactos(arrayContactos,arrayCompanias,contadorSeleccionadas)
       } catch (error) {
         console.log("Algo salió mal ", error);
       }
@@ -102,7 +107,13 @@ global.linkUsuarios.addEventListener("click",async()=>{
   global.companias.classList.add("none");
   global.regiones.classList.add("none")    
   global.usuarios.classList.remove("none");
-  await usuarios.addUsuarios();
+  global.opCabeceraUser.classList.add("none");
+  global.opCabeceraUser.classList.remove("opciones-cabecera");
+  contadorSeleccionadasUser = 0;
+  if(global.bodyTablaUsuarios.firstElementChild){
+    global.clearOptions(global.bodyTablaUsuarios)
+  }
+  await usuarios.addUsuarios(contadorSeleccionadasUser);
 });
 global.linkRegiones.addEventListener("click",async()=>{  
   global.opcionesContactos.classList.add("none");
@@ -121,6 +132,9 @@ global.linkRegiones.addEventListener("click",async()=>{
 });
 global.flexCheck.addEventListener("change",(e)=>{
   contacto.toCheck(e)
+});
+global.flexCheckUsuarios.addEventListener("change",(e)=>{
+  usuarios.toCheckUser(e,contadorSeleccionadasUser)
 })
 global.btnCrearUsuario.addEventListener("click",async()=>{
   await usuarios.crearUsuarios()
@@ -319,6 +333,19 @@ global.btnEliminar.addEventListener("click",async()=>{
     } else if(global.labelWarning.getAttribute("contacto")){
       contacto.deleteContacto(global.labelWarning.getAttribute("contacto"));      
       global.labelWarning.removeAttribute("contacto");
+    } else if(global.labelWarning.getAttribute("usuario")){
+      const res = await fetch(`http://localhost:3000/usuarios/${global.labelWarning.getAttribute("usuario")}`,{
+        method: 'DELETE',
+        headers:{
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${localStorage.getItem("jwt")}`
+        },      
+      })      
+      global.labelWarning.removeAttribute("usuario");            
+        if(!res.ok){
+          throw 'Error al eliminar los datos';
+        }
+        console.log("Usuario eliminada");      
     }
     window.location.reload();
   } catch (error) {
@@ -387,6 +414,13 @@ global.selectCanal.addEventListener("click",async()=>{
 });
 global.selectCiudadContactos.addEventListener("change",()=>{  
   global.inputModalContactoDireccion.disabled = false;  
+});
+global.btnAceptarModalUsuario.addEventListener("click",async()=>{
+  try {
+    await usuarios.editUsuario(global.modalUsuarios.getAttribute("uid"),global.usuarioPerfil.value);    
+  } catch (error) {
+    console.log(error);
+  }
 })
 
 function activeLink(){

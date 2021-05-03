@@ -53,7 +53,7 @@ async function getusuarios(){
     console.log(error);
   }
 }
-async function addUsuarios(){
+async function addUsuarios(contadorSeleccionadas){
   let arrayUsuarios = await getusuarios();
   for (let i = 0; i < arrayUsuarios.length; i++) {    
     let tr = document.createElement("tr");
@@ -65,26 +65,26 @@ async function addUsuarios(){
     let inputDiv = document.createElement("input");
     inputDiv.setAttribute("class","form-check-input")
     inputDiv.setAttribute("type","checkbox");
-    tr.setAttribute("class","to-be-checked");
-      // inputDiv.addEventListener("change",(e)=>{
-    //   let sp = global.nroSeleccion.firstElementChild;
-    //   if(e.currentTarget.checked){
-    //     tr.classList.add("tr-hover")
-    //     contadorSeleccionadas++;
-    //     sp.textContent = contadorSeleccionadas + " seleccionadas";
-    //     global.opCabecera.classList.remove("none");
-    //     global.opCabecera.classList.add("opciones-cabecera");
-    //   }else{
-    //     tr.classList.remove("tr-hover")
-    //     contadorSeleccionadas = contadorSeleccionadas -1;         
-    //     sp.textContent = contadorSeleccionadas + " selecciondas";
-    //     if(contadorSeleccionadas==0){
-    //       global.opCabecera.classList.remove("opciones-cabecera");
-    //       global.opCabecera.classList.add("none");            
-    //       global.flexCheck.checked = false;            
-    //     }
-    //   }        
-    // })
+    tr.setAttribute("class","to-be-checked-usuario");
+    inputDiv.addEventListener("change",(e)=>{
+      let sp = global.nroSeleccionUser.firstElementChild;
+      if(e.currentTarget.checked){
+        tr.classList.add("tr-hover")
+        contadorSeleccionadas++;
+        sp.textContent = contadorSeleccionadas + " seleccionadas";
+        global.opCabeceraUser.classList.remove("none");
+        global.opCabeceraUser.classList.add("opciones-cabecera");
+      }else{
+        tr.classList.remove("tr-hover")
+        contadorSeleccionadas = contadorSeleccionadas -1;         
+        sp.textContent = contadorSeleccionadas + " selecciondas";
+        if(contadorSeleccionadas==0){
+          global.opCabeceraUser.classList.remove("opciones-cabecera");
+          global.opCabeceraUser.classList.add("none");            
+          global.flexCheckUsuarios.checked = false;            
+        }
+      }        
+    })
     let label = document.createElement("label");
     label.setAttribute("class", "form-check-label");
     divCheck.appendChild(inputDiv);
@@ -121,7 +121,18 @@ async function addUsuarios(){
     iconEdit.setAttribute("class","far");
     iconEdit.classList.add("fa-edit");
     iconEdit.setAttribute("data-bs-toggle","modal")
-    iconEdit.setAttribute("data-bs-target","#modalAddContactos")
+    iconEdit.setAttribute("data-bs-target","#modalUsuarios")    
+    iconEdit.addEventListener("click",()=>{
+      global.inputModalUsuarioNombre.value = arrayUsuarios[i].nombre;
+      global.inputModalUsuarioApellido.value = arrayUsuarios[i].apellido;
+      global.inputModalUsuarioEmail.value = arrayUsuarios[i].email;
+      global.modalUsuarios.setAttribute("uid",arrayUsuarios[i].id)
+      if(arrayUsuarios[i].perfil == 1){        
+        global.usuarioPerfil.value = 1;
+      }else{
+        global.usuarioPerfil.value = "Básico"
+      }      
+    })
     spanLinkPrimary.appendChild(iconEdit);
     let spanLinkDanger = document.createElement("span");
     spanLinkDanger.setAttribute("class","link-danger");
@@ -132,7 +143,7 @@ async function addUsuarios(){
     iconDelete.setAttribute("data-bs-toggle","modal")
     iconDelete.addEventListener("click",()=>{
       global.labelWarning.textContent = `Está seguro que desea eliminar este usuario?`
-      global.labelWarning.setAttribute("contacto",arrayUsuarios[i].id);  
+      global.labelWarning.setAttribute("usuario",arrayUsuarios[i].id);  
     })
     spanLinkDanger.appendChild(iconDelete);
     divOpciones.appendChild(spanLinkPrimary);
@@ -143,5 +154,63 @@ async function addUsuarios(){
     global.bodyTablaUsuarios.appendChild(tr)
   }
 }
+function toCheckUser(e,contadorSeleccionadas){
+  let checklist = document.getElementsByClassName("to-be-checked-usuario");
+  if(e.currentTarget.checked){    
+    for (let i = 0; i < checklist.length; i++) {            
+      checklist[i].classList.add("tr-hover")
+      let th = checklist[i].firstElementChild;
+      let div = th.firstElementChild
+      let check = div.firstElementChild
+      check.checked = true      
+    }
+    contadorSeleccionadas = checklist.length;
+    global.nroSeleccionUser.firstElementChild.textContent = contadorSeleccionadas + " selecciondas";    
+  }
+  else{
+    for (let i = 0; i < checklist.length; i++) {      
+      checklist[i].classList.remove("tr-hover");
+      let th = checklist[i].firstElementChild;
+      let div = th.firstElementChild
+      let check = div.firstElementChild
+      check.checked = false
+    }    
+    contadorSeleccionadas = 0;  
+  }
+  if(!(e.currentTarget.checked && global.opCabeceraUser.classList.contains("opciones-cabecera"))){
+    global.opCabeceraUser.classList.toggle("none");
+    global.opCabeceraUser.classList.toggle("opciones-cabecera");
+  }
+}
+async function editUsuario(id, perfil){
+  try {
+    let p = "1"
+    if(perfil == "Básico"){
+      p = "0";
+    }
+    let res = await fetch(`http://localhost:3000/usuarios/${id}`,{
+      method: 'PATCH',
+      headers:{
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${localStorage.getItem("jwt")}`
+      },
+      body:JSON.stringify({
+        nombre: global.inputModalUsuarioNombre.value,
+        apellido: global.inputModalUsuarioApellido.value,
+        email: global.inputModalUsuarioEmail.value,
+        perfil: p        
+      })
+    });
+    if(!res.ok){
+      throw 'Error al actualizar los datos';
+    }
+    global.inputModalUsuarioNombre.value = "";
+    global.inputModalUsuarioApellido.value = "";
+    global.inputModalUsuarioEmail.value = "";
+    window.location.reload();
+  } catch (error) {
+    console.log(error);
+  }
+}
 
-export {noLinkUsuarios, crearUsuarios, addUsuarios}
+export {noLinkUsuarios, crearUsuarios, addUsuarios, editUsuario, toCheckUser}

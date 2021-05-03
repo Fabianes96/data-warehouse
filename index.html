@@ -93,13 +93,24 @@
         <button class="btn btn-primary">Ver usuarios</button>
         <button class="btn btn-success none">Crear usuario</button>
       </div>      
-      <div class="table-container">
+      <div id="opCabeceraUser" class="none">
+        <div id="nro-seleccion-user">
+          <span></span>
+        </div>
+        <div id="eliminar-usuario">
+          <span class="link-primary">
+            <i class="far fa-trash-alt" aria-hidden="true"></i>
+            Eliminar usuarios
+          </span>
+        </div>
+      </div>
+      <div id="div-users-table" class="table-container">
         <table class="table table-borderless table-hover">
           <thead id="cabeceraU">
             <tr>
               <th scope="col"><div class="form-check">
-                <input class="form-check-input" type="checkbox" value="" id="flexCheck">
-                <label class="form-check-label" for="flexCheck">                  
+                <input class="form-check-input" type="checkbox" value="" id="flexCheckUsuarios">
+                <label class="form-check-label" for="flexCheckUsuarios">                  
                 </label>
               <th scope="col">Nombre</th>
               <th scope="col">Apellido</th>
@@ -318,6 +329,65 @@
             <div class="modal-footer">
               <button id="btnCloseModalCompania" type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
               <button id="btnAceptarModalCompania" type="submit" class="btn btn-primary">Aceptar</button>
+            </div>
+          </form>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section id="sectionModalUsuarios">
+      <div class="modal fade" id="modalUsuarios" tabindex="-1" aria-labelledby="modalLabelUsuarios" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title">Editar usuario</h5>
+              <button id="xcloseUsuario" type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <form id="formUsuario" class="needs-validation" novalidate>
+                <div class="mb-3">
+                  <label for="recipient-name" class="col-form-label">Nombre</label>
+                  <input type="text" class="form-control" id="inputModalUsuarioNombre" required>
+                  <div class="valid-feedback">         
+                  </div>
+                  <div class="invalid-feedback">
+                    Debe ingresar un nombre
+                  </div>
+                </div>
+                <div class="mb-3">
+                  <label for="recipient-name" class="col-form-label">Apellido</label>
+                  <input type="text" class="form-control" id="inputModalUsuarioApellido"required>
+                  <div class="valid-feedback">         
+                  </div>
+                  <div class="invalid-feedback">
+                    Debe ingresar la dirección
+                  </div>                  
+                </div>
+                <div class="mb-3">
+                  <label for="recipient-name" class="col-form-label">Email</label>
+                  <input type="email" class="form-control" id="inputModalUsuarioEmail" required>
+                  <div class="valid-feedback">         
+                  </div>
+                  <div class="invalid-feedback">
+                    Debe ingresar un email
+                  </div>                  
+                </div>                
+                <div class="mb-3">            
+                  <label for="perfil" class="form-label">Perfil</label>
+                  <select id="usuarioPerfil" class="form-select" aria-label="Default select example" required>
+                    <option selected>Básico</option>
+                    <option value="1">Admin</option>            
+                  </select>
+                  <div class="valid-feedback">            
+                  </div>
+                  <div class="invalid-feedback">
+                    Debe ingresar un perfil
+                  </div>
+                </div>                  
+            </div>
+            <div class="modal-footer">
+              <button id="btnCloseModalUsuario" type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+              <button id="btnAceptarModalUsuario" type="submit" class="btn btn-primary">Aceptar</button>
             </div>
           </form>
           </div>

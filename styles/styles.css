@@ -1,3 +1,17 @@
+#contactos .opciones-cabecera #nro-seleccion, #usuarios #nro-seleccion-user {
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  width: 100px;
+  height: 30px;
+  text-align: center;
+  border-radius: 4px;
+  background-color: rgba(0, 0, 0, 0.08);
+}
+
+#contactos .opciones-cabecera #nro-seleccion span, #usuarios #nro-seleccion-user span {
+  font-size: 10px;
+  color: #0683F9;
+}
+
 .tr-hover {
   --bs-table-accent-bg: var(--bs-table-hover-bg);
   color: var(--bs-table-hover-color);
@@ -83,6 +97,21 @@
       grid-template-columns: 1fr 1fr 1fr;
   -webkit-column-gap: 18px;
           column-gap: 18px;
+}
+
+.opciones-cabecera {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  position: absolute;
+  bottom: 400px;
+  width: 100%;
 }
 
 .table-container {
@@ -200,35 +229,6 @@ header nav .container ul li:hover a {
 #contactos {
   position: relative;
   margin: 0px 30px;
-}
-
-#contactos .opciones-cabecera {
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-pack: justify;
-      -ms-flex-pack: justify;
-          justify-content: space-between;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
-  position: absolute;
-  bottom: 400px;
-  width: 100%;
-}
-
-#contactos .opciones-cabecera #nro-seleccion {
-  border: 1px solid rgba(0, 0, 0, 0.08);
-  width: 100px;
-  height: 30px;
-  text-align: center;
-  border-radius: 4px;
-  background-color: rgba(0, 0, 0, 0.08);
-}
-
-#contactos .opciones-cabecera #nro-seleccion span {
-  font-size: 10px;
-  color: #0683F9;
 }
 
 #contactos .opciones-cabecera #eliminar-contacto:hover {
@@ -440,8 +440,27 @@ header nav .container ul li:hover a {
   height: 42px;
 }
 
-#usuarios .table-container {
+#usuarios {
+  position: relative;
   margin: 0 30px;
+}
+
+#usuarios > :first-child {
+  position: relative;
+  top: 50px;
+}
+
+#usuarios #opCabeceraUser {
+  bottom: 300px;
+}
+
+#usuarios #div-users-table {
+  position: relative;
+  top: 100px;
+}
+
+#usuarios #nro-seleccion-user {
+  width: 115px;
 }
 
 #usuarios .usuarios {

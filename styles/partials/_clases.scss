@@ -6,6 +6,18 @@ $color-scundario: rgba(0,0,0,0.50);
         cursor: pointer;
     }
 }
+%info-tag{
+    border: 1px solid rgba(0,0,0,0.08);
+    width: 100px;
+    height: 30px;        
+    text-align: center;        
+    border-radius: 4px;
+    background-color: rgba(0,0,0,0.08);
+    span{
+        font-size: 10px;            
+        color: #0683F9;
+    }
+}
 .tr-hover{
     --bs-table-accent-bg: var(--bs-table-hover-bg);
     color: var(--bs-table-hover-color);
@@ -54,6 +66,14 @@ $color-scundario: rgba(0,0,0,0.50);
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
     column-gap: 18px;
+}
+.opciones-cabecera{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: absolute;
+    bottom: 400px;
+    width: 100%;
 }
 .table-container{
     height: 400px;

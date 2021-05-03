@@ -134,7 +134,64 @@ server.post("/usuarios",authorization,isAdmin,async(req,res)=>{
         res.status(500);
         res.json("Ha ocurrido un error inesperado");
       }
-})
+});
+server.patch("/usuarios/:id",authorization, isAdmin, async(req,res)=>{
+  try {
+    const id = req.params.id;
+    const {nombre,apellido,email,perfil} = req.body;
+    if(nombre== "" || nombre ==null){
+      res.status(400);
+      res.json("Debe ingresar el nombre");
+      return;
+    }
+    if(apellido == "" || apellido ==null){
+      res.status(400);
+      res.json("Debe ingresar el apellido");
+      return;
+    }
+    if(email == "" || email ==null || !email.includes("@")){
+      res.status(400);
+      res.json("Debe ingresar un correo");
+      return;
+    }
+    let consulta = await db.sequelize.query("UPDATE usuarios SET nombre = :nombre, apellido = :apellido, email = :email, perfil = :perfil WHERE id = :id",{
+      replacements:{
+        id: id,
+        nombre: nombre,
+        apellido: apellido,
+        email: email,
+        perfil: perfil
+      }, type: db.sequelize.QueryTypes.UPDATE
+    });
+    if(consulta.length === 0){
+      res.status(404);
+      res.json("Usuario no encontrado");
+      return
+    }
+    res.status(200);
+    res.json(consulta);    
+  } catch (error) {
+    console.log(error);
+    res.status(500);
+  }
+});
+server.delete("/usuarios/:id",authorization,isAdmin,async(req,res)=>{
+  try {
+    const id = req.params.id;
+    let consulta = await db.sequelize.query("DELETE FROM usuarios WHERE id = :id",{
+      replacements: {
+        id: id,
+      },type: db.sequelize.QueryTypes.DELETE
+    });    
+    res.status(200)
+    console.log("Usuario eliminado");
+    res.json(consulta);
+  } catch (error) {
+    console.log(error);
+    res.status(500);
+    res.json("Ha ocurrido un error inesperado");
+  }
+});
 server.get("/infociudades",async(req,res)=>{
   try {
     let consulta = await db.sequelize.query(

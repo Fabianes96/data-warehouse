@@ -1,24 +1,9 @@
 #contactos{
     position: relative;
     margin: 0px 30px;
-    .opciones-cabecera{
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        position: absolute;
-        bottom: 400px;
-        width: 100%;
+    .opciones-cabecera{        
         #nro-seleccion{        
-            border: 1px solid rgba(0,0,0,0.08);
-            width: 100px;
-            height: 30px;        
-            text-align: center;        
-            border-radius: 4px;
-            background-color: rgba(0,0,0,0.08);
-            span{
-                font-size: 10px;            
-                color: #0683F9;
-            }
+            @extend %info-tag;
         }
         #eliminar-contacto:hover{
             text-decoration: underline;
