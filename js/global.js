@@ -2,6 +2,7 @@ let linkContactos = document.getElementsByClassName("links")[0];
 let linkCompanias = document.getElementsByClassName("links")[1];
 let linkUsuarios = document.getElementsByClassName("links")[2];
 let linkRegiones = document.getElementsByClassName("links")[3];
+let cerrarSesion = document.getElementsByClassName("links")[4];
 let opcionesContactos = document.getElementById("opciones-contactos");
 let companias = document.getElementById("companias");
 let contactos = document.getElementById("contactos");
@@ -96,6 +97,8 @@ let divPassword = document.getElementById("divPassword");
 let invalidNewPass = document.getElementById("invalidNewPass");
 let invalidPass = document.getElementById("invalidPass");
 let repeatPasswordUsuario = document.getElementById("repeatPasswordUsuario");
+let cancelWarningModal =document.getElementById("cancelWarningModal");
+let invalidPassLenght = document.getElementById("invalidPassLenght");
 function clearOptions(options){
     while(options.firstElementChild){
       options.removeChild(options.firstElementChild);
@@ -115,4 +118,4 @@ function formB () {
       })
 }
 
-export {linkContactos, linkCompanias, linkUsuarios, linkRegiones, opcionesContactos, companias, usuarios, btnCrearUsuario,inputNombre,inputApellido,inputEmailUsuario, perfil,inputPasswordUsuario,regionCiudad,regiones,modalLabel, btnAceptarModal,btnEliminar,labelAddInModal,labelWarning, inputModal,btnAgregarRegion,btnClose,xClose, modal,modalCompania,xCloseCompania, btnCloseCompania, bodyTabla, bodyTablaContactos,btnAddCompanias,inputModalCompaniaNombre,inputModalCompaniaTelefono,inputModalCompaniaEmail, inputModalCompaniaDireccion, optionsGroup,optionsGroupContactos,optionsCiudad, optionsPais,flexCheck, divSearch, inputSearch,btnAceptarModalCompania,nroSeleccion,opCabecera,linkEliminar,btnAddContactos,selectCiudadContactos,selectPaisContactos, inputModalContactoDireccion,selectCanal,selectPreferencia,inputCuentaContacto,agregarCanal,masCanales,selectCompanias,btnAddContactoForm,btnAddNuevoContacto,inputModalContactoNombre,inputModalContactoApellido,inputModalContactoCargo,inputModalContactEmail,selectInteres,selectRegionContactos,modalAddContactos,btnCancelModalAddContacto,btnEliminarModalAddContacto,btnCloseModalAddContactos,btnEditarNuevoContacto,contactos, clearOptions, formB,formContactos, formCompania, bodyTablaUsuarios,modalUsuarios,xcloseUsuario,formUsuario, inputModalUsuarioNombre, inputModalUsuarioApellido,inputModalUsuarioEmail,usuarioPerfil,btnCloseModalUsuario,btnAceptarModalUsuario,nroSeleccionUser,opCabeceraUser, flexCheckUsuarios,toAddUserForm,userHeader, addUsersForm, divUsersTable, spanListaUsuarios,eliminarUsuarios, inputEditPasswordUsuario,changePassword,divPassword, newPasswordUsuario,invalidNewPass, repeatPasswordUsuario, invalidPass}
+export {linkContactos, linkCompanias, linkUsuarios, linkRegiones,cerrarSesion, opcionesContactos, companias, usuarios, btnCrearUsuario,inputNombre,inputApellido,inputEmailUsuario, perfil,inputPasswordUsuario,regionCiudad,regiones,modalLabel, btnAceptarModal,btnEliminar,labelAddInModal,labelWarning, inputModal,btnAgregarRegion,btnClose,xClose, modal,modalCompania,xCloseCompania, btnCloseCompania, bodyTabla, bodyTablaContactos,btnAddCompanias,inputModalCompaniaNombre,inputModalCompaniaTelefono,inputModalCompaniaEmail, inputModalCompaniaDireccion, optionsGroup,optionsGroupContactos,optionsCiudad, optionsPais,flexCheck, divSearch, inputSearch,btnAceptarModalCompania,nroSeleccion,opCabecera,linkEliminar,btnAddContactos,selectCiudadContactos,selectPaisContactos, inputModalContactoDireccion,selectCanal,selectPreferencia,inputCuentaContacto,agregarCanal,masCanales,selectCompanias,btnAddContactoForm,btnAddNuevoContacto,inputModalContactoNombre,inputModalContactoApellido,inputModalContactoCargo,inputModalContactEmail,selectInteres,selectRegionContactos,modalAddContactos,btnCancelModalAddContacto,btnEliminarModalAddContacto,btnCloseModalAddContactos,btnEditarNuevoContacto,contactos, clearOptions, formB,formContactos, formCompania, bodyTablaUsuarios,modalUsuarios,xcloseUsuario,formUsuario, inputModalUsuarioNombre, inputModalUsuarioApellido,inputModalUsuarioEmail,usuarioPerfil,btnCloseModalUsuario,btnAceptarModalUsuario,nroSeleccionUser,opCabeceraUser, flexCheckUsuarios,toAddUserForm,userHeader, addUsersForm, divUsersTable, spanListaUsuarios,eliminarUsuarios, inputEditPasswordUsuario,changePassword,divPassword, newPasswordUsuario,invalidNewPass, repeatPasswordUsuario, invalidPass, cancelWarningModal, invalidPassLenght}

@@ -197,14 +197,9 @@ async function editUsuario(id, perfil){
         email: global.inputModalUsuarioEmail.value,
         perfil: p        
       })
-    });
-    if(!res.ok){
-      throw 'Error al actualizar los datos';
-    }
-    global.inputModalUsuarioNombre.value = "";
-    global.inputModalUsuarioApellido.value = "";
-    global.inputModalUsuarioEmail.value = "";
-    window.location.reload();
+    });    
+    return res;
+    
   } catch (error) {
     console.log(error);
   }
@@ -250,5 +245,15 @@ function clearUsuariosForm(){
   global.repeatPasswordUsuario.value = "";
   global.addUsersForm.classList.remove("was-validated")
 }
+function clearUsuariosModal(){
+  global.inputModalUsuarioNombre.value = "";
+  global.inputModalUsuarioApellido.value = "";
+  global.inputModalUsuarioEmail.value = "";
+  global.formUsuario.classList.remove("was-validated");
+  global.inputEditPasswordUsuario.removeAttribute("required")
+  global.newPasswordUsuario.removeAttribute("required");
+  global.changePassword.classList.remove("none");  
+  global.divPassword.classList.add("none");    
+}
 
-export {noLinkUsuarios, crearUsuarios, addUsuarios, editUsuario, toCheckUser, deleteUsuario, editPassword}
+export {noLinkUsuarios, crearUsuarios, addUsuarios, editUsuario, toCheckUser, deleteUsuario, editPassword,clearUsuariosModal}

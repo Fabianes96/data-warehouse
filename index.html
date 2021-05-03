@@ -15,8 +15,9 @@
                 <ul>
                     <li class="links active"><a href="#">Contactos</a></li>
                     <li class="links"><a href="#">Compañias</a></li>
-                    <li class="links"><a href="#usuarios">Usuarios</a></li>
+                    <li class="links"><a href="#usuarios"></a></li>
                     <li class="links"><a href="#region-ciudad">Region/Ciudad</a></li>
+                    <li class="links"><a href="#">Cerrar sesión</a></li>
                 </ul>
             </div>
         </nav>
@@ -169,7 +170,7 @@
           <input name="contra" type="password" class="form-control" id="inputPasswordUsuario" required>
           <div class="valid-feedback">            
           </div>
-          <div class="invalid-feedback">
+          <div id="invalidPassLenght" class="invalid-feedback">
             Debe ingresar la contraseña
           </div>
         </div>                  
@@ -440,7 +441,7 @@
               <label id="labelWarning" class="col-form-label">Esta seguro de eliminar?</label>              
             </div>
             <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+              <button id="cancelWarningModal" type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
               <button id="btnAceptarWarningModal" type="button" class="btn btn-danger">Eliminar</button>
             </div>
           </div>

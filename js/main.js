@@ -16,6 +16,13 @@ let contadorSeleccionadas = 0;
 let contadorSeleccionadasUser = 0;
 let user = "";
 
+window.onload = ()=>{
+  comprobacion()
+  setTimeout(async()=>{
+    arrayContactos = await contacto.loadContactos()
+    contacto.addContactos(arrayContactos,arrayCompanias,contadorSeleccionadas);
+  },500);
+}
 window.onclick = function(e){      
   if(e.target == global.modal || e.target == global.btnClose || e.target == global.xClose){    
     global.modalLabel.textContent = "";
@@ -33,13 +40,10 @@ window.onclick = function(e){
     contacto.clearModalContactos();
   }
 }
-window.onload = ()=>{
-  comprobacion()
-  setTimeout(async()=>{
-    arrayContactos = await contacto.loadContactos()
-    contacto.addContactos(arrayContactos,arrayCompanias,contadorSeleccionadas);
-  },500);
-}
+global.cerrarSesion.addEventListener("click",()=>{
+  localStorage.removeItem("jwt");
+  window.location.href = "/login.html";
+});
 global.linkContactos.addEventListener("click",async()=>{
   global.opcionesContactos.classList.add("none");
   global.regiones.classList.add("none")
@@ -140,7 +144,7 @@ global.flexCheckUsuarios.addEventListener("change",(e)=>{
 })
 global.btnCrearUsuario.addEventListener("click",async(e)=>{
   try {
-    if(global.inputPasswordUsuario.value == global.repeatPasswordUsuario.value){
+    if(global.inputPasswordUsuario.value.length >=4 && global.inputPasswordUsuario.value == global.repeatPasswordUsuario.value){
       e.preventDefault()
       await usuarios.crearUsuarios();
       global.addUsersForm.lastElementChild.classList.remove("none");
@@ -356,11 +360,16 @@ global.btnEliminar.addEventListener("click",async()=>{
       for (let i = 0; i < allChecked.length; i++){    
         await usuarios.deleteUsuario(allChecked[i].attributes.uid.value);    
       }      
+      global.cancelWarningModal.click()
+      global.linkUsuarios.click();
     } else if(global.labelWarning.getAttribute("usuario")){      
       await usuarios.deleteUsuario(global.labelWarning.getAttribute("usuario"));      
       global.labelWarning.removeAttribute("usuario");
+      global.cancelWarningModal.click()
+      global.linkUsuarios.click();
     }
-    window.location.reload();
+    
+    //window.location.reload();
   } catch (error) {
     console.log(error);
   }
@@ -427,20 +436,37 @@ global.selectCiudadContactos.addEventListener("change",()=>{
 });
 global.btnAceptarModalUsuario.addEventListener("click",async(e)=>{
   try {    
+    e.preventDefault();
     if(!global.divPassword.classList.contains("none")){
       if((global.inputEditPasswordUsuario.value != "" && global.newPasswordUsuario.value != "")){          
         if(global.inputEditPasswordUsuario.value == global.newPasswordUsuario.value){          
           let res = await usuarios.editPassword(user[0].id);          
-          if(!res.ok){
+          if(!res.ok){            
             throw 'Error al actualizar los datos'
           }else{            
-            await usuarios.editUsuario(global.modalUsuarios.getAttribute("uid"),global.usuarioPerfil.value);            
+            let resC = await usuarios.editUsuario(global.modalUsuarios.getAttribute("uid"),global.usuarioPerfil.value);                  
+            if(resC.ok){                            
+              usuarios.clearUsuariosModal()
+              global.btnCloseModalUsuario.click();
+              global.linkUsuarios.click()
+            }
+            else{
+              throw 'Error al actualizar los datos'
+            }
           }
         }
       }       
     }else{      
-      await usuarios.editUsuario(global.modalUsuarios.getAttribute("uid"),global.usuarioPerfil.value);            
-    }    
+      let res = await usuarios.editUsuario(global.modalUsuarios.getAttribute("uid"),global.usuarioPerfil.value);   
+      if(res.ok){        
+        usuarios.clearUsuariosModal()
+        global.btnCloseModalUsuario.click();
+        global.linkUsuarios.click()
+      }       
+      else{        
+        throw 'Error al actualizar los datos'
+      }
+    }        
   } catch (error) {
     console.log(error);
   }
@@ -484,6 +510,7 @@ global.formUsuario.addEventListener("input",()=>{
   }  
 });
 global.addUsersForm.addEventListener("input",()=>{
+  global.inputPasswordUsuario.setCustomValidity(global.inputPasswordUsuario.value.length < 4 ? global.invalidPassLenght.textContent = "La contraseña debe tener al menos 4 caracteres" : "");
   global.repeatPasswordUsuario.setCustomValidity(global.repeatPasswordUsuario.value != global.inputPasswordUsuario.value ? global.invalidPass.textContent = "Las contraseñas no son iguales" : "");
 })
 
@@ -506,11 +533,16 @@ function activeLink(){
   }
 }
 function comprobacion(){
-  let jwt = localStorage.getItem("jwt");  
+  let jwt = localStorage.getItem("jwt");
+  if(!jwt){
+    window.location.href = "/login.html"
+  }  
   let token = jwt.split(".");
   let perfil = JSON.parse(atob(token[1]))
   if(perfil.perfil!=1){
-    global.linkUsuarios.style.display = "none";
+    global.linkUsuarios.parentNode.removeChild(global.linkUsuarios)    
+  }else{
+    global.linkUsuarios.firstElementChild.textContent = "Usuarios";
   }  
 }
 activeLink()
