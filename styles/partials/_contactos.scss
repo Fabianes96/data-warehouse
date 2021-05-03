@@ -45,10 +45,8 @@
                 border-radius: inherit;
             }            
         }
-        .div-opciones-contactos{
-            display: flex;
-            justify-content: center;
-            gap: 5px;
+        #tbodyContactos{
+            @include actions();
         }
     }
 }

@@ -127,7 +127,7 @@ function addContactos(arrayContactos, arrayCompanias,contadorSeleccionadas){
   
       let tdAcciones = document.createElement("td");
       let divOpciones = document.createElement("div");
-      divOpciones.setAttribute("class", "div-opciones-contactos");
+      divOpciones.setAttribute("class", "div-opciones");
       let spanLinkPrimary = document.createElement("span");
       spanLinkPrimary.setAttribute("class","link-primary")
       let iconEdit = document.createElement("i");

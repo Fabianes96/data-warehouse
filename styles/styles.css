@@ -288,7 +288,7 @@ header nav .container ul li:hover a {
   border-radius: inherit;
 }
 
-#contactos #div-contactos .div-opciones-contactos {
+#contactos #div-contactos #tbodyContactos .div-opciones {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -296,6 +296,10 @@ header nav .container ul li:hover a {
       -ms-flex-pack: center;
           justify-content: center;
   gap: 5px;
+}
+
+#contactos #div-contactos #tbodyContactos span i {
+  cursor: pointer;
 }
 
 #modalContactos .modal-header {
@@ -523,6 +527,28 @@ header nav .container ul li:hover a {
 
 #usuarios #eliminar-usuario:hover {
   text-decoration: underline;
+}
+
+#usuarios #cabeceraU {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.5);
+}
+
+#usuarios #cabeceraU tr > :last-child {
+  text-align: center;
+}
+
+#usuarios #tbodyUsuarios .div-opciones {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  gap: 5px;
+}
+
+#usuarios #tbodyUsuarios span i {
+  cursor: pointer;
 }
 
 #sectionModalUsuarios #changePassword {

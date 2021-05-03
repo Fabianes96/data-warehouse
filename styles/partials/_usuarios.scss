@@ -54,6 +54,15 @@
             text-decoration: underline;
         }
     }    
+    #cabeceraU{
+        border-bottom: 1px solid $color-scundario;
+        tr>:last-child{
+            text-align: center;
+        }
+    }
+    #tbodyUsuarios{
+        @include actions();
+    }
 }
 #sectionModalUsuarios{
     #changePassword{

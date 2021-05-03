@@ -6,6 +6,16 @@ $color-scundario: rgba(0,0,0,0.50);
         cursor: pointer;
     }
 }
+@mixin actions(){
+    .div-opciones{
+        display: flex;
+        justify-content: center;
+        gap: 5px;
+    }
+    span i{
+        cursor: pointer;
+    }
+}
 %info-tag{
     border: 1px solid rgba(0,0,0,0.08);
     width: 100px;
