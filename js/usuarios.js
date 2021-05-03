@@ -1,4 +1,5 @@
 import * as global from './global.js';
+import {MD5} from './utils.js';
 
 function noLinkUsuarios(){
     global.opcionesContactos.classList.remove("none");
@@ -29,11 +30,7 @@ async function crearUsuarios(){
       if(!res.ok){
         throw "Error al registrar usuario";
       }else{
-        global.inputNombre.value = "";
-        global.inputApellido.value ="";
-        global.inputEmailUsuario.value = "";
-        admin = "";
-        global.inputPasswordUsuario.value = "";
+        clearUsuariosForm();
         console.log("Usuario registrado con exito");    
       }      
     } catch (error) {    
@@ -212,8 +209,22 @@ async function editUsuario(id, perfil){
     console.log(error);
   }
 }
-async function editPassword(){
-
+async function editPassword(id){
+  try {         
+    let res = await fetch(`http://localhost:3000/usuarios/${id}/password`,{
+      method: 'PATCH',
+      headers:{
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${localStorage.getItem("jwt")}`
+      },
+      body:JSON.stringify({
+        password: MD5(global.newPasswordUsuario.value),        
+      })          
+    });
+    return res;
+  } catch (error) {
+    console.log(error);
+  }
 }
 async function deleteUsuario(id){
   try {
@@ -231,5 +242,13 @@ async function deleteUsuario(id){
     console.log(error);
   }
 }
+function clearUsuariosForm(){
+  global.inputNombre.value = "";
+  global.inputApellido.value ="";
+  global.inputEmailUsuario.value = "";  
+  global.inputPasswordUsuario.value = "";
+  global.repeatPasswordUsuario.value = "";
+  global.addUsersForm.classList.remove("was-validated")
+}
 
-export {noLinkUsuarios, crearUsuarios, addUsuarios, editUsuario, toCheckUser, deleteUsuario}
+export {noLinkUsuarios, crearUsuarios, addUsuarios, editUsuario, toCheckUser, deleteUsuario, editPassword}

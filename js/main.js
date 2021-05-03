@@ -3,7 +3,6 @@ import * as usuarios from './usuarios.js';
 import * as compania from './compania.js';
 import * as regiones from './regiones.js';
 import * as contacto from './contactos.js';
-import {MD5} from './utils.js';
 
 let objeto = {
   "region": {      
@@ -430,18 +429,8 @@ global.btnAceptarModalUsuario.addEventListener("click",async(e)=>{
   try {    
     if(!global.divPassword.classList.contains("none")){
       if((global.inputEditPasswordUsuario.value != "" && global.newPasswordUsuario.value != "")){          
-        if(global.inputEditPasswordUsuario.value == global.newPasswordUsuario.value){
-          console.log("paso");
-          let res = await fetch(`http://localhost:3000/usuarios/${user[0].id}/password`,{
-            method: 'PATCH',
-            headers:{
-              'Content-Type': 'application/json',
-              'Authorization': `Bearer ${localStorage.getItem("jwt")}`
-            },
-            body:JSON.stringify({
-              password: MD5(global.newPasswordUsuario.value),        
-            })          
-          });
+        if(global.inputEditPasswordUsuario.value == global.newPasswordUsuario.value){          
+          let res = await usuarios.editPassword(user[0].id);          
           if(!res.ok){
             throw 'Error al actualizar los datos'
           }else{            
