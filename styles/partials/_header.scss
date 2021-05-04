@@ -4,6 +4,7 @@ header{
         padding-bottom: 0;
     }
     nav{
+        background-color: $color-primario;
         height: 67px;
         img{
             width: 50px;
@@ -20,6 +21,7 @@ header{
                 height: 100%;
                 li{
                     padding: 23px 0;
+                    cursor: pointer;
                     a{
                         color: #FFFFFF;
                         text-decoration: none;

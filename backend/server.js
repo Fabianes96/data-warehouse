@@ -1,7 +1,7 @@
 //Declaraciones
 const express = require("express");
 const server = express();
-const db = require("../js/db");
+const db = require("./db");
 const jwt = require("jsonwebtoken");
 const cors = require("cors");
 const utils = require("./utils");

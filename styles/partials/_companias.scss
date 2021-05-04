@@ -5,6 +5,9 @@
     .cabecera-companias{
         display: flex;
         justify-content: space-between;
+        #addCompanias{
+            align-self: center;
+        }
     }
     #tabla-card{
         position: relative;   

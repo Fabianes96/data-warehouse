@@ -6,6 +6,10 @@
         .busqueda{
             position: relative;
             width: 510px;
+            #labelInputSearch{
+                font-size: 25px;
+                font-weight: 400;
+            }
             #div-search{
                 display: flex;
                 gap: 10px;
@@ -36,7 +40,7 @@
     }
     #coincidencias{
         position: absolute;
-        top: 71px;
+        top: 85px;
         border: 1px solid rgba(0,0,0,0.05);
         font-size: 12px;
         display: flex;

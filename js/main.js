@@ -11,7 +11,6 @@ let objeto = {
 let arrayCompanias = [];
 let arrayContactos = [];
 let flag = false;
-let flagCompanias = false;
 let contadorSeleccionadas = 0;
 let contadorSeleccionadasUser = 0;
 let user = "";
@@ -38,6 +37,9 @@ window.onclick = function(e){
   }
   if(e.target == global.modalAddContactos || e.target == global.btnCloseModalAddContactos || e.target == global.btnCancelModalAddContacto){
     contacto.clearModalContactos();
+  }
+  if(e.target == global.modalUsuarios){
+    usuarios.clearUsuariosModal();
   }
 }
 global.cerrarSesion.addEventListener("click",()=>{
@@ -409,8 +411,9 @@ global.btnAddContactos.addEventListener("click",async()=>{
   await contacto.loadCanales(global.selectCanal);  
 })
 
-global.agregarCanal.addEventListener("click",async()=>{
+global.agregarCanal.addEventListener("click",async(e)=>{
   if(global.selectCanal.value!="" && global.inputCuentaContacto.value != "" && global.selectPreferencia.value != ""){
+    e.preventDefault()
     await contacto.addCanalToModal(global.selectCanal.value,global.inputCuentaContacto.value,global.selectPreferencia.value,false);
     global.selectCanal.value = ""
     global.inputCuentaContacto.value = ""

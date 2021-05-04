@@ -1,4 +1,4 @@
-const db = require("../js/db");
+const db = require("./db");
 
 function MD5(string) {
     function RotateLeft(lValue, iShiftBits) {

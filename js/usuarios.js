@@ -249,6 +249,8 @@ function clearUsuariosModal(){
   global.inputModalUsuarioNombre.value = "";
   global.inputModalUsuarioApellido.value = "";
   global.inputModalUsuarioEmail.value = "";
+  global.inputEditPasswordUsuario.value = "";
+  global.newPasswordUsuario.value = ""
   global.formUsuario.classList.remove("was-validated");
   global.inputEditPasswordUsuario.removeAttribute("required")
   global.newPasswordUsuario.removeAttribute("required");

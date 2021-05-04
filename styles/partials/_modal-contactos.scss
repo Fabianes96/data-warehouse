@@ -14,6 +14,12 @@
             filter: invert(1);
         }
     }
+    #formContactos{
+        label::after{            
+            content: "*";
+            color: red;
+        }
+    }
     .form-nuevo-contacto{
         display: grid;
         grid-template-columns: repeat(5, 1fr);
@@ -70,8 +76,11 @@
         gap: 35px;
         margin: 20px 0;        
         span{
+            display: flex;
+            align-items: center;
+            gap: 5px;
             align-self: center;
-            justify-self: flex-start;
+            justify-self: flex-start;            
         }
         :nth-child(5n){
             position: relative;
