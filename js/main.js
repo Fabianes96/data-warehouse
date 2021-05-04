@@ -354,11 +354,17 @@ global.btnEliminar.addEventListener("click",async()=>{
     } else if(global.labelWarning.getAttribute("contacto")){
       await contacto.deleteContacto(global.labelWarning.getAttribute("contacto"));      
       global.labelWarning.removeAttribute("contacto");
+      global.cancelWarningModal.click()
+      global.btnCancelModalAddContacto.click()
+      global.linkContactos.click();
     }else if(global.labelWarning.getAttribute("contactos-varios")){
       let allChecked = document.getElementsByClassName("tr-hover");
       for (let i = 0; i < allChecked.length; i++) {    
         await contacto.deleteContacto(allChecked[i].attributes.cid.value);    
       }      
+      global.labelWarning.removeAttribute("contactos-varios");
+      global.cancelWarningModal.click()
+      global.linkContactos.click();
     } else if(global.labelWarning.getAttribute("usuarios")){
       let allChecked = document.getElementsByClassName("tr-hover");
       for (let i = 0; i < allChecked.length; i++){    
@@ -393,6 +399,7 @@ global.btnAddContactos.addEventListener("click",async()=>{
   global.btnAddNuevoContacto.classList.remove("none");
   global.btnEditarNuevoContacto.classList.add("none");
   global.btnEliminarModalAddContacto.classList.add("none");
+  global.tituloModalContacto.textContent = "Nuevo contacto";
   await compania.loadCompaniaToModal(arrayCompanias);
   await regiones.loadOptions(global.optionsGroupContactos);
   await contacto.loadCanales(global.selectCanal);  
@@ -412,14 +419,23 @@ global.linkEliminar.addEventListener("click", async()=>{
   global.labelWarning.setAttribute("contactos-varios","true");    
 });
 
-global.btnAddContactoForm.addEventListener("click",async()=>{  
-  await contacto.addContactoForm();
+global.btnAddContactoForm.addEventListener("click",async(e)=>{    
+  if(global.btnAddContactoForm.getAttribute("add")==""){
+    await contacto.addContactoForm();  
+  }else if(global.btnAddContactoForm.getAttribute("edit") == ""){    
+    e.preventDefault()
+    await contacto.editContactoForm();
+    global.btnCancelModalAddContacto.click()
+    global.linkContactos.click();            
+  }
 });
 global.btnAddNuevoContacto.addEventListener("click",async()=>{  
+  global.btnAddContactoForm.setAttribute("add","")
   await global.btnAddContactoForm.click();
 });
 global.btnEditarNuevoContacto.addEventListener("click",async()=>{
-  await contacto.editContactoForm();
+  global.btnAddContactoForm.setAttribute("edit","")
+  await global.btnAddContactoForm.click();
 });
 global.optionsGroup.addEventListener("change",async()=>{
   await regiones.loadPaises(global.optionsPais,global.optionsGroup)  

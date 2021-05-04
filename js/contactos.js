@@ -136,6 +136,7 @@ function addContactos(arrayContactos, arrayCompanias,contadorSeleccionadas){
       iconEdit.setAttribute("data-bs-toggle","modal")
       iconEdit.setAttribute("data-bs-target","#modalAddContactos")
       iconEdit.addEventListener("click",async()=>{
+        global.tituloModalContacto.textContent = "Editar contacto";
         global.btnCancelModalAddContacto.classList.add("none");
         global.btnAddNuevoContacto.classList.add("none");
         global.btnEditarNuevoContacto.classList.remove("none");
@@ -369,8 +370,9 @@ async function addCanales(contacto,i=0){
   let iCanal ="";
   let iCuenta="";
   let iPreferencia ="";
+  
   for (i; i < global.masCanales.childElementCount; i++) {
-    let children = global.masCanales.children[i]
+    let children = global.masCanales.children[i]    
     if(!children.classList.contains("btn")){            
       if(i%5 == 0){
         iCanal = children.value
@@ -405,11 +407,11 @@ async function addCanales(contacto,i=0){
 async function editCanales(contacto,cont){
   let iCanal ="";
   let iCuenta="";
-  let iPreferencia ="";
+  let iPreferencia ="";  
   let i = 0;
   let count = global.masCanales.childElementCount
   for (i; i < count; i++) {
-    let children = global.masCanales.children[i]
+    let children = global.masCanales.children[i]    
     if(!children.classList.contains("btn")){            
       if(i%5 == 0){
         iCanal = children.value
@@ -443,8 +445,8 @@ async function editCanales(contacto,cont){
       }
     }
   }  
-  if(i+1!=count-1){
-    await addCanales(contacto,i)
+  if(i+1!=count-1){    
+    await addCanales(contacto,i+2);
   }
 }
 
@@ -468,11 +470,7 @@ function clearModalContactos(){
 }
 async function addContactoForm(){
     try {    
-        if(global.inputModalContactoNombre.value != "" && global.inputModalContactoApellido.value != "" && global.inputModalContactoCargo.value != "" && global.inputModalContactEmail.value != "" && global.selectCompanias.value != "" && global.selectCiudadContactos.value != "" && global.selectInteres.value != "" && global.inputModalContactoDireccion.value != ""){
-          if(global.selectCanal.value != "" && (global.inputCuentaContacto.value == "" || global.selectPreferencia.value == "")){
-            console.log("Faltan parámetros");
-            return;
-          }
+        if(global.inputModalContactoNombre.value != "" && global.inputModalContactoApellido.value != "" && global.inputModalContactoCargo.value != "" && global.inputModalContactEmail.value != "" && global.selectCompanias.value != "" && global.selectCiudadContactos.value != "" && global.selectInteres.value != "" && global.inputModalContactoDireccion.value != ""){          
           let res = await fetch("http://localhost:3000/contactos",{
             method: "POST",
             headers:{
@@ -496,11 +494,12 @@ async function addContactoForm(){
               await addCanales(resAsJSON[0]);
             }
             clearModalContactos();      
-            window.location.reload()
+            global.btnCancelModalAddContacto.click()
+            global.linkContactos.click();            
           }else{
             throw resAsJSON;
           }
-        }
+        }        
     } catch (error) {
         console.log(error);
     }
@@ -528,9 +527,10 @@ async function editContactoForm(){
           });          
           let contador = global.modalAddContactos.getAttribute("cuentas");    
           let children = global.masCanales.childElementCount;
-          if(children != 0 && contador == 0){      
+          if(children == 0 && contador == 0){      
             await addCanales(idContacto);
           }else{
+            console.log(idContacto,contador);
             await editCanales(idContacto,contador);
           }
           if(!res.ok){
