@@ -632,10 +632,11 @@ server.delete("/companias/:id",authorization,isAdmin,async(req,res)=>{
 });
 server.get("/busqueda", authorization, async(req,res)=>{
   try {
-    let busqueda = req.query.termino;
-    let consulta = await db.sequelize.query(`SELECT contactos.id, contactos.nombre AS nombre,contactos.apellido AS apellido, cargo, contactos.email AS email, companias.id AS id_compania, companias.nombre AS compania, paises.nombre AS pais, regiones.nombre AS region, interes.porcentaje, contactos.direccion AS direccion FROM contactos JOIN ciudades ON ciudades.id = contactos.ciudad JOIN paises ON paises.id = ciudades.pais JOIN companias ON contactos.compania = companias.id JOIN regiones ON regiones.id = paises.region JOIN interes ON contactos.interes = interes.id WHERE contactos.nombre LIKE :busqueda OR contactos.apellido LIKE :busqueda OR cargo LIKE :busqueda OR companias.nombre LIKE :busqueda OR paises.nombre LIKE :busqueda OR regiones.nombre LIKE :busqueda`,{
+    let busqueda = req.query.termino;    
+    let consulta = await db.sequelize.query(`SELECT contactos.id, contactos.nombre AS nombre,contactos.apellido AS apellido, cargo, contactos.email AS email, companias.id AS id_compania, companias.nombre AS compania, paises.nombre AS pais, regiones.nombre AS region, interes.porcentaje, contactos.direccion AS direccion FROM contactos JOIN ciudades ON ciudades.id = contactos.ciudad JOIN paises ON paises.id = ciudades.pais JOIN companias ON contactos.compania = companias.id JOIN regiones ON regiones.id = paises.region JOIN interes ON contactos.interes = interes.id WHERE contactos.nombre LIKE :busqueda OR contactos.nombre LIKE :busquedaP OR contactos.apellido LIKE :busqueda OR contactos.apellido LIKE :busquedaP OR cargo LIKE :busqueda OR cargo LIKE :busquedaP OR companias.nombre LIKE :busqueda OR companias.nombre LIKE :busquedaP OR paises.nombre LIKE :busqueda OR paises.nombre LIKE :busquedaP OR regiones.nombre LIKE :busqueda OR regiones.nombre LIKE :busquedaP`,{
       replacements:{
-        busqueda: `${busqueda}`
+        busqueda: `${busqueda}`,
+        busquedaP: `%${busqueda}%`
       }, type: db.sequelize.QueryTypes.SELECT,
     });
     res.status(200);

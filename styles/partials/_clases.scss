@@ -1,4 +1,6 @@
+$color-primario: #1D72C2;
 $color-scundario: rgba(0,0,0,0.50);
+$color-terciario: rgba(0,0,0,0.05);
 @mixin opciones($gap){
     display: flex;
     gap: $gap;

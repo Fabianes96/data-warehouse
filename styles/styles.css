@@ -177,6 +177,7 @@ header nav .container ul li:hover a {
 }
 
 #opciones-contactos .opciones-contactos .busqueda {
+  position: relative;
   width: 510px;
 }
 
@@ -224,6 +225,25 @@ header nav .container ul li:hover a {
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center;
+}
+
+#opciones-contactos #coincidencias {
+  position: absolute;
+  top: 71px;
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  font-size: 12px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  gap: 9px;
+  padding: 0 5px;
+  border-radius: 4px;
+  background-color: rgba(0, 0, 0, 0.05);
+}
+
+#opciones-contactos #coincidencias button {
+  height: 11px;
+  width: 3px;
 }
 
 #contactos {

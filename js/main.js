@@ -69,6 +69,8 @@ global.divSearch.addEventListener("click",async()=>{
           'Authorization': `Bearer ${localStorage.getItem("jwt")}`
         },        
       });
+      global.coincidencias.firstElementChild.textContent = global.inputSearch.value;
+      global.coincidencias.classList.remove("none");
       arrayContactos = await res.json();
       global.clearOptions(global.bodyTablaContactos);
       contacto.addContactos(arrayContactos,arrayCompanias,contadorSeleccionadas);
@@ -88,6 +90,8 @@ global.inputSearch.addEventListener("keypress",async(e)=>{
           },        
         });
         arrayContactos = await res.json();
+        global.coincidencias.firstElementChild.textContent = global.inputSearch.value;
+        global.coincidencias.classList.remove("none");
         global.clearOptions(global.bodyTablaContactos);
         contacto.addContactos(arrayContactos,arrayCompanias,contadorSeleccionadas)
       } catch (error) {
@@ -533,6 +537,12 @@ global.formUsuario.addEventListener("input",()=>{
 global.addUsersForm.addEventListener("input",()=>{
   global.inputPasswordUsuario.setCustomValidity(global.inputPasswordUsuario.value.length < 4 ? global.invalidPassLenght.textContent = "La contraseña debe tener al menos 4 caracteres" : "");
   global.repeatPasswordUsuario.setCustomValidity(global.repeatPasswordUsuario.value != global.inputPasswordUsuario.value ? global.invalidPass.textContent = "Las contraseñas no son iguales" : "");
+});
+
+global.closeTag.addEventListener("click",()=>{
+  global.inputSearch.value = ""
+  global.coincidencias.classList.add("none");
+  global.linkContactos.click();
 })
 
 function activeLink(){
